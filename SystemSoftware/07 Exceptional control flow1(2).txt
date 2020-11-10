@@ -1,0 +1,91 @@
+엑셉셔널 컨트롤 플로우
+
+fork 에 대한 다른 예제를 살펴보도록 할게요
+
+이 예제를 보고 화면상에 이렇게 표시되는 것을 살펴보도록 합시다.
+
+부모가 있어요
+printf()
+fork()			자식생성		
+printf()			printf()
+fork()	자식생성		fork()
+printf()	printf()		printf()	--- 여기부터 출력
+	fork()		fork()				손자 생성
+	printf()		printf()				printf()
+	fork() --- 여기부터 출력				fork()
+	printf()						printf()
+							fork()		여기서부터 출력
+							printf()
+
+포크한 다음 라인부터 실행한다.
+
+포크 한 다음에 리턴값을 비교한다.
+
+이 정도로 쉽게 살펴볼수 있어요
+
+exit: Destroyinh Process
+
+그다음 시스템콜은 엑시트에요
+일반적으로 종료할때는 0을 넣게돼요.
+
+main 함수를 시행하고
+일반적으로 return 0을 하게되요
+
+실제로는 메인함수를 시행하기 전에
+
+init 이라는 함수를 호출해요
+그다음에 메인함수를 호출해요
+exit 함수를 호툴하게돼요
+
+내부적으로 exit 을 호출하게 디기때문에 
+return 0 하지 않더라도 프로그램은 종료되게 되요
+하지만 써주는게 좋겠죠 ㅋㅋ
+
+atexit() 라는 새로운 함수가 나오는데
+자동으로 종료할때 여러분이 정의한 시스템콜을 불러와달라고 할 수 있어요
+atexit(cleanup);
+이런식으로 실행하면 너의 메쏘드가 exit함수를 불러올때 cleanup을 사용하고 exit 될거에요
+자원의 낭비를 막기 위한 방법일 수 있어요
+
+많이 사용되진 않지만 알아둬서 나쁠건 ㅈ도 없어요
+
+process states 프로그램의 상태
+
+프로세스의 생명주기 	 new			zombie
+				read	running
+				     wating
+PROCESS STATE
+    CODES
+wating	D	uninterruptible sleep (usually IO)	[ IO 상태에서 이벤트를 기다리는것]
+ready	R	runnable (on run queue)
+wating	S	sleeping [sleep]
+일시정지	T	traced or stopped
+zombie	Z	a defunct ("zombie) process
+
+	D/S 는 wating 상태
+
+전반적인 프로세스의 생명주기 ( 프로세스의 상태 )
+
+흔한 예 [프로세스 스케줄]
+	귀성 티켓
+	ticket machine 서울역
+		new	명절
+		ready		남는표
+		사람(5분)	running	남는표	o	>기차	zombie
+		ready			x	>맨뒤	ready
+		사람(5분)		남는표
+		사람(5분)		남는표
+		사람(5분)		남는표
+
+
+이런 스케쥴 방식을 라운드 로빈 스케쥴링 이라고 합니다.
+실제로 이런 방식들을 가장 기본적으로 사용하고 있답니다.
+
+	ticket machein 서울역
+			명절
+		사람	< 엄마 call "1시간 후에 올테니깐 기차표를 발매해라"
+		ready				> wating
+wating		사람
+1시간후 ready	사람
+		사람
+

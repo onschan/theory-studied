@@ -1,0 +1,200 @@
+System Level IO3
+
+
+char buf[512];
+fd = opeb("a.txt"...);			a [][][][] 4byte
+nByte=read(fd, buf, 512);
+
+512바이트를 요청했으나 a.txt의 크기가 4바이트이기때문에
+반한되는 바이트는 4바이트이다.
+이것을 short counts 라고 한다.
+
+만약 a.txt 가 514 바이트라면
+반환되는 바이트는 512가 반환된다.
+
+그 이후에 
+nByte=read(fd, buf, 512);
+를 한번더 해준다.
+
+그렇다면 남은 바이트는 2바이트밖에 없기 떄문에
+반환되는 바이트는 2이다.
+이것도 short count이다.
+
+off_t lseek(int filedes, off_t offset, int whence)
+
+Return new file offser if OK, -1 on error.
+새로운 오프셋 파일을 반환하고 에러 발생시 -1을 반환한다.
+
+세번째 인자
+SEEK_SET 파일의 시작위치로해서 offset 얼마만큼 이동해라
+SEEK_CUR 현재 위치를 기준으로 +offset해라
+SEEK_CUR 파일의 끝(사이즈) + offset
+
+
+--------------------------------------------------------------------------------------------------------
+lseek operation                                                  a.txt [][][][][][][][][][][][][][][]][][][][][][][][][][]
+						          o 
+						       o
+								                 o
+fd = open("a.txt'...);
+
+lseek(fd,4,SEEK_SET);
+
+lseek(fd,-2,SEEK_CUR);
+
+lseek(fd,-2,SEEK_END);
+
+---------------------------------------------------------------------------------------------------------
+계속 append를 하고 싶으면 open()의 플래그에 append를 넣자.
+---------------------------------------------------------------------------------------------------------
+FIle Metadata
+ 	= 파일의 데이터(정보)
+	파일을 저장하는 1 block 은 2개의 섹터로 되어있다.
+	1블럭은 1024 바이트 이다. 1개의 섹터 512 바이트
+	
+Retrieving File Metadata
+	int stat(const char *path, struct stat *buf);
+	int fstat(int filedes, struct stat *buf);
+		
+	struct stat a;
+	stat("a.txt", &a);
+
+	void stat(char* path, struct stat* pStat)
+	{
+		if(stat(path,pStat) < 0)
+		{
+			perror("stat");
+			exit(-1);
+		}
+	}
+
+------------------------------------------------------------------------------------------------------------
+File creation & Permission mode
+int open(const char *pathname, int flags);
+int open(const char *pathname, int flags, mode_t mode); 3개: permisson
+
+fd = open("a.txt", O_CREAT, S_IRUSR|S_IWUSR)  3번쨰 퍼미션이 포함되면 새로운 파일을 만들때만 적용된다.
+
+------------------------------------------------------------------------------------------------------------
+Absolute Path & Relative Path
+절대 패스, 상대 패스
+
+	절대 패스 /dir/dir1/dir2
+
+	상대패스 ./a.txt
+		a.txt
+
+	fd = open("a.txt", O_CREAT);
+ 	파일을 만들때 현재 디렉토리 + 파일이나 디렉토리 이름에 형성된다,
+			CWD: getcwd() 함수를 통해 현재 작업 디렉토리를 얻을 수 있다.
+	if cwd if /tmp
+	fd = open("a.txt", O_CREAT);
+	fd = open("/tmp/a.txt", O_CREAT); 
+	위에 처럼 상대패스가 들어오면 절대패스로 변환함
+	
+	절대패스 상대패스는 CWP를 기준으로 하고있다.
+
+-------------------------------------------------------------------------------------------------------
+File Descriptor & Identity(ID)
+
+File identity(or id)
+
+File Decriptor
+
+OS는 프로세스별로 파일 디스크립터 테이블을 가지고 있다.
+
+이것 외에도 (open)파일 테이블을 가지고 있다.
+
+하나의 프로세스
+디스크립터 테이블( 프로세스 생성시마다 만들어짐)
+오픈 파일 테이블 (4각형 엔트리 각각의 사각형을 보고 파일테이블 엔트리라고함)
+파일디스크립터 테이블은 파일 테이블을 포인터하고있다.
+
+파일 테이블 안에 파일테이블 엔트리가 있고 파일 테이블 엔트리를 포인터 하는게 디스크립터 테이블이다.
+파일 테이블 엔트리에서 빈 테이블 엔트리를 찾고 이것이 v-node 테이블을 가리키게 한다.
+그 다음 디스크립터 테이블에서 빈 엔트리를 찾는다. 파일 테입블이 갖고 있는 번호, 디스크립터의 번호
+디스크립터에서 번호 찾고 그 번호와 일치하는 파일 테이블 엔트리 찾고 그게 가리키는 v-node 테이블 찾음
+리턴값은 디스크립터에서 파일엔트리의 숫자를 가리키는 고유의 숫자를 리턴하게 된다.
+그리고 여기를 보면 우리가 파일을 오픈할떄 파일 엑세스의 정보를 만들었고 파일 테이블을 만들었어요
+file pos가 file offset이에요. 이 커렌트 파일 오프셋은 파일 테이블에 저장된다. 
+나중에 리드하고 라이트할때 file pos를 가지고 정하게 된다. 생성시 file pos = 0 이된다.
+프로세스에서 파일 디스크립터 테이블이 만들어질때 무조건 0 1 2 는 stdin, stdout, stderr가 초기 할당왼다.
+Descriptor 테이블 0,1,2는 이미 할댕되어있어서 3번부터 리턴값을 가지게 된다.
+
+--------------------------------------------------------------------------------------------------------
+File Sharing 파일 겅유
+
+int fd1, fd2;
+char buf[512]
+
+if(fd1 = open("/home/park/a.txt", O_RDONLY) < 0) {
+	perror("open");
+	exit(-1);
+}
+if (read(fd1, buf, sizeof(buf) < 0) {
+	perror("read");
+	exit(-1);
+}
+if (fd2 = open("/home/park/a.txt", O_RDONLY) < 0) {
+	perror("open");
+	exit(-1);
+}
+if (read(fd2, buf, sizeof(buf) < 0) {
+	perror("read");
+	exit(-1);
+}
+
+fd= open("a.txt"...);
+> a.fr
+> v-node table
+> open file table
+> descriptor table
+
+다시 a.txt를 불러와도 open file table을 다시 쓰지않고
+새로운 open file table을 불러온다.
+
+---------------------------------------------------------------------------------------------------------------
+I/O Redirection
+
+커맨드창에서 dir하면 ls동작처럼
+디렉토리가 쭉 출력될것이다.
+dir > foo.txt 이런식으로하면 화면사에 출력되는 것이 아니고
+foo.txt.에 그래도 저장이 된다.
+그래서 foo.txt.을 열어보면 화면상에 보이는 dir 결과값이
+foo.txt에 그대로 저장되어있다.
+이것이 redirection 동작이 바뀌었다는 거에요
+
+이것을 불러오기위해서 dup2(oldfd, newfd)
+	duplicate를 함수로 만들었다.
+
+dup2(3,1) 을 하게되면 3번에 있는 엔트리 내용을 1번으로 복사한다.
+=그 전에 내용은 사라지면서 복사되는 것이다.
+
+--------------------------------------------------------------------------------------------------------------
+Unix I/O Example
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
+int main(void)
+{
+	char c;
+	
+	while(read(STDIN__FilENO, &c, 1)  != 0)
+		write*STDOUT_FILENO, &c, 1);
+	exit(0);
+}
+
+----------------------------------------------------------------------------------------------------------------
+Directory
+모든 파일의 정보를 담고있는 노드들의 묶음이다.
+
+파일의 정보를 담고있는게 node 이것의 묶음을 디렉토리
+
+
+
+
+
+
+

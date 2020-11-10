@@ -1,0 +1,145 @@
+시그널
+
+시그널을 받게 되면 반응하게 되요 반응
+
+프로세스가 있고
+
+os가 시그널을 보내게 되겠죠
+
+시그널을 받은 프로세스는 반응하게 되요
+
+반응 ( 종료, 무시, catch) 하는 거에요
+signal handelr 라고 하는 것을 호출할 수 있어요 ( catch 할때)
+
+프로세스 stop 하거나 restart 할 수 있어요
+
+무시, 종료, 시그널 핸들러를 통해 캐치, 스탑&재시작
+
+Kill 명령어
+ 터미널에서 kill pid 를 사용하면
+해당 pid 에 signal 을 보내는 거에요
+SIGTERM 이 전해져요
+kill -signalnumber pid
+ex) kill -2 1234
+이렇게하면 -2 에 해당하는 시그널번호가 pid 로 전해지게 돼요
+
+pid가 1234 라면
+kill 1234 하면 해당 1234 프로세스가 종료되겠죠
+kill -9 PID(s)
+kill SIGKILL PID(s)
+SIGKILL 이 9번이에요 [강력한 kill 시그널이에요. rm -rf 처럼 force]
+
+ctrl-c(ctrl-z)
+SIGTERM(SIGSTP)
+
+fork 로 자식 생성후 컨트롤 z를 눌렀어요
+터미널에서 생성된 프로세스 (p) 와 (c)가 있죠
+그러면 두 프로세스에게 SIGTSTP 시그널이 전달되는거에요
+
+fg 명령어를 사용하면 stop되어 있던게 다시 시작하게 될 것이에요
+다시 시작되고 있는 중에 다시 ctrl+c 를 누르면
+
+부모 자식 에게 SIGTERM  시그널이 전달되면서 종료되겠죠
+
+fg = foreground 		앞에서 사용자와 상호작용
+bg = background		사용자 뒤에서 작동
+
+kill(pid[i], SIGINT)
+kill -2 pid[i](pid)
+
+child가 있고 parent 가 있어요
+sigint 를 통해서 child 가 종료돼요
+그러면 빠져나오게 되죠
+이것은 비정상적인 종료에요
+그래서 코드에 WIFEXITED(child_status) 가 있으면  // w if exited
+비정상적인 종료인지 아닌지 확인할 수 있을것이다.
+
+default actions
+종료, 스탑 재시작, 무시
+
+시그널 핸들러 설치
+	시그널 핸들러의 프로토타입은
+	typedef void (*handler_t_(int);
+	이런식으로 개발자가 구현해주면된다.
+	그리고
+	handler_t *signal(int signum, handler_t *handler)
+	이런 시그널 함수가 있는데 signum에 해당하는 시그널이 발생하면
+	handler에 해당하는 함수를 실행해달라고 요청하는 시스템 콜이다.
+	
+	즉 핸들러는 함수 포인터이다.
+	시그널 num 으로 받은 시그널 발생시 handler (함수 포인터) 에 해당하는 함수를 실행
+	installing(걸어준다) 시그널에 핸들러를 등록해주는거
+	핸들러를 실행하면 cathing or hanglinig 했다라고 한다.
+	
+Procedure Call vs Singnal Handler
+
+void sigint_handler(int signo){
+	print(Hello, world);
+}
+
+main() {
+signal(SIGINT, sigint_handler(-2))
+while(10
+{
+/*
+	여기서 컨트롤 c를 눌렀어요
+	그러면 default action 은 종료였어요
+	하지만 나는 signal_handler 를 불러와서
+	컨트롤 c를 누르면 Hello, world 를 출력하고 싶어요
+	이럴때 시그널 핸들러를 사용하는거에요
+*/
+}
+
+Process A		Process A
+	-> int_handler		-> int_handler		-> int_handler
+control c		    V	control c		    V	control c	
+	->			->			->	
+동일한 핸들러가 계속 실행된다.
+
+Signal Handling Example
+void int_handler(int sig)
+{
+	printf("process : %d, signal : %d", getpid(), sig);
+	exit(0);
+}
+
+void fork13()
+{
+	pid_t pid[n];
+	int i, child_status;
+	signal(SIGINT, int_handler);
+	// SIGINT 시그널에 int_handler 등록 signal 함수를 이용해서
+
+
+다시 앞쪽으로 돌아가서 Procedure Call vs Singnal Handler
+함수 호출 vs 시그널 핸들러
+
+유사점 : 함수 프로토타입(형식)
+	동일한 프로세스 안에서의 실행
+차이점 : 
+	함수 호출 
+		상위 함수가 호출을 요청하기 때문에 전체 실행 흐름을 예측할 수 있다.
+	시그널 핸들러
+		upper 함수가 없고 커널이 실행하기 때문에 흐름을 예측할 수 없다.
+
+
+시그널은 외부에서(내부 디바이스|| 다른 프로세스) 전달이 되어요. ctrl-c
+void handler(int sig) { ... }
+main() {
+	signal(SIGINT, handler)
+}
+
+반면에 프로그램 자체에서도 시그널을 내부적으로 발생할 수 있어요
+main() {
+	signal(SIGALRM, handler);
+	alarm(1) // 시스템콜을 이용해서 자체적으로 SIGALRM 시그널을 발생시킴
+}
+
+
+Alarm()
+	SIGALRM 시그널을 프로세스에 전달하는 함수
+	unsigned int alarm(unsigned int seconds)
+
+알람 설명은 여기서 마칠게요
+
+

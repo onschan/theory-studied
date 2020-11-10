@@ -1,0 +1,119 @@
+이러면 시그널에서 
+
+시그널을 잘못사용하게 되면 발생할 수 있는
+
+Race Condition 에 대해서 말해볼거에요
+
+char *pGlobalMem = NULL;
+int globalCnt = 0;
+
+void sigint_handler(int sig)
+{
+	pGolbalMem 모든 값 i로 초기화
+	i++ 출력
+	
+}
+
+int main()
+{
+	pGlobalMem = malloc(1000);	1000바이트 말록
+	memset(pGlobalMem, 0, 1000);	말록받은 1000바이트를 0으로 초기화
+	signal(SIGINT, sigint_handler);	SIGINT 핸들러 등록
+	while(1);				무한루프
+}
+
+ctrl-c 누르면 1 출력, 초기화
+ctrl-c 누르면 2 출력, 초기화
+ctrl-c 누르면 3 출력, 초기화
+
+초기화 하는 도중에 ctrl-c 를 또 누르면 어떻게 되겠는가?
+race condition 발생
+시그널 핸들러 시행도중 동일한 시그널이 발생했기 떄문에
+
+이 문제를 해결할 수 있는 방법은?
+동일 시그널 발생시 시그널 핸들러가 끝날때까지 기다리게 하고 그 다음 시그널을 받게 해주면된다.
+시그널 핸들러의 경쟁을 막아주면 된다.
+
+그래서 우리는
+이를 어떻게 하는가
+
+signal_handler
+{
+	시그널 블록(또는 마스킹)
+	sigmask(SIGINT)	// 이 함수를 통해서 SIGINT의 간섭을 막을 수 있다.
+	...
+	시그널 핸들러의 수행이 끝나고 종료 시
+	sigunmast(SIGINT)	// mask or block 해제
+}
+
+시그널을 일시적으로 차단할 수 있다. (마스킹)
+시그널이 처리되고 나서 unmask 시행
+
+전달된 시그널이 없어지는 것이 아니고 일시적으로 전달된 시그널의 처리가 되지 않는 것뿐이다.
+
+Mask vs ignored
+
+마스크 vs 무시된
+
+ignored : 시그널은 전달되지만 아무것도 처리하지 않는 것
+	A : 야! B : (들었지만 대답하지 않음)
+mask : 처리할 것이지만 잠시 우선순위에서 미뤄두는 것
+	B : (처리 중인 작업이 있어서 잠시 후 듣겠다고 표시해놓음) A : 야! B : (들었지만 현작업 처리 후 반응)
+ 
+sigprocmask(int how, const sigset_t *restrict set, sigset_t *restrict oset)
+	   블록,언블록/블록 대상 시그널들 지정/
+		    32비트(각 비트 시그널 넘버)
+
+sigemptyset(모든 시그널넘버 0으로 초기화)
+sigaddset(sigset_t *set, int signo)	// signo 에 해당하는 시그널이 set위치에 할당됨
+				// sigaddset(&set, SIGKILL)	// 9번이 set 위치에 할당됨
+sigdelset				// set에 있는 시그널이 0으로 바뀌게됨
+
+
+sigprocmask(int how, const sigset_t *restrict set, sigset_t *restrict oset)
+	int how :	SIG_BLOCK
+		SIG_UNBLOCK
+		SIG_SETMASK
+
+signal 이라는 함수가 있고 sigprocmask 라는 함수 있어요
+핸들러 등록		block/unblock
+
+signal 과 sigprocmask 를 합친 함수가
+sigaction 이에요
+
+sigaction(int sig, const struct sigaction *act, struct sigaction *oact);
+
+struct sigaction
+	void (*sa_handler) (int);
+	void (*sa_sigaction)(int, siginfo_t *, void *);	나중에 뒤쪽에서 timer 에서 자세하게 설명
+	sigset_t sa_mask;
+	int sa_flags;
+	void (*sa_restorer) (void)
+예제를 보면
+struct sigaction newact 선언
+newact.sa_handler = mysighand;
+newact.sa_flags = 0;
+
+if((sigemptyset(&newact.sa_mask) == -1) || (sigaction(SIGINT, &newact, NULL) == -1)
+	perror("SIGINT 의 시그널 핸들러를 등록하는데 실패했습니다.");
+----------------------------------------------------------------------------------------------
+구조체에 핸들러를 등록하고 
+시그액션을 해야 핸들러가 불러와진다.
+
+----------------------------------------------------------------------------------------------
+Unix Process Hierarchy(유닉스 프로세스 계층)
+			[0] 태초
+			init[1]
+	Daemon 	|	
+			Login shell
+	child		child		child
+		grandchild 	grandchild
+ 
+부팅을 하게 되면 boot/vmlinux 커널 실행
+접근, 종료 할수 없는 0 프로세스 실행 (OS내부에서 돌아가는 프로세스)
+0번의 child 로 init[1] 프로세스 실행 [/sbin/init]
+/etc/inittab 이라는 파일이있는데 여기에 부팅할떄 실행하고자 하는 daemon (백그라운드 실행 시스템 프로세스)
+이 있음 ftpd, httpd 등 (네트워크같은거)
+그 뒤 init[1] 은 child 로 getty 실행
+
+다음 강의로 갑자기 넘어감
