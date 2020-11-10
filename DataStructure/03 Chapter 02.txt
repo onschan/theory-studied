@@ -1,0 +1,173 @@
+Chapter 02
+
+오늘은 자료구조를 설명할 때 필요한 앱스트렉트 C++타입 이런것들을 배우겠다.
+본질적으로는 고급프로그래밍 시간에 배웠던 것들을 복습하겠다.
+
+챕터2는 오브젝트 OOP에 대해서 설명한다. 즉, 클래서 오브젝트 오리엔티드 프로그래밍
+
+오오피는 새로운 데이터 타입을 만들고 그들을 조작하기 위한 오퍼레이션
+
+클래스에 대한 복습이다.
+
+class ThinkingCap
+{
+public:
+	void slots(char new_green[], char new_red[]);
+	void push_green() const;
+	void push_red() const;
+private:
+	char green_string[50]:
+	char red_string[50];
+};
+
+TinkingCap::slots(char new_green[], char new_red[]);
+{
+	
+}
+
+TinkingCap::push_green() const;
+{
+	
+}
+
+TinkingCap::void push_red() const;
+{
+	
+}
+
+const를 붙여하는 다양한 경우가 있는데
+constant 상수라는 뜻은 바꿀수 없다 이들 멤버 function이 바뀌더라도 사용하는 값들은 바꿀수 없다.
+
+thinking cap을 실제로 만들고 싶다면
+클래스를 파일로 작성을 해야한다. 클래스르 만드는 이유는 다양한 사람들, 사용자들이 사용할 수 있도록
+그래서 클래스를 만들땐 별로의 파일로 만들게 된다. 그래서 헤더파일러과 임플리멘션 파일로 나뉜다.
+띵킹캡 클래스에 대한 정의가 다큐멘테이션의 정의와 함께 헤더파일에 정의되어야한다.
+클래스는 헤더파일과 임플리메테이션 파일로 나뉘는데 헤더파일에는 다큐멘테이션의 정보가 들어간다.
+사용법에 대한 정의가 이뤄진다고 볼 수 있다. 이것이 헤더파일에 들어간다고 할 수 있다.
+임플리멘테이션에는 클래스에 대한 정의가 들어간다. 실제 함수 구현 내용이 들어간다고 할 수 있다.
+
+thinking cap 실제로 만들어보기
+
+클래스가 만들어졌다면 어떤식으로 사용해야 하는지 알아야한다.
+헤더 파일을 인클루드 해야한다.
+
+메인 .cpp 파일
+
+#include <iostream>
+#include <stdlib.h>
+#include "thinker.h"   (내가 만든 헤더 파일 라이브러리로 저장되어있는 것이 아니기 때문에 큰 따옴표"를 사용
+
+int main()
+{
+	ThinkingCap student;
+	ThinkingCap fan;
+
+	student.slots("Hello", "Goodbye");
+	
+	student.push_green();
+}
+
+너가 객체에 대해서 알고 있는 것
+	클라스는 데이터와 멤버 펑션 으로 이루어져 있다.
+	class = data + member function                자료구조 = 데이터 + 알고리즘
+	새로운 클래스 타입을 정의하고 정의를 헤더파일에 정의해야 하는 것을 알고 있다.
+	헤더 파일을 어떻게 가져오는지 알고 있다.
+	멤버 함수들을 어떻게 싱행시키는 지 알고 있다.
+	하지만 너는 아직 클래스 멤버 함수의 바디를 쓰는법을 알아야 한다.
+----------------thinker.h------------------------------------implementation
+#ifndef THINKER_H
+#define THINKER_H
+
+class ThinkingCap
+{
+public:
+	void slots(char new_green[], char new_red[]);
+	void push_green() const;
+	void push_red() const;
+private:
+	char green_string[50]:
+	char red_string[50];
+};
+#endif
+---------------------------------------------------------------
+
+----------------thinker.cpp-----------------------------------
+#include <cstring> (assert, strcpy)
+#include "thinker.h"
+
+void ThinkingCap::slots(char new_green[], char new_red[]);
+{
+	assert(strlen(new_green) < 50);		
+	assert(strelen(new_red) < 50);
+	strcpy(green_string, new_green);
+	strcpy(red_string, new_red);
+}
+
+void ThinkingCap::push_green() const;
+{
+	cout << green_string << endl;
+}
+void ThinkingCap::push_red() const;
+{
+	cout << red_string << endl;	
+}
+----------------------------------------------------------------
+
+클래스는 데이터와 함수의 결헙
+멤버 함수 > 보관과 사용
+
+클래스와 파라미터(매개변수)
+	기본 아규먼트(인자)
+		int date_check(int year, int month = 1, int day = 1);
+		
+		date_check(2000); // same as date_check(2000,1,1)
+		date_check(2000,7); // same as date_check(2000,7,1)
+
+		파라미터 설정시 오른쪽부터 기본 파라미터를 설정하며
+		인자 입력시 왼쪽부터 입력하여 읽는다, 비어있는 인자는 기본 파라미터가 들어간다.
+	
+		c언어에 없던 기능이며 cpp에 생겼다. 과도한 함수 오버로딩을 피할 수 있다.
+		class의 생성자와 소멸자에서 많이 사용하기 때문에 cpp에서 필요에 의해 생겼다.
+		constructor, destructor 생성 소멸시 디폴트 아규먼트가 필요하다.
+
+	파라미터 패싱
+		cpp에서 벨류와 래퍼런스를 둘다 넘길 수 있게 되었다.
+		밸류 파라미터
+		래퍼런스 파라미터(참조)
+			void swap(int& a, int& b) 이런 식
+			&주소 값이 아니라 a를 레퍼런스로 넘기겠다는 표시로 보면된다.
+			변수의 값이 아니라 변수가 직접 함수 안에 들어가겠다는 말이다.
+			
+		콘스트 레퍼랜스 파라미터
+			일반적 래퍼런스 파라미터와 같지만 변수의 값이 변하지 않는 다는 것이다르다.
+			그렇다면 일반적인 변수 값의 전달과 콘스트 래퍼랜스가 뭐가 다른가?
+			>> 궁금중에 대한 답변
+			변수의 값을 바꾼다 > 래퍼랜스 파라미터
+			변수의 값을 바꾸지 않는다 > 벨류 파라미터 , 콘스트 레퍼랜스 파라미터
+				값이 작으면 > 벨류 파라미터
+				값이 크면 > 콘스트 레퍼랜스 파라미터
+					값이 큰 경우 벨류로 넘기게 될때 시간이 많이 들고
+					메모리 낭비가 심할 수 있다.
+					효율성의 측면에서 콘스트 레퍼랜스 파라미터를
+					주로 쓰게 될것이다.
+
+오퍼레이터 오버로딩
+	어렵지 않으나 강의 뒷부분에 나오는 부분이라 어렵게 느껴질 뿐이다.
+	상황에 따라 연산자를 오버로딩할 뿐이다.
+	+, -. * ,/,% 등에 대해서 필요한 상황에 연산이 가능하도록 정의할 뿐이다.
+	
+	정의하는 법은 두가지로 나눌수 있다
+		클래스의 멤버
+		클래스의 멤버X
+	클래스 멤버X 경우 [논멤버]
+		bool operator == (const point& p1, const point& p2)
+		// bool operatot == (point p1, point p2)
+		{
+			return (p1.get_x() == p2.get_x() &&
+			(p1.get_y() == p2.get_y());
+		}
+	
+		bool operator !=(const point& p1, const point& p2)
+		{
+			return !(p1 == p2);
+		}

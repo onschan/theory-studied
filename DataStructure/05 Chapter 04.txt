@@ -1,0 +1,295 @@
+Chap04
+
+4. 포인터와 다이나믹 어레이
+
+다이나믹 어레이와
+스태틱 어레이가 있다
+
+스태틱 어레이는 정적, 실행할때부터 사이즈가 정해져있고 알수 있는것
+다이나믹 어래이 동적, 움직일수있고 사이즈가 정해져있지않고 프로그램 중간에서 사이즈를 정함
+(훨씬 유연한것이 다이나믹 어레이)
+
+포인터라는 개념을 사용해서 다이나믹 어레이 즉 동적 배열을 만들수 있다.
+
+4장의 앞부분은 여러분이 C++ 시간에 배운 포인터와 다이나믹 어레이의 복습부분이다.
+
+이 부분을 이용해서 뒷부분에서 아까 만들었던 가방을 다시 만들어 보겠습니다.
+
+포인터와 다이나믹 어레이
+
+포인터가 무엇이냐?
+	포인터의 변수의 메모리 주소이다. 메모리 어드레스 오브 어 베리어블
+	포인터 베리어블은 한 베리어블 (그것의 변수는 포인터이다)
+
+syntax:
+	Type_name *var_name;
+	Type_name* var_name;
+Examples:
+	double* ptr; // == double *ptt
+	char *c1_ptr, *c2_ptr' // == char* c1_ptr, c2_ptr
+
+포인터 배리어블은 그 주소가 어떤 데이터의 주소를 저장하는 지 까지 언급되어있다.
+
+int i = 42;
+int j = 80;
+int *p1, *p2;
+p1 = &1; p2 = &j;
+p2 = p1;
+cout << *p1 << endl;
+cout << *p2 << endl;
+cout << i << endl;
+cout << j << endl;
+
+동적 변수
+	- 선언되지 않습니다. 하지만 프로그램 실행중에 만들어진다.
+	-"new" 오퍼레이터를 통해 만든다.
+		-할당한다 특정한 데이터 타입의 메모리를 그리고 반환한다 포인터를 ( 이 새로운 동적 변수를 가리키는)
+
+Example:
+	int *p1;
+	double *p2;
+	p1 = new int;
+	*p1 - new int;
+	*p1 = 42;
+	p2 = new double[4];
+	p2[2] = 5.5;
+
+	포인터 변수 p1 생성
+	p1이 가리키는 새로운 변수 new int 생성(비어있는 동적 공간 생성)
+	p1의 값(new int 의 공간) = 42; // 할당
+	p2가 가리키는 new double[4] (4개의 new double) 공간 생성
+	p2[2] = 5.5;
+	new double[2]의 값을 5.5로 바꿈
+
+동적으로 할당받은 변수들은 프로그램이 끝날때 없어지거나
+delete 오퍼레이터를 통해서 해제할 수 있다. [메모리가 꽉차서 프로그램에 문제가 생기게하지않기위해]
+
+	delete p1;	// 새로운 공간을 가리키던 포인터의 화살표를 없애준다.
+	delete[] p2;	// 배열을 없애고 싶을 땐 delete[] 를 사용
+
+여기까지가 기본적인 포인터와 배열을 함수 파라미터(매개변수)로 사용하는 법
+	포인터와 어레이[거의 같은 개념]
+1	- 포인터가 밸류 파라미터로 들어가는 법
+2	- 어레이 파라미터로 넘기는 법 (위에랑 거의 같은데 어레이가 레퍼런스로 들어가는 착각)
+3	- 포인터와 어레이를 const로 넘기는법
+4	- 포인터를 레퍼런스 파라미터로 넘기는 법(c언어에서는 레퍼런스 파라미터가 없기떄문에 이중 포인터)
+	> 이중포인터까지 넘어가면 화나니깐 포인터 레퍼런스를 가능하게함
+1Example:
+	void make_it_42(int* i_ptr)
+	{ *i_ptr = 42; } 가리키고 있는 값을 넣어줌
+
+	int *main_ptr;
+	main_ptr = new_int;
+	make_it_42(main_ptr);
+	
+	콜바이레퍼런스를 흉내냄, 사실은i_ptr을 만들어 포인터끼리 연결한거임
+
+2Example:
+	void make_it_all_42(double data[],size_t n)
+	{	size_t i;
+		for(i = 0; i < n; ++i)
+			data[i]=42;
+	}
+	...
+	double main_array[10];
+	make_it_all_42(main_array,10);
+	cout << main_array[5];
+
+3Example:
+	bool is_42(const int* i_ptr)   // i_ptr > 가리키는 곳(이곳이 const))
+	{
+		return (*i_ptr == 42);
+	}
+
+Example
+	double average(const double data[], size_t n);
+	{
+		size_t i; double sum;
+		assert(n>0);
+		sum = 0;
+		for(i=0; i<n;i++)
+		sum += data[i];    // data[i] += 1; >> error
+		return (sum/n);
+	}
+
+제일 중요한 코드
+	void allocate_doubles(double*& p, size_t &n); //더블 포인터의 레퍼런스 피, 사이즈언더바티 레퍼런스 엔
+	{
+		cout << "Enter the number of doubles:";
+		cin >> n;
+		p = new double[n];
+	}
+	>> n은 n의 변수가 그 자체가 와서 값 까지 바꾼다.
+	p = new double[n];
+	// 새로운 n개의 double형 공간을 만들어놓고 p가 그것을 가리킬 수 있도록 한다.
+	함수안에서 가리킨 이 사실을 함수가 끝나도 유지하도록 한다.
+	&p 를 참조하지않으면 함수가 끝나면 링크가 사라진다.
+	도서관에서 나왔더니 책에서 사라졌다는건 &를 붙이지 않았기떄문이다.
+	함수가 끝나도 그 변수, 그 행동이 유지하게 하기위해서 &를 붙일뿐인거다
+	포인터 p 를 함수 밖에 있는 그 함수까지 조작하는것.
+	유지! 포인터를 래퍼런스로 넘기는 상황을 꼭 기억해야한다.	
+	이것을 기억해야 앞으로의 코드를 기억할 수 있겠다.
+	구현하는 사람은 짜증나지만 사용
+
+포인터와 다이나믹 어레이 allocation 에 대해서 복습했었다.
+
+오늘은 드디어 포인터와 다이나믹 어레이를 이용해서 가방 클래스를 다시 만들어 보겠습니다.
+
+The Static Bag:
+class bag {
+	value_type data[CAPACITY];
+	size_type used;
+}
+
+Ths Dynamic Bag:
+class bag {
+	value_type *data;
+	size_type used;
+	size_type capacity;
+}
+
+	같은 가방이지만 다양한 사이즈를 가질 수 있다.
+
+bag(size_type init_capacity = Default_Capacity);
+
+bag::bag(size_type init_capacity)
+{
+	data = new value_type[init_capacity];
+	capacity = init_capacity;
+	used = 0;
+}
+
+copy constructor 를 무조건 오버로딩, 재정의 해줘야한다.
+	컨스트럭터를 쓰는데 복사본으로 그 가방을 다시 만들어주기 위해 쓰는것
+	생성자
+
+bag(const bag& source);
+
+bag::bag(const bag& source)
+{
+	data = new value_type[source.capacity];
+	capacity = source.capacity;
+	used = source.used;
+	copy(source.data, source.data+used, data);
+}
+
+Usage of copy constructor
+	create a new instance by copying an existing objet
+		bag y(x); // same as bag y = x;
+	return an onjet from a funtion
+		bag operator +(const nag& b1, ocnst bag& b2);
+	when a value parameter is an object
+		int rotation_needed(point p);
+
+destructor	소멸자
+	free dynamic memory
+~bag();
+
+bag::~bag()
+{
+	delete[] data;
+}
+
+assignment operatior =:
+	should check for self-assignment (a=a) first
+	if the size of the array doesn't match, allocate memory for the new array
+	copy the source data into the newly allocated data array
+	내용 복사와 메모리 할당
+	example assignment operator
+	a: a bag object(capacity 2)
+	b: a bag object(capacity 5)
+	
+	a = b;
+	
+	capacity 		used		 data
+	new_data		
+
+&엠퍼센드 왜 붙였냐? 안붙여도 되는데 안붙이면 문제가 생긴다. a = b = c = d; 를 쓰면
+어떻게 코드가 진행된냐면 d가 c에 들어가고 c가 b에 들어가고 b가 a에 들어가고 a가 리턴된다.
+void를 쓰게 되면 chaining assignment가 안이뤄지고 return에 대한 복사가 일어나지 않는다.
+&를 붙인다는거은 현재 개체가 복사없이 리턴되어서 리턴에 대한 효율성을 높이게 된다.
+
+bag& bag::operator =(const bag& source) {
+	if (this == &source)
+		return *this;
+	if (capacity != source.capacity) 	// 가방 사이즈가 다르면
+	{
+		delete [] data;		// 현재꺼 버리고
+		data = new value_type[source.capacity];  	사이즈 공간
+		capacity = source.capacity;		공간 할당
+	}
+	used = source.used;		used 할당
+	copy(source.data, source.data+used,data);	 copy
+	return this;
+}
+
+reserve function
+	increase the capacity of a bag
+	가방의 크기를 바꾸는 기능 vector 의 기능
+	
+void bag::reserve(size_tye new_capacity)
+{
+	value_type *larger_array;
+	if(new_capacity == capacity)
+		return;
+	if(new_capacity < used)
+		new_capacity = used;
+
+	larger_array = new value_type[new_capacity];
+	copy(data, data+used, larger_array);
+	delete [] data;
+	data = larger_array;
+	capacity = new_capacity;
+}
+
+void bag::insert(const value_type& entry)
+{
+	if(used == capacity)
+		reserve(used+1);
+	data[used] = entry;
+	++used;
+}
+
+bag operator +(const bag& b1, const bag& b2)
+{
+	bag answer(b1.size() + b2.size());
+	
+	answer += b1;
+	answer += b2;
+	return answer;
+}
+
+void bag::operator +=(const bag& addend)
+{
+	if(used + addend.used > capacity)
+		reserve(used + addend.used);
+	copy(addend.data, addend.data + addend.used, data+used);
+	used += addend.used;
+}
+
+
+destructor / copy constructor / overloaded assignment operator
+멤버 변수가 포인터인 경우에 위에 3개를 무조건 포함해야한다
+
+----------------------------------------------------------------------------------------------
+
+Vectors 소개
+
+일반적인 어레이는 고정된 사이즈를 가지고 있다.
+백터는 늘리고 줄일수 있는 어레이이다. ( 프로그램 실행 동안 )
+스탠다드 템플릿 라이브러리(STL) 의 형태로 되어있다. (템플릿 클래스 사용)
+
+어레이와 유사하다.
+	타입을 언급해서 사용 가능핟.
+	베이스 타입에 해당하는 자료들을 저장할 수 있다.
+문법 : vertor<Base_Type>
+	지시한다 템플릿 클래스
+	어떠한 형도 사용 가능하다
+	해당 타입에 해당ㅎ아는 새로운 클래스를 제공한다
+	vector<int>v;
+	v라는 클래스는 벡터인데 int 타입을 저장하는 어레이 역할을 한다
+	v는 인트형의 벡터이다.
+	자동으로 기본 생성자를 호출한다 - 비어있는 백퍼 객체 생성
+	특징적인게 add element 를 할 수 있다.
+	push_back() 이라는 멤버삼수를 이용해서 뒤에 넣을 수 있다.
+	size() 지금 몇개가 들어가 있는지 확인 할  수 있다.

@@ -1,0 +1,582 @@
+Liked lists
+
+첫번째 시간
+
+컨테이너 클래스를 스태틱 어레이로 구현해봤습니다.
+다이나믹 어레이로 구현해봤구요.
+
+이번 5장에서는 트리비얼하지않은(원시적이지않은) 첫번쨰 자료구조이겠습니다.
+
+링크드 리스트.
+
+체인을 생각하자
+
+체인이라고 하는 것은 무엇인가요.
+체인에 중간중간 고리를 다시 걸어서 끼워넣기가 가능하죠?
+
+간단히 말해서 어레이라고 하는것은
+연속된 긴 강체의 모양이죠
+그래서 데이터가 들어있으면
+내가 중간에 데이터를 끼워넣는것이 쉽지 않습니다.
+
+그런데 링크드 리스트는 이렇게 고리 모양으로 들어있기때문에
+중간에 하나씩 끼워넣을 수 있겠죠?
+
+어레이는 이것을 하려면 트릭을 만들어서 복잡하게 해결해야하지만
+링크드 리스트는 끼워넣기가 간단합니다.
+
+linear structure 선형 구조 - 연속된 구조
+물리적으로 연속된 구조 [어레이]
+논리적으로 연속된 구조 [링크드 리스트]
+>실제로는 연속된 구조가 아니지만 형태를 만들어서 체인 모양을 이용해서 연속적 모습으로 생각하는것
+
+첫번째 파트를 보겠습니다.
+
+링크드 리스트[고리][체인][노드][Node]
+
+이 고리로 연결되어있는게 링크드 리스트인데
+이 고리 하나를 Node 노드라고 보면 되겠습니다.
+
+실제 메모리는 선형구조입니다.
+주소가 있죠. 0부터 끝 바이트 까지
+
+링크드 리스트는 그 메모리를 조각을 내서 연결을 해주는 겁니다.
+그래서 링크가 필요한겁니다.
+
+노드 속에는
+데이터와 링크가 있습니다
+
+하나의 네모가 node 입니다
+(         노드        )(         노드       )(           노드	)
+[ ]	->	[ ]	->	[ ]	->	
+데이터	링크	데이터	링크	데이터	링크
+
+링크는 포인터에요
+
+내가 현재 노드에서 다음 노드는 어디이냐
+이것을 링크로 연결해주는것이다.
+
+노드 클래스
+class node
+{
+public:
+	typedef double value_type;
+private:
+	value_type data_field;
+	nod *link_field;		// 재귀느낌이긴 하지만 상관은 없다. 다음 노드를 가리키기위한 노드
+}
+
+링크드 리스트라 하는 것은
+헤드 포인터를 이용해서 앞의 노드를 킵 트랙할수 있다.
+head_ptr
+시작부분
+
+특수한 상황에서는
+마지막 포인트인 tail_ptr 도 있을 수 있다.
+
+head_ptr 과 tail_ptr 은
+노드가 아니고 그냥 노드를 가리키는 포인터일 뿐이다.
+데이터를 담고있지 않다.
+
+head_ptr가 null 이라면 노드가 비어있다.
+라고 표현할 수 있다.
+즉, 사용할 수 없는 포인터이다.
+head_ptr = NULL
+
+node constructor:
+
+node(				<익명의 오브젝트> double, int 등을 넣어야함
+	const value_type& init_data = value_type(),
+	const node* init_link = NULL)	// 입력 받을 수도 있고 안받을 수도 있음 디폴트 아규먼트
+{
+	data_field = init_data;
+	link_field = init_link;
+}
+
+class node
+{
+public:
+	node(...);
+	void set_data	//데이터를 데이터로
+	void set_link	// 링크를 링크로
+	value_type data() const;
+	const node* link() const;
+	node* link();
+}
+
+콘스트가 붙은 버전 안붙은 버전이 있다 * link() 에
+링크라는 함수를 호출하면 return link_field 호출한다
+node *second = head_ptr->link();
+		// (*head_ptr).link()
+
+second = 9.2 를해도 상관없음 왜냐면 link() 콘스트가 안붙었으니깐
+const 가 붙은 버전으로 불러오면
+const node* second = head_ptr->link();
+이렇게 해주면 값을 바꿀수없다.
+
+그러니깐 값을 바꾸고 싶은 경우
+바꾸면 안되는 경우 
+
+두 가지 경우가 있기떄문에
+const 버젼 non-const 버젼으로 link() 두개를 만들어야한다.
+
+여기까지가 기본적인 링크드 리스트 노드 클래스를 봤구요
+
+노드 클래스는
+간단한 형태의 클래스입니다.
+
+이 노드를 바탕으로
+head_ptr 를 시작으로 노드를 다루게 되는 겁니다.
+
+head_ptr 을 가지고 시작하는 겁니다.
+
+링크드 리스트 툴킷 함수가 있어야
+링크드 리스트를 자유롭게 다룰수 있고
+그러한 유틸리티를 만들겄이다.
+
+링크드 리스트의 길이를 알아야합니다.  (length)
+링크드 리스트에 노드를 넣어야 합니다. (Insert) 		+
+링크드 리스트에 노드를 삭제해야 합니다 (Remove)	+
+링크드 리스트에 노드를 찾아야 합니다. (Search)		+
+다이렉트 엑세스가 불가능하기떄문에 위치를 따라가서 찾아야한다. (Locate)	-
+복사기능	(Copy)		-=
+연결리스트에서 할당받은 것을 반환해야합니다. (Clear)
+
+
+데이터를 끼워놓을수 있게 선형으로 관리하는것
+
+링크드 리스트
+고리들이 연결되어 있는 형태
+데이터 파트
+링크 파트
+이 두개를 합쳐서 노드라고 한다.
+
+node 클래스엔 재귀형태로 node 가 선언되어있다.
+
+head_ptr 과 tail_ptr 이 있어서
+노드를 관리하는 포인터 이다.
+노드는 아니다
+데이터가 없기때문에
+
+노드를 위한 퍼블릭 멤버들을 살펴봤는데요
+데이터필드 링크필드 초기화 하는 방법과
+노드를 불러오는 콘스트 리턴타입을 갖는 노드 포인터와
+변경이 가능하나 노드 포인터 두개가 정의된다.
+
+노드들이 연결되어 있는 상황
+7개의 유틸리티 펑션을 오늘 이 시간에 배울것이다.
+
+"toolkit function"
+
+length()
+-헤드 포인터에서 null 까지 노드가 몇개 달려있는지 세는 함수
+우리가 구할 값은 갯수인 answer
+따라가는 입장에서 cursor가 있어야 겠다.
+head_ptr 포인터의 값을 cursor에 복사하게되면
+answer = 0 이고 커서는 첫번째 노드를 가리키게 된다.
+그와 동시에 answer 값은 1이 된다.
+그 다음 다음 노드를 가리키고 
+answer 값은 2가 되고
+그 다음 노드를 가리키며 answer 값이 3이된다.
+그러면서 null 을 만나면서 종료가 되면서
+노드의 갯수가 answer에 입력된다.
+
+size_t list_length(const node* head_ptr) //개발자가 실수로 head_ptr의 값을 바꾸지 않기 위해 const
+{
+	size_t = answer = 0;
+	const node *cursor;
+	for (cursor = head_ptr; cursor!=NULL; cursor=cursor->link())
+		++answer;;
+	return answer;	
+}
+
+//for문을 주의 깊게 보자
+
+두번쨰 함수를 보겠습니다.
+insert()	// 놀랍게도 두 가지 버젼이 있습니다.
+첫번째 - list_head_insert
+새로운 노드를 링크드 리스트의 머리(맨 앞에) insert 한다.
+만약 우리가 새로운 13을 링크드 리스트 앞에 넣고 싶다면?
+void list_head_insert(node*& head_ptr, const node::value_type& entry);
+{
+	노드를 만들고 엔트리는 데이터가 되고 링크가 된다.
+	헤드 포인터가 그 엔트리를 가리키게 한다.
+	head_ptr = new node(entry,head_ptr);
+}
+
+list_insert	// 특정한 위치에 노드를 insert 할 것이다.
+head_ptr 		->	10	->	15	->	7	null
+
+15뒤에 넣을것이다.
+
+어떻게 넣을 것이냐면
+previous_ptr 을 받아서 넣을 것이다.
+
+void list_insert(node* previous_ptr, const node::value_type& entry)
+노드를 만들것이다. entry 13값을 갖는
+그 노드 데이터에 previous_ptr의 링크를 넣을 것이다.
+previous_ptr은 15를 가지키고 있겠지.
+{
+	node *insert_ptr;
+	
+	insert_ptr = new node;
+	insert_ptr -> set_data(entry);
+	insert_ptr -> set_link(previous_ptr-> link());
+	previous_ptr -> set_link(insert_ptr);
+}
+
+이것을 한 줄로 줄일 수 있다.
+{
+	previous_ptr -> set_link(new node(entry,previous_tr ->link());
+}
+
+우리는 length 와 insert 까지 했다
+그다음 search 를 하겠다.
+
+찾는 것을 볼텐데
+2가지 버전이다 이것도
+
+링크드 리스트에서 특정 데이터를 갖는 것을 찾을텐데 여러개를 찾을 수도 있다.
+그래서 첫번째 값을 찾는 첫번째 방법을 찾겠다.
+
+target:15
+15의 값을 첫번째로 갖는 노드를 찾을 것이다.
+
+node *list_search(node *head_ptr, const node::value_type& target);
+const node* list_search(const node* head_ptr, const node::value_type& target);
+
+거서가 처음부터 끝까지 갈겁니다.
+처음 노드부터 끝까지 반복할텐데
+거기서 target과 데이터가 같으면 종료하는 것입니다.
+
+node *list_search(node *head_ptr, const node::value_type& target)
+{
+	node *cursor;
+	for (cursor = head_ptr; cursor != NULL; cursor = cursor -> link())
+		if(target == cursor -> data())
+			return cursor;
+	return NULL;
+}
+
+list_locate
+	노드를 가리키는 위치에 있는 포인터를 반환한다.
+
+node *list_locate(node *head_ptr, size_t position)
+const node *list_locate(const node* head_ptr, size_t position);
+{
+	node* cursor;
+	size_t;
+	assert(0 < posotion);
+	for(cursor = head_ptr, i = 1; (cursor != NULL && i <position); ++i,cursor = cursor ->. link());
+	return cursor;
+}
+
+가방을 위해 쓰일수 있는 두 가지 객체
+
+list_copy
+	head and tail pointers to the new list
+	헤드와 테일 포인터를 새로운 리스트에 복사 할 것이다.
+
+	source_ptr	-> 10	-> 15	-> 7
+
+	head_ptr NULL
+									tail_ptr NULL
+	source 가 비어있으면 return(끝낸다)
+	새로운 노드를 새로운 리스트의 헤드 포인터에 할당한다.
+	오리지널 끝까지 도착할때까지 반복한다. 테일포인터 쪽으로 넣으면 되겠죠?
+
+void list_copy(const node* source_ptr, node*& head_ptr, node *&tail_ptr);	//헤드와 테일이 들어감
+{
+	head_ptr = NULL;	tail_ptr = NULL;
+	if(source_ptr == NULL)
+		return;
+	list_head_insert(head_ptr, source_ptr -> data());
+	tail_ptr = head_ptr;
+	
+	source_ptr = source_ptr -> link();
+	while(source_ptr != NULL) {
+		list_insert(tail_ptr, source_ptr -> data());
+		tail_ptr = tail_ptr -> link();
+		source_tr = source_ptr -> link();
+	}
+}
+
+list_head_remove
+	삭제하는 함수
+	제일 앞에 있는 노드 삭제
+	중간 노드 삭제
+	두가지 버전
+
+remove_ptr 로 삭제할 노드를 가리킨다.
+head_ptr = remove_ptr -> link();
+delete remove_ptr;
+
+헤드 포인터를 리무브 포인터 다음 포인터를 가리키게함(link함수이용)
+리무브 포인터 삭제
+
+void list_head_remove(node*& head_ptr)  
+헤드 포인터를 인자로 받을건데 참조를 받는다 값을 바꾸고 유지할거니깐
+{
+	node *remoev_ptr;
+	
+	remove_ptr = head_ptr;
+	head_ptr = remove_ptr -> link();
+	delete remove_ptr;
+}
+
+list_remove
+중간에 있는 노드를 삭제하는 함수
+previous_ptr을 받아서 삭제
+이전 링크를 알수 없기때문에 리니어가 깨지게 된다.
+이전을 알고 그 다음에 연결해주면된다.
+이전 링크를 알아야한다.
+remove_ptr.
+previous_ptr->set_link(remove_ptr ->link());
+delete remove_ptr;		// return the node's memory to heap
+
+void list_remove(node *previous_ptr)		// 삭제할 전 노드를 인자로
+{
+	node* remove_ptr;
+	
+	remove_ptr = previous_ptr->link();
+	previous_ptr = set_link(remove_ptr -> link() ); 
+	// previous_ptr 의 링크를 삭제할 링크가 가리키는 링크로
+	delete remove_ptr;
+}
+
+list_clear
+	heap 영역에 있는 메모리들을 빌려와서 노드단위로 연결해준것인데
+
+	만약 head_ptr 을 NULL 로만 두면 메모리들은 남아있을것이다.
+	접근할수없는 메모리 영역으로
+	
+
+void list_clear(node*& head_ptr)
+{
+	while(head_ptr != NULL)
+		list_head_remove(head_ptr)
+}
+
+
+toolkit function 을 구현하는 법에 대해서 배워봤었죠
+
+Bag 클래스를 링크드 리스트로 구현하는 법을 배워보겠습니다.
+
+가방의 용량에 대해서는 걱정하지마세요
+
+다이나믹 어레이와 링크드 리스트가 가지는 장단점에 대해서 생각하세요.
+다이나믹 어레이 - 용량에 대해서 걱정은 없지만 선언 후 늘려가면서 유지하는 것
+
+링크드 리스트 - 기본 용량 선언이 없음, 즉 reserve 함수가 필요없음
+쉽게 늘어나고 줄일수있음, node 제거와 추가가 쉽기 때문에
+
+고무줄 형태의 가방으로 생각하면된다. 다이나믹 어레이 - 크기가 두배씩 늘어나는 마법 가방(두배가 아니라 설정)
+
+새로운 클래스 정의
+ 두개의 멤버 변수
+	헤드 포인터와 length
+class bag
+{
+public:
+	typedef std::size_t size_type;
+private:
+	node *head_ptr;
+	size_type many_nodes;
+};
+
+새로운 클래스 구현
+생성자/소멸자
+할당/연산자self-increment operator(=,+=)
+erase_one 제거
+count 카운트
+grab 랜덤하게 아무거나 꺼내는거[그냥 만들어보겠다]
+insert 추가
++operator
+
+생성자
+1. 기본 생성자
+	set head_ptr to NULL
+	sets many_nodes to 0
+bag::bag()
+{
+	head_ptr = NULL;
+	many_nodes = 0
+}
+
+2.카피 컨스트럭터
+	생성한다 가방 클래스 인스턴스를 소스 객체를 복사함으로써
+	(이미 있는 클래스를 인자로 받아서 같은 클래스를 하나 더 만드는거, 단 서로 영향끼치지않고)
+	list_copy 를 쓰는것이 적절하다.
+bag::bag(const bag& source)
+{
+	node *tail_ptr;
+	list_copy(source.head_ptr, head_tr, tail_ptr);
+	many_nodes = source.many_nodes;
+}
+
+	우리가 지난 시간에 배운 toolkit 을 이용한다.
+
+소멸자
+	파괴한다. 한 가방을 리스트 안에 있는 모든 노드를 풀어줌으로써
+	list_clear 사용하는 것이 적절하다.
+bag::~bag()
+{
+	list_claer(head_ptr);
+	many_nodes =0;	// 필요없음
+}
+
+Assignment(=):
+ bag a = bag b;
+ bag a 의 내용이 사라지고 b 의 내용이 담김
+ a == a > 그냥 끝
+
+bag& bag::operator=(const bag& source)	// 어사인먼트의 전형적인 모습 체인이 가능하기위해 bag&
+					으로 받음 source 를 받는데 수를 모르기떄문에 const &
+{
+	node *tail_ptr;
+	if (this == &source)
+		return *this;
+	list_clear(hear_ptr);
+	many_nodes =0;	// 필요없음
+	list_copy(source.head_ptr, head_ptr, tail_ptr);
+	many_nodes = source.many_nodes;
+	return *this;
+}
+
+self-increment opeartor(+=):
+	bag a += bag b
+	a 가방에 b의 내용을 붙여주는것
+
+	append 의 효율을 고려하기 위해 tail_ptr 이 있다.
+
+	addend 가 비어있기떄문에 return
+	source list 의 복사본을 만듬
+	
+	카피를 셀프 리스트의 끝에 추가한다.
+	head_ptr을 앞에, tail_ptr을 뒤에 추가
+	
+vodi bag::operator +=(const bag& addend)
+{
+	node *copy_tail_ptr, copy_head_ptr;
+	if(addend.many_nodes > 0)
+	{
+	list_copy(addend.head_ptr, copy_head_ptr, copy_tail_ptr);
+	copy_tail_ptr -> set_link(head_ptr);
+	head_ptr = copy_head_ptr;
+	many_nodes += addend.many_nodes;
+	}
+}
+
+erase_one()
+	한개의 노드를 삭제한다.
+	list_search 를 사용
+	cursor = list_search(head_ptr, 5)
+	head_node 에 있는 값으로 search 된 값을 바꾼다.
+
+bool bag::erase_one(const value_type& target)
+{
+	node* target_ptr;
+	target_ptr = list_search(head_ptr, target);
+	if(target_ptr == NULL)
+		return false;
+	target_ptr -> set_data(head_ptr -> data());
+	list_head_remove(head_ptr);
+	--many_nodes;
+	return true;
+}
+
+count()
+	가방에 있는 특정데이터의 빈도수를 세는 함수
+	return 빈도값
+list_search 로 찾고
+seach 로 찾은 링크를 이용해 그 링크부터 다시 search
+
+bag::size_type bag::count(const value_type&target) const
+{
+	size_type answer = 0;
+	const node *cursor;
+	cursor = list_search(head_ptr, target);
+	while(cursor != NULL)
+	{
+		++answer;
+		cursor = cursor -> link();
+		cursor = cursor -> link();
+		cursor - list_search(cursor, target);
+	}
+	return answer;
+}
+
+굳이 복잡한 방법이다.
+
+
+grab()
+재미삼아 만들어보는 함수
+
+랜덤으로 숫자 하나 꺼내서 그냥 보고 다시 넣는거
+rand() 쓰겠습니다.
+
+position = ( rand() % size() ) +1;
+
+bag::value_type bag::grab() const
+{
+	size_type i;
+	const node *cursor;
+
+	assert(size() > 0);
+
+	i = (rand() % size() ) + 1;     // srand(time) 을 넣어주면 확실한 랜덤값이 나올것이다.
+	cursor = list_locate(head_ptr, i);
+	reaturn cursor->data()
+}
+
+
+
+insert
+
+void bag::insert(const value_type& entry)
+{
+	list_head_insert(head_ptr, entry);
+	++many_nodes;
+}
+
+
+Doubly linked list
+링크가 두개 있는 더블리 링크드 리스트
+
+				링크			->	링크
+head ptr		->		데이터				데이터
+				링크		->	링크	링크
+							데이터
+							링크
+
+class dnode
+{ 
+public:
+	typedef double value_type;
+private:
+	value_type data_field;
+	dnode *link_for;
+	dnode *link_back;
+}
+
+
+장단점을 언급하면서 끝내겠습니다.
+	
+어레이는 특정 값에 접근하기 용이하다.
+링크드 리스트는 특정 값에 접근하려면 처음부터 그 특정값을 찾아야되기때문에 시간이 오래걸린다.
+
+링크드 리스트는 데이터를 중간에 끼워넣기가 용이하다.
+어레이는 중간에 끼워넣으려면 그 뒤의 모든 데이터를 조작해야한다.
+
+다이나믹 어레이의 리사이즈는 비효율적이다.
+링크드 리스트는 리사이즈에 대해서 고민할 필요가 없다.
+
+
+
+
+
+
+		
+
+
+
