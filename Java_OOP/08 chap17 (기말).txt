@@ -1,0 +1,352 @@
+인터페이스와 추상클래스
+	
+추상 메소드만 담고 있는 인터페이스
+
+interface Printable {
+	public void print(String Doc);	//추상 메소드
+}
+인터페이스의 정의! 메소드의 몸체를 갖지 않는다.
+따라서 인스턴스 생성 불가! 참조변수만 선언 가능	// Printable a; 	O
+						// Printable a = new Printable();	  X
+
+class Printer implements Printable {
+	public void print(string doc) {
+		System.out.println(doc);		// Printable a = new Printer();	O
+	}					// a.print("Hello");			O
+}
+인터페이스를 구현하는 클래스!
+구현하는 메소드와 추상 메소드 사이에도 메소드 오버라디잉 관계 성립, 따라서 @Override 붙일 수 있음
+
+상속과 구현
+class Robot extends Machine implements Movable, Runnable { ... }
+
+	Robot 클래스는 Machine 클래스를 상속한다.
+		이렇듯 상속과 구현 동시에 가능!
+	Robot 클래스는 Movable 과 Runnable 인터페이스를 구현한다.
+		이렇듯 둘 이상의 인터페이스 구현 가능!
+	
+	Robot v = new Robot();
+	Machine m = new Robot();
+	Movealble n = new Robot();
+	Runnable r = new Robot();
+
+인터페이스의 본질적 의미
+동일한 인터페이스에서 구체적으로 가지뻗기함
+
+interfaace Printable {
+	public void print(String doc);
+}
+
+-----------
+
+class SPrinterDriver implements Printable {
+	@Override
+	public void print(String doc) {...}
+}
+
+class LPrintDrive implements Printable {
+	@Override
+	public void print(String doc) {...}
+}
+
+인터페이스에 선언되는 메소드와 변수
+interace Printable {
+	public void print(String doc);	// 추상 메소드
+}
+
+interface Printable {
+	public static final int PAPER_WIDTH = 70;
+	public static final int PAPER_HEIGHT = 120; 	// public static final 은 당연하기 떄문에 생략 가능
+	public void print(String doc);		// public 은 당연하기 때문에 생략 가능
+}
+
+인터페이스간 상속 : 문제 상황의 제시
+	프린터에서 칼라기능이 추가됨
+
+interface Printable{
+	void print(String doc);
+	void PrintCMYK(String doc);
+}	// 컬러 출력을 위한 메소드 추가
+
+인터페이스를 구현하는 클래스는 해당 인터페이스의 모든 추상 메소드를 구현해야 한다. 
+그래야 인스턴스 생성 가능
+
+해결책 > 인터페이스의 상속
+
+interface Printable{
+	void print(String doc);
+}	
+
+interface ColorPrintable extends Printable {
+	void PrintCMYK(String doc);
+}
+
+class LPrintDrive implements Printable {
+	@Override
+	public void print(String doc) {...}
+}
+
+class ColorPrintDrive implements ColorPrintable {
+	@Override
+	public void print(String doc) {...}
+	@Override
+	public void printCMYK(String doc);
+}
+
+두번째 문제 상황 > 인터페이스의 디폴트 메소드
+총 256개의 인터페이스가 존재하는 상황에서 모든 인터페이스에 다음 추상 메소드를 추가해야 한다면?
+
+default void printCMYK(String doc)  { } // 디폴트 메소드
+다음 디폴트 메소드로 이 문제를 해결하면 인터페이스의 수가 늘어나지 않는다.
+[필요에 따라 구현해서 사용함]
+
+interface Printable{
+	void print(String doc)
+}
+
+|
+V
+interface Printable {
+	void print(String doc);
+	default void ColorPrint(String doc) {}
+]
+
+인터페이스의 static 메소드
+인터페이스에도 static 메소드를 정의할 수 있다.
+interface Printable {
+	static void printLine(String sr) {
+		System.out.println(str);
+	}
+
+	default void print(String doc) {
+		printLine(doc);	//인터페이스의 static 메소드 호출
+	}
+}
+
+[구현을 인터페이스에 추가 가능]
+
+인터페이스 대상의 instanceof 연산
+if(ca instanceof Cake)....	Cake ca = new Cake();
+
+	Cake는 클래스의 이름 또는 인터페이스의 이름도 가능
+
+인터페이스의 또 다른 용도 :Marker 인터페이스
+interface Upper { } // 마커 인터페이스
+interface Lower { } // 마커 인터페이스
+
+interface Printable {
+	 String getContents();
+}
+					// Lower로 표시해 둔다면?
+class Report implements Printable, Upper {
+ 	String cons;
+ 
+	Report(String cons) {
+		 this.cons = cons;
+	 }
+	 public String getContents() {
+		 return cons;
+	 }
+}
+
+public void printContents(Printable doc) {
+ 	if(doc instanceof Upper) {
+ 		System.out.println((doc.getContents()).toUpperCase());
+ 	}
+ 	else if(doc instanceof Lower) {
+ 		System.out.println((doc.getContents()).toLowerCase());
+ 	}
+ 	else
+ 		System.out.println(doc.getContents());
+	}
+
+클래스에 특정 표시를 해 두기 위한 목적으로 정의된 인터페이스를 마커 인터페이스라 한다. 
+마커 인터페이스에는 구현해야 할 메소드가 없는 경우가 흔하다
+
+추상 클래스
+public abstract class House {		// 추상 클래스
+	public void mathhodOne() {
+		System.out.println("method one");
+	}
+
+	public abstract void methodTwo();	// 추상 메소드
+}
+
+하나 이상의 추상 메소드를 지니는 클래스를 가리켜 추상 클래스라 한다.
+그리고 추상 클래스를 대상으로는 인스턴스 생성이 불가능하다. 물론 참조변수 선언은 가능하다.
+
+
+예외처리
+
+예외적인 상황을 줄여서 예외라고 한다.
+단순한 문법 오류가 아닌 실행 중간에 발생하는 정삭적이지 않은 상황을 뜻한다.
+
+예외처리
+예외 상황에 대한 처리를 의미한다.
+자바는 예외처리 메커니즘을 제공한다
+
+정수를 0으로 나누는 상황
+
+예외 상황을 알리기 위한 크래스
+ArithmeticException		수학연산
+InputMismatchException		scanner를 통한 입력오류
+
+try{
+	관찰영역
+}
+
+catch(ArithmeticException e) {
+	처리영역
+}
+예외의 처리를 위한 코드를 별도로 구분하기 위해 디자인된 예외처리 메커니즘이 try~catch 이다
+예외적인 부분에서 프로그램이 멈추지 않고 바로 catch 구문으로 넘어가서 실행이 유지됨
+
+Throwable 클래스
+java.lang.Throwable 클래스
+	모든 예외 클래스의 최상위 클래스: 물론 Throwable도 Object를 상속한다.
+
+Throwable 크래스의 메소드 툴
+	public Stirng getMessage() : 예외의 원인을 담고 있는 문자열 반환 [간단함]
+	public void printStackTrace(0 : 예외가 발생한 위치와 호출된 메소드의 정보를 출력 [자세함]
+
+class ExceptionMessage {
+	public static void md1(int n) {
+		md2(n,0);
+	}
+	public static void md2(int n1, int n2) {
+		int r = n1/n2;	// 예외 발생 지점
+	}
+
+	public static void main(String[] args) }
+		md1(3);
+		System.out.println("Good bye~~!");
+	}
+}
+
+예외 발생 지점에서 예외처리를 하지 않으면 해당 메소드를 호출한 영역으로 예외가 전달된다.
+
+class ExceptionMessage {
+	public static void md1(int n) {
+		md2(n,0);
+	}
+	public static void md2(int n1, int n2) {
+		int r = n1/n2;	// 예외 발생 지점
+	}
+
+	public static void main(String[] args) }
+		try {
+			md1(3);;
+		}
+		catch(Throwable e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("Good bye~~!");
+	}
+}
+
+ArrayIndexOutOfBoundsException
+	없는 값을 호출할때
+
+ClassCastException
+	Board pb1 = new PBoard(); // 하위 = 상위
+	PBoard pd2 = (PBoard)pd1;	// 상위 = (상위)(하위 = 상위) 	OK
+
+	Board ebd1 = new Board();	// 하위 = 하위
+	PBoard ebd2 = (PBoard)ebd1;	// 상위 = (상위)하위	ClassCastException
+
+NullPointerException
+	대상이 없는 포인터에 대해서 포인터 함수를 불어올때. length() 등
+
+----------------------------------------------------------------
+예외 클래스의 구분
+
+Error 클래스를 상속하는 예외 클래스
+Exception 클래스를 상속하는 예외 클래스
+RuntimeException 클래스를 상속하는 예외 클래스
+	> RuntimeException 클래스는 Exception 클래스를 상속한다.
+
+
+Error 클래스를 상속하는 예외 클래스
+
+Error 클래스르 상속하는 예외 클래스의 예외 상황은 시스템 오류 수준의 예외 상황으로 프로그램 내에서
+처리 할 수 있는 수준의 예외가 아니다
+	ex ) VirtualMachineError 가상머신에 심각한 오류 발생
+	
+
+RuntimeException 클래스를 상속하는 예외 클래스
+	코드 오류로 발생하는 경우가 대부분이다. 따라서 이 유형의 예외 발생시 코드의 수정을 고려해야 한다
+
+
+사실 위에 나온 예외 발생 경우들은 필수적이지 않고 개발자가 주의를 기울여 코드 작성을 해야하는 부분이다.
+예외처리가 필수적인 상황들은 아니다. unchecked exception
+
+checked exception [필수적인 예외처리 사항들]
+	java.io.IOException
+
+throws IOException		// 예외 넘긴다고 명시
+
+public static void main(String[] args) {
+ 	try {
+ 		md1();
+	 }
+	 catch(IOException e) {
+		 e.printStackTrace();
+ 	}
+}
+
+public static void md1() throws IOException {	 // IOException 예외 넘긴다고 명시!
+ 	md2();
+}
+
+public static void md2() throws IOException { 	// IOException 예외 넘긴다고 명시!
+	Path file = Paths.get("C:\\javastudy\\Simple.txt");
+ 	BufferedWriter writer = null;
+ 	writer = Files.newBufferedWriter(file); // IOException 발생 가능
+ 	writer.write('A'); // IOException 발생 가능
+ 	writer.write('Z'); // IOException 발생 가능
+
+ 	if(writer != null)
+ 	writer.close(); // IOException 발생 가능
+	}
+
+
+둘 이상의 예외 넘김에 대한 선언
+
+public void simpleWrite() throws IOException, IndexOutofBoundsException {
+	 ....
+}
+
+프로그래머가 정의하는 예외 클래스
+
+			Exception 클래스를 상속하는 것이 예외 클래스의 유일한 조건
+
+class ReadAgeException extends Exception { // Exception을 상속하는 것이 핵심
+ 	public ReadAgeException() {
+ 		super("유효하지 않은 나이가 입력되었습니다.");
+ 	}	// Throwable 클래스의 getMessage 메소드가 반환할 문자열 지정
+}
+
+
+finally
+	try {
+	}
+	catch {
+	}
+	finally {
+		무조건 하고 넘어가라
+	}
+
+
+try-with-resources
+
+	try(BufferWriter writer = FIles.newBufferedWriter(file)) {
+	}
+	catch {
+	}
+				try 구문을 빠져 나갈 때 다음 문장을 안정적으로 자동 실행
+				writer.close(); 
+
+	try-with-resources 기반의 오픈 및 종료 대상이 되기 위한 조건은 다음과 같다.
+	java.lang.AutoCloseable 인터페이스의 구현
+

@@ -1,0 +1,429 @@
+상속의 기본
+
+상속의 기본 문법 이해
+
+상속의 매우 치명적인 오해
+"코드의 재활용을 위한 문법이 아니고
+연관된 일련의 클래스들에 대해 공통적인 규약을 정의할 수 있습니다."
+
+- 교수님 입장에서는 상속의 매력적인 부분들때문에 빠져들었던 적이 있지만
+산업적인 부분에서는 너무 억압적인 제약일 수도 있다. 재화용을 위한 문법으로 경우에 따라 사용해야할 수
+있다.
+
+C - 속도, 디바이스에 가까움
+자바 - 코드의 재사용성, 개발의 용이함, 유지보수 용이
+C++ - 속도, 유지보수 용이 어중간함 (C++ 개발자를 구하는 것은 어려움)
+
+넝쿨째 고구마를 캔다는 느낌으로 생각하고 이해하면서 상속을 사용해야 한다.
+--------------------------
+상속의 가장 기본적인 특성
+class Man{
+	...
+}
+
+class BuusinessMan extends Man {
+	...
+}
+
+BusinessMan 의 공통적인 특징 > Man 이 가지고 있는 특징
+
+BusinessMan man = new BusinessMan();
+
+man		->	String name : Man 의 멤버
+참조변수			String company;
+			String positon;
+			void tellYourName() {...} Man 의 멤버함수
+
+상속 관련 용어의 정리와 상속의 UML 표현
+
+class Man {
+	...					Man
+}						  ^
+						   |
+class BusinessMan extends Man {			BusinessMan
+	...
+}
+
+상속의 대상이 되는 클래스 상위 클래스, 기초 클래스, 부모 클래스
+	ex) Man 클래스
+상속을 하는 클래스 하위 클래스, 유도 클래스, 자식 클래스
+	ex) Business  클래스
+
+-------------------------------------------------
+상속과 생성자1
+class Man {
+	String nam;
+	public Man(String name) {
+		this.name = name;
+	}
+	...
+}
+
+class BusinessMan extends Man {
+	String company;
+	
+	public BusinessMan(String company)	{
+		this.company = company;
+	}
+	...
+}
+
+BusinessMan 인스턴스 생성시 문제점은??
+	부모 클래스의 생성자는 어떻게 처리가 되는 것인가?
+	Man 의 멤버변수에 대한 초기화가 이루어지지 않고 있다.
+
+class BusinessMan extends Man {
+	String company;
+	
+	public BusinessMan(String name, String company)	{
+		this.name = name;
+		this.company = company;
+	}
+	...
+}
+
+모든 멤버의 초기화는 이루어진다. 그러나 생성자를 통한 초기화 원칙에는 어긋남
+	public Man(String name) {
+		this.name = name;
+	}
+	...
+에 대한 생성자 초기화 원칙에 어긋나기 떄문
+Business man = new BusinessMan("On", "KW")
+
+---------------------------------------------------------------
+상속과 생성자3 : 생성자 호출 관계 파악하기
+class SuperCLS {
+	public SuperCLS() {
+		"Super Class"
+	}
+}
+
+class SubCLS extends SuperCLs {
+	public SubCLS() {
+		"Sub Class"
+	} 호출할 상위 클래스 생성자를 명시하지 않으면 void 생성자 호출 됨
+}
+
+clss SuperSubCon {
+	public static void main(String[] args) {
+		new SubCLS();
+	}
+}
+
+main 함수에서 new SubCLS(); 생성
+참조 변수가 없지만 테스트하는 것
+
+SubCLS() 가 불러와질때 먼저 상위클래스 호출
+커맨드창
+	"Super Class"
+	"Sub Class"
+
+생성자는 상위클래스가 먼저 호출된다는 것을 기억해야 한다.
+extends 된 생성자먼저 [부모,기초,상위 생성자] 먼저 호출한다.
+
+------------------------------------------------------
+상속과 생성자4: 상위 클래스의 생성자 호출 지정
+class SuperCLS {
+	public 생성자() {
+	}
+	public 생성자(int i) {
+	}
+	public 생성자(int i, int j) {
+	}
+}
+
+class SubCLS extends SuperCLS {
+	public 생성자() {
+	}	// 상위 클래스의 생성자 호출하지 않았을지 기본 생성자 호출 SuperCLS() 호출
+	public 생성자(int i) {
+		super(i);	// 상위 클래스 생성자를 직접 호출하였기 때문에 SuperCLS(i) 호출
+	}
+	public 생성자(int i, int j) {
+		super(i, j); // 상위 클래스 생성자 super(i, j) 를 호출하였기 때문에 SuperCLS(i,j) 호출
+	}
+}
+
+키워드 super를 통해 상위 클래스의 생성자 호출을 명시할 수 있다.
+"super" 상위클래스의 이름을 가진 생성자를 호출하는 것이 아니고 "super" 라는 키워드를 통해
+extends 된 부모클래스의 생성자 호출
+-------------------------------------------------------
+상속과 생성자2 에서 this->name = name 을 super(name) 을 통해 상위클래스 생성자를 불러야 한다.
+-------------------------------------------------------
+단일 상속만 지원하는 자바
+[C++ 은 다중 상속을 지원한다] 
+class AAA {...}
+class BBB extends AAA {...}
+class ZZZ extends MMM {...}
+
+자바는 다음 상속을 지원하지 않는다.
+한 클래스에서 상속할 수 있는 최대 클래스의 수는 한 개이다.
+[순수 객체 지향 언어인 요소 중 하나이다. 복잡한 수준의 상속을 지원하지 않는다]
+ZZZ -> MMM -> AAA 
+이런식으로의 연결은 가능하다.
+단, 단일 상속으로 링크 연결을 해주어여한다.
+
+-----------------------------------------------------------
+클래스 변수, 메소드는 상속이 되는가?
+class SuperCLS {
+	static int count = 0;	// 클래스 변수 [클래스 생성시 만들어지는 정보]
+	
+	public SuperCLS() {
+		count++;		// 클래스 내에서는 직접 접근이 가능
+	}
+}	프로그램 전체에서 딱 하나만 존재하는데 상속의 대상이 되겠는가?
+
+class SubCLS extends SuperCLS {
+	public void showCount() {
+		시스템아웃프린트(count);	//상위 클래스에 위치하는 클래스 변수에 접근
+	}
+}
+	그러나 하위 클래스에서 이름만으로 접근 가능하다
+	접근 수준 지시자에서 허용한다면!
+-------------------------------------------------------------------------
+클래스의 상속 : 오버라이딩
+
+상속 관계에 놓은 두 대상의 관찰
+상속의 특성
+	하위 클래스는 상위 클래스의 모든 특성을 지닌다.
+	거기에 더하여 하위 클래스는 자신만의 추가적인 특성을 더하게된다.
+	
+	모바일폰 vs 스마트폰
+	모바일폰을 스마트폰이 상속한다.
+	class 스마트폰 extends 모바일폰 { ... }
+	
+	이렇듯, 상속 관계에 있는 두 대상은 IS-A 관계를 가져야 한다.
+
+	상속과 IS-A 관계
+	A is B
+	.. 은 .. 이다의 관계
+	LIfe is a journey
+	노트북은 컴퓨터이다. 전기자동차는 자동차이다.
+	
+	IS-A 관계를 갖지 않는 두 클래스가 상소긍로 연결되어 있다면, 적절한 상속인지 의심해야한다.
+-------------------------------------------------------------------
+메소드 오버라이딩
+
+상위 클래스의 참조변수가 참조할 수 있는 대상의 범위
+class SmartPhone extends MobilePhone {...}
+SmartPhone phone = new SmartPhoen()
+따라서 스마트폰 참조변수로 스마트폰 참조 가능하다
+	이 역은 성립하지 않음에 주의
+Mobile phone = new Smartphone()
+부모가 자식을 가리키는거
+SmartPhone phone = new Mobile()
+자식이 부모를 가리키는거 (X) 자식은 부모한테 손가락질 하면 안되죠
+
+대신
+Mobile phone = new Smartphone()
+이런 식의 인스턴스 호출은
+Smartphone 인스턴스의 호출이었어도 형이 Mobile 이기 떄문에
+Mobile의 멤버에만 접근 가능핟.
+Mobile 에 없고 SmartPhone 에 있는 멤버의 접근에는 제한이 생긴다.
+
+--------------------------------------------------
+참조변수 간 대입과 형 변환
+class Cake {
+	public void sweet() {...}
+}
+
+class CheeseCake extends Cake {
+	public void milky() {...}
+}
+
+CheeseCake ca1 = new CheeseCake()
+Cake ca2 = ca1; // 가능
+
+Cake ca3 = new CheeseCake();
+CheeseCake ca4 = ca3; 	// 불가능
+> 이 시점에 컴파일러 및 가상머신은 ca3가 참조하는 대상을 Cake 인스턴스로 판단한다! ca3 가 참조하는
+인스턴스의 정확한 클래스 정보는 유지하지 않는다.
+
+------------------------------- 
+배열기반
+
+class Cake {
+	public void sweet() {...}
+}
+
+class CheeseCake extends Cake {
+	public void milky() {...}
+}
+
+CheeseCake ca1 = new CheeseCake()	//가능
+
+CheeseCake[] cakes = bew CheeseCake[10] // 가능
+
+Cake[] cakes = new CheeseCake[10];	// 가능
+상속의 관계가 배열 인스턴스의 참조 관계까지 이어진다.
+
+-----------------------------------------------
+메소드 오버라이딩
+class Cake {
+	public void yummy() {
+		"케이크 맛있당" 출력
+	}
+}					          <
+						] 오버라이딩 관계
+class CheeseCake extends Cake {		          <  CheeseCake의 yummy 메소드가
+	public void yummy() {			  Cake의 yummy 메소드를 오버라이딩!
+		"치즈 케이크 맛있당" 출력
+	}
+}
+
+동일한 이름의 메소드
+같은 매개변수
+같은 리런타입
+public static void(String[] args) {
+	Cake c1 = new CheeseCake();
+	CheeseCake c2 = new CheeseCake();
+	
+	c1.yummy; [Cake의 멤버 함수가 실행될것으로 생각할 수 있으나 CheeseCake 의 yummy() 가 실행됨]
+	c2.yummy;
+}
+
+커맨드창
+	치즈 케이크 맛있당
+	치즈 케이크 맛있당
+
+부모님한테 집도 받고 자동차도 받고 모든 걸 다 받았어요. 하지만 자동차는 내가 새로운 차를 갖고싶어서
+새로운 자동차를 가졌어요. 그러면 튜닝된 그 자동차는 그대로 구현이 되어요
+상속받았어도 내가 같은 이름의 새로운 것을 만들었다면 그것으로 작동이 된다.
+
+class Cake
+class CheeseCake extends Cake
+class StrawCheeseCake extends CheeseCake
+이런식의 단일상속으로 StrawCheeseCake 과 Cake이 이루져있고
+동일 이름, 동일 리턴타입, 동일 매개변수의 함수가 실행된다면
+Cake c1 = new StrawCheeseCake()
+의 해당함수 실행시 StrawCheeseCake 의 함수 실행
+
+---------------------------------------------------
+오버라이딩 된 메소드 호출하는 방법
+class Cake {
+	public void yummy() {
+		"케이크 맛있당" 출력
+	}
+}
+					
+class CheeseCake extends Cake {		          
+	public void yummy() {
+		super.yummy();	
+		"치즈 케이크 맛있당" 출력
+	}
+}
+
+this 포인터처럼 super 포인터가 제공되는것
+
+오버라이딩 된 메소드를 인스턴스 외부에서 호출하는 방법은 없다.
+그러나 인스턴스 내부에서는 키워드 super를 이용해 호출 가능
+
+-----------------------------------------
+인스턴스 변수와 클래스 변수도 오버라이딩이 되는가?
+class Cake {
+	public int size;
+	...
+}
+
+class CheeseCake extends Cake {
+	public int size;
+	...
+}
+
+CheeseCake c1 = new CheeseCake()
+c1.size =  ...	// CheeseCake의 size에 접근
+
+Cake c2 = new CheeseCake()
+c2.size =  ...	// Cake의 size에 접근
+
+인스턴스 변수는 오버라이딩 되지 않는다. 따라서 참조변수의 형에 따라 접근하는 멤버가 결정된다.
+
+오버라이딩 > 인스턴스로 공간할당할때 해당 함수와 같은 함수가 있으면 overwrite 하는것
+변수는 불가능 실제 형식은 Cake 일뿐
+
+----------------------------------------------------------------------------
+instanceof 연산자의 기본
+class Cake {
+}
+class CheeseCake extends Cake {
+}
+class StrawCheeseCake extends CheeseCake {
+}
+
+		.............................................................................................
+Cake cake   ->	[ StrawCheeseCake	,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,  ]
+		[		[ CheeseCake	,,,,,,,,,,,,,	] ]
+		[		[        접근권한 ->	[ Cake ]	] ]
+		''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+public Static void main(String[] args) {
+	Cake cake = new StrawCheeseCake();
+
+	if(cake instanceof Cake) {...}    True
+	if(cake instanceof CheeseCake) {...}   True
+	if(cake instanceof StrawCheeseCake) {...}    True
+
+--------------------------------------------------------------------------------
+모든 클래스는 Object 클래스를 상속합니다.
+class MyClass{...}
+	상속하는 클래스가 없다면
+	컴파일러에 의해 다음과 같이 java.lang.Object 클래스를 상소갛게 코드가 구성된다.
+class MyClass extends Object {...}
+
+class MyClass extends OtherClass {...}
+	이렇듯 다른 클래스를 상속한다면 Object 클래스를 직접 상속하지는 않게 된다.
+	그러나 간접적으로 (Object 클래스를 상속하는 클래스를 상속하는 형태로) Object 클래스를 상속함
+
+모든 클래스가 Object를 직접 또는 간접 상속하므로
+// System.out.println
+public void println(Object x) {
+	...
+	String s = x.toString();
+	...
+}
+	모든 클래스는 Object 를 상속하므로 위 메소드의 인자로 전달이 가능하다.
+	toString 메소드는 Object 클래스의 메소드였음을 알 수 있다.
+
+class Cake {
+	// Object 클래스의 toString 메소드를 오버라이딩
+	public String toString() {
+		return "My birthday cake";
+	}
+}
+
+class CheeseCake extends Cake {
+	// Cake 클래스의 toString 메소드를 오버라이딩
+	public String toString() {
+		return "My birthday cheese cake";
+	}
+}
+
+클래스와 메소드의 final 선언
+public final class MyLastCLS {...}
+	-> MyLastCls 클래스는 다른 클래스가 상속할 수 없음
+
+class Simple {
+	// 아래의 메소드는 다른 클래스에서 오버라이딩 할 수 없음
+	public final void finc(int n) {...}
+}
+
+@Override
+
+class ParentAdder {
+	public int add(int a, int b) {
+		return a + b;
+	}
+}
+							오버라딩이 아니라
+class ChildAdder extends ParentAdder [			상속으로 두 클래스에 걸쳐서 형성된
+	@Override					메소드 오버로딩이다.
+	public double add(double a, double b) {		따라서 컴파일 오류 발생
+		System.out.println("덧셈을 진행합니다.")
+		return a + b;
+	}
+}
+
+@Override
+상위 클래스의 메소드를 오버라이딩 하는 것이 목적이라는 선언!
+오버라이딩을 하는 형태가 아니면 컴파일러가 오류 메세지 전달
+[나는 오버라이드를 하기 위해 메소드를 작성하는 것이라는 것을 명시]
+
