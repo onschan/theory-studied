@@ -1,0 +1,193 @@
+System V IPC Resources
+
+기억해라, IPC resources 는 자동적으로 정리되지 않는다.
+	청소를 해주지 않는다면 resource 누수가 있을 수 있다.
+	"ipcs" 는 너가 사용중인 현재 System V IPCs 들을 볼 수 있게 해준다.
+	"ipcrm" 는 resources 들을 메뉴얼에 따라 삭제할 수 있게해준다.
+	ipcrm [-q msgid | -Q msgkey | -s semid | -S semkey | -, shmid | -M shmkey]
+
+
+----------------------------------------------------
+커맨드라인에서 사용하니깐 불편한 느낌이 들죠?
+그래서 코드상에서도 가능합니다.
+
+Automatic IPC Cleanup
+
+// Message queue id
+int id;
+void cleanup(int signum) {		 청소하는 함수를 만들어서 signal과 연결하여 사용
+	msgctl(id, IPC_RMID, NULL);
+	exit(0);
+}
+
+void main(int argc, char* argv[]) {
+	if(id = msgget(IPC_PRIVATE, IPC_CREAT | 0700)) != 0)
+	{
+		perror("msget");
+		exit(0);
+	}
+	signal(SIGINT, cleanup);
+	signal(SIGSEGV, cleanup);	segmentation 오류발생
+	...
+	cleanup(0);
+	return;
+}
+
+------------------------------------------------------------
+Implementation of Local Procedure Calls : File Server
+
+Due : 11/26(Thr)	to : whahn@kw.ac.kr
+
+Introduction
+	Remote procedure call(RPC)
+		함수 호출을 위해 기능을 갖고 있는 다른 컴퓨터에 네트워크를 통해
+		proxy,sub를 이용해 원격으로 데이터를 불러오고 사용하는 것
+
+	Local Procedure Call [Local은 remote 와 반댓말]
+		RPC와 동일하나 원격이 아닌 동일 컴퓨터 내에서 동작이 이루어짐
+		대표적인 사용 사례, 안드로이드, 윈도우 운영체제
+
+		실제 앱을 호출했을때 원격에 있는 서버가 작업을 해주는 프로시져[한개의 컴퓨터]
+		커널이 직접 서비스를 실행시켜주는 것이 아니고 서버가 담당
+
+		보안상 장점이 있고 OS 밖에 추가하기 때문에 안정성도 높다.
+
+	우리는 LPC 를 이용하여 클라이언트와 서버를 만들겠습니다. [File Server]
+
+File Server
+	Application(client)			File Server
+	-------------------			-----------
+	ReadFile(fd, ...);			read(fd, ...);
+	WriteFile(fd, ...);			write(fd, ...);
+
+   user	File Service Prox			File Service Stub
+   kernel  		         IPC			file system <> 
+									disk
+File Service Proxy 
+	-클라인트가 호출한 함수 (예, ReadFile) 의 정보 ( 함수번호, 함수 인자들)을 묶어서 
+	(marshalling) File Server로 송신하고, File server의 처리결과를 기다림
+	-File server에서 처리 결과가 전달되면 해당 함수는 그 결과값을 반환
+File Service Stub
+	클라리언트에서 전달된 함수 정보를 분해(unmarshalling)하고, 해당 함수에 대응하는 시스템 함수
+	("read" system call")를 호출
+	시스템 함수를 호출한 결과를 묶어서 client로 전달함
+
+-------------------------------------------------
+File Server가 호출하는 System Call
+
+	-file server는 client가 요청하는 함수에 대응하여 아래에 정의된 system call을 호출하면 된다.
+
+	open, read, write, close, mkdir, rmdir, gets
+
+	이슈 : 어떤 system call을 호출할 것인지 어떻게 결정할까?
+		-파일 프록시가 전달하는 service 요청 번호에 대응하는 system call을 호출
+		위의 시스템콜을 구현하는 것이 아니고 시스템콜에 대한 호출만 잘해주면된다.
+		결과를 잘 전해주면됨
+--------------------------------------------------
+Runtime Situation
+	Application			File Server
+			request
+	LPC proxy	-> 		LPC Stub
+	(C file)		<-		(C file)
+			Response
+-----------------------------------------------------
+File LPC proxy
+
+-LpcProxy와 LpcStub 간의 전송되는 메세지 형식
+
+#define LPC_DATA_MAX 512
+#define LPC_ARG_MAX 4
+
+typedef struct __LpcRequet
+{
+	long pid;
+	lpcService service;
+	int numArg;
+	LpcArg ipaAcrg[LPC_ARG_MAX];
+} LpcRequest;	// request format
+
+typedef struct __LpcArg
+{
+	int argSize;
+	char argData[LPC_DATA_MAX];
+} LpcArg;		// data format
+
+Typedef struct __lpcResponse
+{
+	long pid;
+	int errorno;
+	int responseSize;
+	char responseData[LPC_DATA_MAX];
+} LpcResponse;	// response format
+
+Typedef enum __lpcService
+{
+	LPC_OPEN_FILE,
+	LPC_READ-FILE,
+	LPC_WRITE-FILE,
+	LPC_CLOSE_FILE,
+	LPC_MAKE_DIRECTORY,
+	LPC__REMOVE_DIRECTORY,
+} LpcService
+
+----------------------------------------------------------
+File LPC Proxy
+-구현해야 할 함수
+[Testcase.c]
+void main(void)
+{
+	Init();
+	
+	MakeFile("tmp");
+	int fd = OpenFile("tmp/a.c", O_CREATE);
+	...
+	WriteFIle
+	..
+	Read
+	..
+}
+여러분에 File open, read, write 조합의 테스트 프로그램 제공[구현X 제공해줌]
+
+[LpcProxy.c]
+int OpenFile(char* path, int mode)
+{
+빈칸 구현 
+open() 시스템콜 그대로 호출
+결과 리턴
+}
+...
+...
+Int RemoveFile(char* path)
+{
+}
+LpcStuc로 request 메세지를 보내고, response를 받는 코드를 구현
+-------------------------------------------------------------
+FIle Server
+[FileServer.c]
+void main(void)
+{
+	Init();
+	while(1) {
+		File proxy에서 전달된 request 메세지를 기다린다.
+		Request가 전달되면 urmarshalling
+		요청한 Lpc service를 확인한다. (feat LPC service number)
+		해당 Lpc service에 대응하는 file stub의 함수 호출
+		호출 결과를 response로 proxy 전달
+	}
+}
+
+-------------------------------------------------------------------------
+File Server 초기화
+
+client와 file server 간의 통신 방법
+	- file server 의 Init 함수에서 Message queue를 생성
+
+client에서 file server로 request를 전달 용 message queue 생성
+	- request를 전달할 떄 client 자신의 pid를 LpcRequest message에 담아서 전달
+	- File server는 message queue에서 FIFO 순서로 message를 받음
+
+file server에서 client로 response를 전달하기 위한 message queue 생성
+	-file server의 처리 결과를 response를 담아서 response queue에 전달
+	-response를 원하는 client의 pid를 LpcResponse에 담아서 전달함
+	-Client는 자신의 pid로 msgrecv를 호출함
+-------------------------------------------------------------------------
