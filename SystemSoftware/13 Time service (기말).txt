@@ -1,0 +1,109 @@
+Timer and Time Services
+타이머와 타임 서비스
+
+Real-Timer Clocks (RTC)
+	cpu옆에 배터리와 RTC라는 타이머가 있는데 여기에 시간과 날짜가 저정되어있다.
+		real-time clock
+		
+		11:30AM
+		8/1/2001
+
+	배터리가 다 나가게 되면 방전되어서 1970년대로 RTC가 reset된다.
+	
+	전형적으로 RTC는 1초 단위로 기록된다.
+	더 낮은 단위 시간으로 저장하면 정확한 기록을 할 수 있지만 배터리를 위해 1초로 타협했다.
+
+System Clocks
+	     tick			system clock
+device	PIT	>1>	CPU	>2>	main memory
+	    	  >1>	DMA	>2>	DRAM
+RTC		
+	
+	시스템 클락은 OS(커널)에서 관리된다.
+	RTC에서 부팅된 시간을 main memory로 가져온다.
+	부팅된 시간을 가져온 뒤 다음부터 시간은 system clock에서 관리한다.
+	1미리나노세컨드 단위로(정교한 단위)
+
+Programmable Interval Timers [PIT]
+	주기적으로 발생하는  timer interrupt를 tick 이라고 합니다.
+	Timer 0, Timer 1, Timer2 가 있는데 각각의 역할이 있다.
+
+Time Services
+	time_t time(time_t *tloc)
+		영국 기준 1970년 1월 1일부터 현재 시간
+	struct tm *localtime(const time_t *timeval);
+		호출 나라 기준 1970년 1월 1일부터 현재시간
+	char *ctime(const time_t *time)
+		현재 시간 스트링 "Wed Jun 30 21:49:08 1993\n"
+	int gettimeofday(struct timeval *restict tp,void *restrict tzp);
+		마이크로세컨드 단위의 현재 시간을 얻을 수 있다.
+
+	위의 시간에 대한 정보들은 system clock에서 관리하고 있다.
+
+Soft-Timer
+	타이머라는 것은 어떤 타임아웃이라는 주어진 시간이 있을때 이것이 expire, 즉 모두 지나갔다.
+	그때 이벤트를 발생시키는 것을 타이머의 역할이다.
+	이벤트는 시그널 형태로 보내게된다.
+	
+	PIT 를 이용해서 타이머를 구현할 수 있다.
+	하나의 앱이 PIT를 사용해서 구동하고 있다면, 다른 앱이 그 PIT를 사용할 수 없다.
+	그래서 나온 것이 soft-timer 이다.
+
+	이것은 커널이 마치 소프트웨어에서 많은 타이머가 있는 것처럼 보이게 하는 것이다.
+	PIT의 독점에 의한 비효율성을 막기 위한 soft-time
+	구체적 timeout 값에 대해 event를 보내주는 역할
+
+	소프트 타이머를 사용하기 위해선 앱이 타이머를 start하고, stop, cancle 및 관리할 수 있어야 한다.
+	
+	SIGALARM initialization
+		|
+	Time creation
+		|
+	Timer setting
+		|
+	Timer removal		의 절차를 지나면 된다.
+
+Timer Creation  	타이머 생성
+	int timer_create(clockid_t clock_id, struct sigevent *evp, timer_t * timerid);
+	두번째 인자에 NULL 을 넣어주게되면 [타임아웃이 expired] 되면 SIGALRM이 불러올텐데
+	struct sigenvent 구조체에 sigev_signo를 다른 값으로 변경하면 다른 시그널을 호출할 수 있다.
+
+Timer setting
+	int timer_settime(timer_t timerid, int flags = 0, const struct itimerspec *value, struct itimerspec * ovalue);
+	
+	struct itimerspec {
+		struct timespec it_interal;	// Timer Interval		1 sec
+		struct timespec it_value;	// Initial expiration		0.5 sec
+
+	0.5때부터 1초 간격으로 타이머가 주기적으로 구동된다. 
+	마이크로 단위로 시간을 설정할 수 있다.
+
+Example
+
+void main(void)
+{
+	struct sigaction act;
+
+	act.sa_flags = SA_SIGINFO;	/* to use sa_sigation */
+	act.sa_sigaction = interrupt;
+	if ((sigemptyset(&act.sa_mask) == -1) ||
+	    (sigation(SIGALRM, &act, NULL) == -1))
+	   return -1;
+	if (timer_create(CLOCK_REALTIME, NULL, &timerid) == -1)
+	   return -1;
+	value.it_interval.tv_sec = 1;		// 1초 단위로
+	value.it_interval.tc_nsec = 0;		// 0초부터 시작해서
+	timer_settime(timerid, 0, &value, NULL);
+	for(; ;)
+		pause();			// 시그널이 발생하면 wake함
+	// 무한루프로 들어가지 않아도 코드는 작동하지만 무한루프를 들어가게되면
+	// 프로세스를 점유하게 된다. 무한루프 사용은 별로 안좋을 수 있기 때문에
+	// 굳이 무한루프를 들어갈거면 sleep 하는게 나을수 있다.
+}
+
+----------------------------
+struct sigaction
+	1. void (*sa-hanlder) (int)
+	2. void (*sa_sigaction) (int, siginfo_t *, void *);	핸들러를 등록하는 두가지 방법이 있는데
+						타이머 사용시 두번쨰를 사용해야한다.
+	int sa_flags; 를 무조건 SA_SIGINFO 형식으로 등록해야한다.

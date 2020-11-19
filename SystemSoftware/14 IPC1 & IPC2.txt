@@ -1,0 +1,89 @@
+Inter-Process Communication
+	서로 데이터를 주고받는 통신
+Topics : Pipe, FIFO
+
+Definition
+	Mechanusm for a process to communicate with other processes.
+	서로 다른 프로세스 간 통신 매커니즘
+
+	shared memory 공간을 통해 read, send로 데이터를 주고 받는다.
+
+PIPE
+	- 가장 오래된 IPC form
+	- 단방향 채널 (읽기전용, 쓰기전용)
+	- parent와 child 프로세스간 통신의 목적으로 사용된다.
+	- 파이프도 일종의 file이다.
+
+PIPE System call
+	fd[0] = read 전용
+	fd[1] = write 전용
+
+	int pipe(int filedes[2]);
+	성공하면 0 이상이 값, 실패하면 -1 반환
+
+	void main(void) 
+	{
+		int fd[2];
+		
+		if(pipe(fd) < 0)
+			perror("pipe");
+		...
+	}
+
+---------------------------------------------
+FIFO [지명 파이프] named piped
+	FIFO is a type of file, so that stat ::st_mode has S_ISFIFO value
+
+	부모 자식 프로세스간 통신말고 다른 프로세스간 통신에도 사용된다.
+
+Procedue of Using FIFO
+	1. Create FIFO using mkfifo system call.
+	2. Open the FIFO with open system call.
+	3. Exchange data between processes.
+
+int mkfifo(const char *path, mode_t mode)
+	이미 있는 fifo 를 생성시 -1 반환
+
+---------------------------------------------------
+제일 많이 사용하는 것은 message queue [standard]
+
+Inter-Process Communication 2
+
+Topic: Shared Memory, Message queue
+
+메세지 큐는 일종의 메일 박스
+쉐어드 메모리는 여러개의 프로세스가 동일한 메모리 공간을 사용하는 것
+
+Process & Memory Management
+	실제로 DRAM 공간은 제한되어 있으나, 사용자에게는 무한한 공간인것처럼 느끼게함
+
+	Virtual Memory 라는 개념을 지원하기 떄문에 무제한 메모리인듯 프로세스가 실행될 수 있다.
+
+	다른 프로세는 한 프로세스가 사용하고 있는 공간을 절대 접근하지 못한다.
+
+	[개인적인 정보, 보안상 이슈들이 메모리에 저장되어있을 수 있기 때문에 접근을 애초에 차단해놓는다]
+	[불법적으로 다른 프로세스의 메모리에 접근하는 것을 일종의 해킹이라고 한다]
+
+	Sharued Memory
+	0번 프로세스와 1번 프로세스가 같은 메모리 공간을 공유하는 것
+	1. 합법적 약속
+	2. make, read, write
+
+Virtual Address Space
+
+			   page table	      page table
+		   	   for procees1	      for procees2
+	Register			|	[]	|	Register		
+	[]			|	[]	|	[]
+	[Stack]		      >	|	[]	|     <	[Stack]	
+	[]			|	[]	|	[]
+	[Heap(malloc)]	      >	|	[]	|     <	[Heap(malloc)]
+	[Data(global variable)]	|	[]	|	[Data(global variable)]
+	[Text(code)]	      >	|	[]	|     <	[Text(code)]
+				   Physical memory
+	  			    (main memory)
+      Virtual address space(process 1)			   Virtual address space(process 2)
+
+	
+
+
