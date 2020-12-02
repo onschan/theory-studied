@@ -1,0 +1,151 @@
+Heap
+
+힙이라고 하는 것은 무엇인가?
+heap is a complete binary tree with the following property
+힙은 following propery를 이용하는 완벽한 baniary tree이다.
+특정 노드에 있는 값이 그것의 자식들에 있는 노드값들보다 항상 같거나 크다.
+
+1. complete binary tree
+2. 자식 노드의 값이 부모보다 작거나 같아야함
+
+그렇다면 힙은 어디에 쓰이는가?
+priority queue	힙으로 구현
+우선순위가 높은것을 먼저 꺼내는것
+enqueue, dequeue [ add to heap, remove from heap]
+
+힙에 새로운 엔트리 넣기
+	1. complete binary tree의 기준으로 다음위치에 새로운 노드를 넣는다 [ 왼쪽부터 하나씩]
+	2. heap이 아닐텐데 새로운 노드의 ancestor를 보면서 위치를 바꾼다. [ parent가 더 클때까지]
+	[이런 작업을 reheapification upward 라 한다]
+
+힙에서 엔트리 삭제[타켓값을 목표로 하는 것이 아니고 root 를 삭제함]
+	1. root 삭제
+	2. 제일 바닥에 있는 것이 root 가 됨 [모양은 유지되었음]
+	3. 두개의 자식중에 큰 자식과 swapping 해가면서 heap 모양으로 다시 바꿔줌
+	[reheapification downward]
+
+---------
+Heap 구현
+
+왼쪽부터 차곡차곡 어레이에 넣어줌
+하지만 0을 비워두고 1부터 시작
+i 노드의 왼쪽 자식 2i 오른쪽자식 2i+1 [원래는 왼쪽 자식 2i+1, 오른쪽자식 2i+1]
+
+[메모리 영역에 있는 heap(더미가 쌓여있는 것)과 다르다.]
+-------------------------------------------------
+B-Tree
+
+가장 어려울것
+B-Tree 의 B의 어원은 모름
+
+1~10까지의 수를 순차적으로 바이너리 서치 트리에 추가를 한다면
+단순한 링크드 리스트가 될 것이다.
+트리를 사용하는 이유가 없을 것이다.
+
+비트리는 바이너리 트리가 아니다.
+
+특별한 종류의 트리인데 각각의 노드가 여러개의 엔트리[데이터형식]를 보관한다.
+중복을 허용하지 않는다는 특징을 가지고 있습니다.
+
+Set을 위한 비트리의 규칙
+
+1. 각각의 노드가 여러개의 엔트리를 가질수 있다고 했는데 그 최소의 개수를 제한을 둔다.
+
+루트는 예외적으로 처리한다. 한개의 엔트리를 가질수도 있고 아예 안 가질수도 있다.
+하지만 다른 노드들은 지정한 최소한의 엔트리를 가지고 있어야한다. [MINIMUM]
+
+2. 각각의 노드에 저장되는 엔트리의 최대갯수는 미니멈의 두배이다.
+
+3. 각각의 비트리에 있는 노드의 엔트리들은 작은거부터 큰거까지 정렬이 된 상태로 보관된다.
+
+4. 각각의 노드에 있는 엔트리의 갯수보다 한개 많게 자식이 있다. [모양]
+엔트리가 한개면 자식이 두개, 엔트리가 두개면 자식이 세개
+
+5. 자식이 없는 leaf 노드가 아니면 i번째 엔트리는 i번째 서브트리에 있는 노드 값보다 크다.
+i번째 엔트리는 i+1 번째 서브트리의 노드보다 작다.
+
+	4,7
+1	5,6	23
+작음	큼작음	큼
+
+6. 비트리에 있는 모든 leaf 노드들은 같은 깊이를 가진다.
+
+				6
+			2,4		9
+		1	 3        5     7,8	      10
+
+--------------
+The Set ADT with B-Trees
+
+비트리를 이용한 Set(template)클래스
+[d0][d1][]...[][dk]
+[s0][s1][]....[][sk]
+엔트리에 대한 어레이와 노드포인터에 대한 어레이 두개의 어레이가 필요하다.
+
+private member constants/variables	상수 2개 	/갯수에 대한 변수 2개 /데이터 변수 2개
+	static const size_t MINIMUM = 200;
+	static const size_t MAXIMUM = 2 * MINIMUM;
+	size_t data_count;
+	Item data[MAXIMUM+1];
+	size_t child_count;
+	set* subset[MAXIMUM+2];
+
+count function
+insert function
+erase function
+
+count function 비트리에서 아이템 찾기
+	타켓 찾으면 1, 못찾으면 0반환
+
+	1. 루트에서 타켓이 data[i] 보다 같거나 작은 첫번째 인덱스 i를 찾는다.
+	2. 만약 data[i]가 타켓이면 1반환
+	3. i 가 없다면 자식이 없는 것이니깐 0반환
+	4. 타켓이 아니라면
+		subset[i]->count(target) 
+		리커젼을 통해 찾음
+insert function
+	B-tree에 아이템 넣기
+	loose_insert [문제 발생]and fix_excess[문제 해결] 함수 사용
+	loose_insert 서브트리에 맥시멈보다 한개 더 많은 엔트리가 들어갈 수 있는 것을 감안한 후 실행
+	fix_excess loose_insert 에서 발생한 문제 해결
+
+	maximum이 2인 비트리	
+				6,17
+			4	12	19,22
+	
+			18을 넣는다면
+					18,19,22 이렇게 loose_insert를 함
+			그 뒤 fix_excess 를 하면
+				17
+			        6        19
+			      4   12  18  22
+
+	loose_insert
+		data[i]가 entry보다 큰 i번째 인덱스를 찾음
+		entry가 data[i]에서 발견된다면 false 리턴
+		그게 아니라 root 가 자식이 없다면
+		엔트리를 data[i]에 삽입하고 fix 함 true 반환
+		[fix 할땐 맥시멈보다 한개 많은 경우 가운데 값을 위로 올림]
+		아니면 리커젼 실행
+
+	fix_excess
+		맥시멈을 두개 쪼개서 미니멈 미니멈으로 바꾸고 남은 값을 위로 올림
+
+	전체에 적용하는 법
+	-새로운 노드를 만들어서 루트에 넣음
+	-루트의 child부터 fix 시행
+
+erase
+	B-tree 아이엠 빼기
+	loose_erase 와 fix_shortage 사용
+ 	loose_erase B-tree에서 삭제했을때 root가 0개의 엔트리를 갖거나(자식은 존재한 채로)
+	MINIMUM 엔트리보다 적은 경우가 발생할 수 있는 것을 감안한 수 시행
+	fix_shortage 에서 문제해결
+
+ 	루트가 자식이 있고 타겟이 발견될 경우
+	서브트리에서 가장 큰값을 가져온다.
+
+	자식 서브트리에서 shortage가 발생할 경우
+	부모에서 하나의 엔트리를 주고 다른 자식노드에서 다른 엔트리를 받아옴
+	다른 자식에서도 빌려올 수 없는 경우
+	부모의 엔트리를 주면서 같은 엔트리로 만들어줌

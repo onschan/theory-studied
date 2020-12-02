@@ -1,0 +1,353 @@
+자료구조의 꽃이라고 할 수 있는 Trees 를 하겠습니다.
+
+비선형 구조 자료구조 (nonlinear structure)
+
+컴퓨터 상에서의 트리는 나무를 뒤집은 모양이다.
+
+	root
+
+branch		
+		leaf
+
+나무모양으로 비선형적으로 노드로 이어져있다.
+
+트리는 속이 비어있을 수도 있는 유한한 노드의 집합으로 이루어져있다.
+데이터는 노드속에 저장된다,
+
+Parent (of a node), Child , Siblings
+	노드 바로 위에 연결된 노드를 아래에 연결된 노드의 Parant라하고
+	아래에 연결된 노드를 Child 라고 한다.
+	동일선상에 연결된 child 노드들의 관계를 siblings 라고 한다.
+
+Root, Branch, Leaf
+	child 노드가 없는 노드를 leaf라고 한다.
+	ancestor 부모 노드를 쭉 타고 올라가서 loot 까지 연결된 노드를 ancestor 노드라고 한다.
+	자식 노드 밑에 있는 모든 노드를 descendant 노드라고 한다.
+	참고로 ancestor 노드는 선형적이고 descendant 노드는 비선형적이다.
+
+Subtree
+	오리지널 트리에서 가지를 꺾어서 작은 모양의 새로운 트리를 만든것이다.
+
+Depth of node
+	root 노드에서 노드까지의 거리이다.
+	14 - 5 - 55 - 45 [depth 3]
+
+Depth of tree
+	Depth of node 중 제일 큰 값
+
+------------------------------------------------------------
+Binary Trees 이중 트리 [ 자식 갯수에 대한 제한이 2개]
+	
+	  parant
+             |        |
+     left child    right child
+
+-----------------------------------------------------
+Full Binary Trees
+	모든 leaf는 depth가 같고
+	모든 leaf가 아닌 노드들은 모두 2가지 자식노드를 가지고 있다.
+
+	1 + 2 + 4 + 8 + 16 이런식으로 트리의 갯수가 늘어난다.
+
+---------------------------------------------------------
+Complete Binary Trees
+	가장 깊은 노드를 제외하고는 full binary tree 이다.
+	왼쪽부터 차곡차곡 이루어진다
+
+			14
+		5		22
+	    893        55 	      34	     12
+        123   234  46				가장 깊은 노드
+
+----------------------------------------------------------------
+Full Binary 트리는 complete 트리
+----------------------------------------------------------------
+트리라는 것이 자료구조로 쓰일 것인데.
+트리를 표현하는 방법에 대해서 알아햐 합니다.
+보통 노드를 사용하나 특별한 경우에 어레이를 사용할 수 있다.
+
+어레이를 사용한다는 것은 비선형적구조를 선형적으로 표현하겠다는 것이다.
+어레이에 보관을 하려면 부모자식관계를 제대로 복원할 수 있어야한다.
+
+(트리)
+			14
+		5		22
+	    893        55 	      34	     12
+        123   234  46
+
+(어레이)
+0	1	2	3	4	5	
+[14	][5	][22	][893	][55	][34	] ...
+depth 별로 왼쪽부터 오른쪽으로 보관
+
+저장은 이런식으로 할 수 있지만 부모자식관계가 표현되지 않았다.
+
+2배를해서 1을 더하면 왼쪽자식을 구할 수 있다.
+i's left child > 2i + 1
+2배를해서 2를 더하면 오른쪽자식을 구할 수 있다.
+i's right child > 2i + 2
+----------------------------------------------------------------
+A binary tree Node class
+바이너리 트리의 노드 클래스를 만들어보겠습니다.
+
+3개의 멤버 변수
+data_field, left_field, right_field
+
+template<class T>
+class binary_tree_node
+{
+	private:
+		T data_filed;
+		binary_tree_node *left_field;
+		binary_tree_ode *right_filed;
+};
+
+T& data()
+{
+	return data_filed
+}
+
+binary_tree_node*& left()
+{
+	return left_field
+}
+
+binary_tree_node*& right()
+{
+	return right_field
+}
+
+bool is_leaf() const
+{
+	return (left_filed == NUll && right_field == NULL);
+}
+
+tree_clear(...)
+tree_copy(...)
+비선형구조를 손쉽게 다룰수 있는 법은 recursion 밖에 없습니다.
+
+tree_clear(...)
+template<class T>
+void tree_clear(binary tree node<T>*& root_ptr)
+{
+	if(root_ptr != NULL)
+	{
+		tree_clear(root_ptr->left());
+		tree_clear(root_ptr->right());
+		delete root_ptr;
+		root_ptr = NULL;
+	}
+}
+
+tree_copy(...)
+bunary_tree_node<T>* tree_copy(binary_tree_node<T>* root_ptr)
+{
+	if(root_ptr == NULL)
+		return NULL;
+	else {
+		l_ptr = tree_copy(root_ptr -> left());
+		r_ptr = tree_copy(root_ptr -> right());
+		return new binary_tree_node<T>(root_ptr->data(),l_ptr,r_ptr);
+	}
+}
+
+Tree traversal(모든 노드 탐색하기)
+-to process all nodes in a tree applying some operation to each node
+
+	pre-order, in-order, post-order
+
+			*
+		+		-
+	       3         y	     2	      x
+
+
+Pre-Order Traversal	루트를 먼저보고 left right	prefix
+void preorder_print(const binary_tree_node<Item>* root_ptr)
+{
+	if(root_ptr != NULL)
+	{
+		cout << root_ptr ->data() << endl;
+		preorder_print(root_ptr->left());
+		preorder_print(root_ptr->right());
+	}
+}
+* | *+	| *+3	| *+3y	| *+3y-	| *+3y-2	| *+3y-2x
+
+In-Order Traversal		left먼저 root 보고 right 보고		infix
+void inorder_print(const binary_tree_node<Item>* root_ptr)
+{
+	if(root_ptr != NULL)
+	{		
+		inorder_print(root_ptr->left());
+		cout << root_ptr ->data() << endl;
+		inorder_print(root_ptr->right());
+	}
+}
+3 | 3+	| 3+y	| 3+y*	| 3+y*2	| 3+y*2-	| 3+y*2-x
+
+Post-Order	left 보고 right 보고 root 마지막에    	postfix
+void postorder_print(const binary_tree_node<Item>* root_ptr)
+{
+	if(root_ptr != NULL)
+	{		
+		postorder_print(root_ptr->left());
+		postorder_print(root_ptr->right());
+		cout << root_ptr ->data() << endl;
+	}
+}
+3 | 3y	| 3y+	| 3y+2	| 3y+2x	| 3y+2x-	| 3y+2x-*
+
+Backward In-Order Traversal		Right 먼저보고 root 보고 left보고
+	Userful for quickly printing the nodes in a tree-like (90도 회전) form
+	90도 회전된 트리 모양을 프린트하기위해 효과적이다.
+void print(const binary_tree_node<Item>* root_ptr, SizeType depth)
+{
+	if(root_ptr != NULL)
+	{		
+		print(root_ptr->right(), depth+1);
+		cout << setw(4*depth) << "" << root_ptr->data() << endl;
+		print(root_ptr->left(), depth+1);
+	}
+}
+
+	x
+        - 
+	2
+     *
+	y
+        +
+	3
+
+---------------------------------------------------------------------
+template<class Process, class Item, class SizeType>
+void apply(Procss f, Item data[], SizeType n)
+{
+	SizeType i;
+	for(i = 0; i < n; i++)
+		f(data[i]);	// f can be called with a single Item argument
+}
+void add1(int& i) { i += 1; }
+void printf(double d) { cout << d << endl; }
+
+Template FUnctions for Tree Traversals
+template<class Process, class BTNode> 
+void preorder(Process f, BTNode* node_ptr)
+{
+	if (node_ptr != NULL)
+	{
+		f(node_ptr -> data());
+		preorder(f, node_ptr -> left());
+		preorder(f, node_ptr -> right());
+	}
+}
+
+-----------------------------------------------------------------------------
+Tree Traversal of Binary Tree [ 보조강의 ]
+
+level-order Traversal
+[트리를 왼쪽부터 순차적으로 읽음]
+
+큐를 이용해서 구현하면 된다.
+ 
+template<class Item>
+void levelorder_print(const binary_tree_node<Item>* root_ptr)
+{
+	queue<binary_tree_node<Item>*> q;
+	binary_tree_node<Item>* node_ptr;
+	q.push(root_ptr);
+	while(!q.empty())
+	{
+		node_ptr = q.front();
+		q.pop();
+		cout << node_ptr->data() << endl;
+	
+		if(node_ptr->left() != NULL)
+			q.push(node_ptr->left());
+		if(node_ptr->right() != NULL)
+			q.push(node_ptr->right());
+	}
+}
+-------------------------------------------------------------------------
+Binary Search Trees
+
+Binary Search Trees 를 이용해서 가방를 만들것이다.
+
+ 부모노드 기준으로 이하는 왼쪽 child ,큰값은 오른쪽 child
+			17
+		      8           22
+		  3     13    19    65
+	            1  5  10        22
+
+가방에 바이너리 서치 트리가 들어있습니다.
+template<class Item>
+class bag
+{
+public:
+	…
+private:
+	binary_tree_node<Item>* root_ptr;
+}
+
+이걸 바탕으로 앞에서 했던것을 만들어 보겠다.
+앞에 내용과 비슷하기 때문에
+가장중요한 Insert와 erase 를 보겠다.
+
+Insert(entry)
+			45
+		9		53
+	3	          17   53		54
+		16
+16을 넣는다고 하면
+먼저 45와 비교 45보다 작기 떄문에 왼쪽으로
+9와 비교, 9 오른쪽으로
+17과 비교, 17보다 작기때문에 17의 왼쪽으로
+
+데이터와 포인터를 갖는 새로운 노드 생성
+루트와 비교하고 루트가 없다면 루트
+있다면 비교후 왼쪽 오른쪽 결정
+왼쪽 오른쪽 노드가 가리키는 포인터가 비어있다면
+이 노드를 가리키도록 함
+순차적으로 비교하면 insert가 완료됨
+
+erase_one(target)
+가장어려운 부분
+구조가 깨질수 있기때문에 구조가 안깨지기 위한 행동들을 많이 할것
+
+어떠한 타켓을 삭제하는 것은 서브트리의 루트를 삭제할 수 밖에 없게된다.
+
+루트를 기준으로 (항상 서브트리의 루트가 되기때문에)
+왼쪽이 있는 경우와 없는 경우를 나누게 된다.
+타켓루트가 삭제되면 왼쪽에서 가장 큰 값이 올라오게 될 것이다.
+bst_remove(...) 와 bst_remove_max(..)를 포함해서 만들것이다.
+
+bst_remove(root_ptr, target)
+1만약 타켓이 비어있으면 return
+2만약 타켓이 root_ptr->data() 보다 작다면
+	bst_remove(root_ptr->left(),target) 호출
+3만약 타켓이 root_ptr->data() 보다 크다면
+	bst_remove(root_ptr->right(),target) 호출
+4 만약 타켓과 root_ptr->data()이 같다면
+	case 4a : 왼쪽 자식이 없는 경우
+			오른쪽 자식이 루트가 되면서 끝 root_ptr이 가리키면됨
+	case 4b : 왼쪽 자식이 있는 경우
+			bst_remove_max(root_ptr->(),root_ptr->data());
+
+bst_remove_max(root_ptr, removed_Item)
+case1: 오른쪽 자식이 없는 경우 (root가 가장 큰 값임)
+1removed_Item = root_ptr->data();
+//the root data is max
+2oldroot = root_ptr;
+3root_ptr = root_ptr-<left();
+make the root's left child the new root
+4delete oldroot;	// delete the old root
+
+case2: 오른쪽 자식이 있는 경우 (가장 큰값을 찾아야됨 , recursion 사용)
+bst_remove_max(root_ptr->right(), removed_Item);
+
+-------------------------------------------------------------------------------
++=Operator 만들기
+
+insert_all을 먼저 만든다.
+
+first check for self addition [같은 값 넣을때]
+	복사본을 마늘고 복사본을 넣은 후 삭제

@@ -1,0 +1,108 @@
+recursive thinking
+재귀	사고
+
+자기 자신을 호출해서 자기 자신의 기능을 완성하는 함수 recursive function
+
+앞으로 배울 자료구조의 필수적인 내용이라고 보면 되겠습니다. 
+
+recursive 한 자료구조는 비선형 구조입니다. 시간순, 일렬적으로 이루어지지 않고 뒤죽박죽 처리 될 수 있음
+
+--------------------------------------------------------
+recursive thinking 의 예
+정수를 수직적으로 출력
+(작은 사이즈에 동작할 수 있다는 가정하에 큰 자리수를 동작할 수 있게 만듬)
+
+수평적으로 입력하면
+1234	
+
+수직으로 출력
+1
+2
+3
+4
+	123을 수직으로 출력할 수 있게 만들고 4를 추가적으로 출력하게 만들겠다고 생각
+
+	12를 수직으로 출력할 수 있게 만들고 3을 추가적으로 출력하게 만들겠다고 생각
+
+
+if (한자리 숫자 문자로 구성된 숫자라면)
+	한자리 숫자를 쓴다
+else 
+{
+	10으로 나눈 나머지를 출력하고
+	10의 몫으로 바꿔줌
+}
+
+void wrtite_vertical(unsigned int number) {
+	if(number < 10)
+		cout << number << endl;
+	else
+	{
+		write_vertical(number/10);
+		cout << number % 10 << endl;
+	}
+}
+
+재귀 함수로 본인을 호출할 떄는 자신의 기능을 잘 생각하고
+자신의 함수에 대한 믿음이 있어야 한다.
+
+
+--------------------------------------
+write_vertical 의 확장
+	음수를 포함해서 출력
+	입력
+	-36
+	출력
+	-
+	3
+	6
+
+void super_wrtite_vertical(int number) {
+	if(number < 0)
+	{
+		cout << '-' << endl;
+		super_write_vertical(abs(number));
+	}
+	if(number < 10)
+		cout << number << endl;
+	else
+	{
+		super_write_vertical(number/10);
+		cout << number % 10 << endl;
+	}
+}
+
+지금 까지는 내가 선형으로 구현할 수 있는 것을 굳이 recursion 으로 바꾼거에요
+---------------------------------------------
+
+컴퓨터 내부상에서 어떤식으로 움직이는지 볼 것 입니다.
+Activation Record for a funtion ( 함수 호출을 위한 활동 기록)
+	현재 실행 상태 저장을 위한 메모리 블락이 있다.
+	함수가 호출되면 시스템 스택에 activation record 가 push 즉, 기록된다.
+	'the return location' 반환 위치가 구체적으로 포함되어있어야한다.
+	local 변수와 return location이 시스템수택에 순차적으로 저장된다.
+
+> 시스템 스택을 사용하지않고 본인의 스택을 사용하면 재귀를 구현할 수 있다.
+	재귀를 구현할 수 있는 사고력이 떨어질 수 있음
+---------------------------------------------
+Studies of Recursion : Fractals and Mazes
+
+* Generating randgom fractals
+	fractals : 확대를 해도 비슷한 모양이 계속해서 나오는 것
+
+	mid_heiht = (left_height + right_height)/2
+	mid_height += ramdom_real(-width,width)
+
+void random fractal(double left_height, double right__height, double width, double epsilon) {
+	double mid_height;
+	if(width <= epsilon)
+		display(right_height);
+	else {
+		mid_height = (left_height + right_height) / 2;
+		mid_height += random_real(_width, width);
+		random_fractal(left_height, mid_height, width / 2, epsilon);
+		random_fractal(mid_height, right_height, width  2, epsilon);
+	}
+}
+
+
