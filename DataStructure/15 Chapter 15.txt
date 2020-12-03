@@ -1,0 +1,475 @@
+Graphs 
+
+그래프에 대해서 알아보겠습니다.
+지금껏 sort, search , tree에 대해서 알아보았었는데
+이번 장에서는 그래프에 대해서 알아보겠는데
+어렵다기 보단 가장 일반화된 모양이라고 할 수 있겠습니다.
+
+그래프란 무엇이냐?
+그래프는 비선형 자료구조입니다. non linear data structure
+
+트리와 같이 node와 links 로 되어있는데
+다른 점은 트리와 달리 임의의 패턴으로 이루어질수 있다는 점이있다.
+
+트리는 정해진 모양에 따라 패턴이 저장되어있는데
+그래프는 어떠한 패턴으로 진행되어도 상관이 없다.
+그래프의 노드간 방향이 주어질수 있다.
+
+Undirected Graphs 방향이 없는 그래프
+	- a finite set of vertices (nodes)  together with a finite set of edges/arcs 
+	(links between nodes)
+	- edges have no directions
+	- both vertices and edges could have labels 레이블 존재
+	트리의 경우 노드가 데이터를 가지고있음
+
+	예) Undirected State Graphs
+	데이터는 효율적인 컨테이너 구조가 아니라
+	내가 저장하는 데이터를 표현하는 방식이다.
+	Graph for game sates 게임 상황 표시 그래프
+	(H)	(T)	(H)
+	앞면	뒷면	앞면
+
+	Rules: 1. You may flip the middle coin anytime.
+		언제든 가운데 코인을 뒤집을수 있다.
+	2. You may flip one of the end coins only if the other two coins are the same as each other. 
+		끝에 있는 동전은 나머지 두개의 코인이 같은 면을 보이고 있을때만 뒤집을 수 있다.
+
+		[특정 방향 없이 어느 경우든 접근 할 수 있다]
+
+	이것의 경우들을 그래프를 방향이 없는 그래프를 이용해 표현할 수 있다.
+
+Directed Graphs 방향이 있는 그래프 [다이그래프 Digraphs]
+	- a finite set of vertices (nodes)  together with a finite set of directed edges/arcs 
+	(links between nodes)
+	- edges have directions (source -> target )
+	- both vertices and edges could have labels
+
+	웹사이트 [ 한 링크를 이용해 다른 사이트로 이동할 수 있지만 다시 되돌아갈순 없다 ]
+
+More Graph Terminology 더 많은 그래프 기술
+-Loop:
+	자기 자신으로 돌아갈 수 있는 vertex
+-Path:
+	- a sequence of vertices p1,p2,…,pm such that each adjacent
+	pair of pi and pi+1  are connected by an edge.
+	출발하는 vertices 에서 이동할 수 있는 경로
+-Cycle	
+	출발했던 경로에 다시 돌아올수 있는 path
+- Multiple Edges
+	- two or more edges that connect the same two vertices (in the same direction)
+	같은 방향을 오고갈수 있는 두개이상의 edges
+- Simple Graph
+	루프와 multiple edges가 없는 간단한 형식의 그래프
+
+-----------------
+Representing Graphs with an Adjacency Matrix
+	어떻게 컴퓨터에 그래프를 표현할 수 있을까 [ 컴퓨터는 그림으로 표현한다고 해서 인식할 수 없다 ]
+	어드제이슨시 매트릭스 [인접 행렬] 매트릭스 - 2차원 행렬
+	가장 보편적인 표현법
+	엣지에 대한 정보를 2차원행렬(매트릭스)에 표현하겠다.
+	edge가 있다없다면 boolean 형이고 또한 엣지의 weights[가중치]이다.
+
+	Cell[i,j]==true 는 vertex i에서 j 로 가는 edge가 있다는 것이다.
+	Cell[i,j[ == w는 vertex i에서 j 로 가는 엣지를 가중치 w로 표현한 것이다. w값에 따라 달라질수있다.
+
+		v0 v1 v2 v3
+	        v0	F   T   F  T
+	        v1 F   F   T  T  
+	        v2 T   F   T  T
+  	        v3 T   F   F  F   요런 느낌
+
+Representing Graphs with Adjacency Lists 
+	위에서는 어레이를 이용해서 표현하는 법을 보았고
+	이번에는 리스트를 이용해서 그래프를 표현하는 법을 보겠다.
+	
+	일차원 어레이가 우선적으로 존재해야겠다. [vertic의 갯수를 보관할 수 있는 어레이]
+
+	-each array cell represents a vertex in the graph
+ 	-each array cell [i] has a pointer to a linked list of all vertices directly connected from i
+	어레이에 링크를 연결하여 인접 노드에 대한 링크를 달아준다.
+	노드의 데이터가 NULL이면 갈수 없는 vertex이고 데이터가 있는 노드가 갈수 있는 vertex이다.
+	어레이에 링크를 연결하여 표헌하는 방법이다.
+
+Adjacency Matrix vs  Adjacency Lists
+
+어드제이슨시 매트릭스는 아주 접근성이 좋고 직관적이다.
+하지만 메모리 낭비가 심하다. 필요없는 정보저장이 많기 때문에 (연결되지 않는 버텍스 연결관계도 bool로 저장)
+
+어드제이슨시 리스트는 메모리 낭비가 적다 (연결가능한 버텍스의 관계만 데이터로 표현하기 때문에)
+하지만 직관적으로 연결관계를 알아볼 수 없고 접근성이 낮다.
+하지만 밸런스드 트리의 형태로 저장을 한다면 접근 방식이 좋아질수 있다.
+이것이 Representing Graphs with Edge Sets 이다.
+
+Representing Graphs with Edge Sets
+	set이 담긴 array를 이용해서 표현
+	
+
+-----------------------------
+그래프에 대한 표준 방식이 없기 떄문에 직접 만들어서 사용해야 한다.
+
+template <class Item>
+class graph
+{   public: …
+	static const std::size_t MAX=20;
+    private: 
+	bool edges[MAX][MAX] ;
+	Item labels[MAX] ;
+	std::size_t many_vertices;
+};
+
+이 그래프를 위한 public functions
+- add_vertex(const Item& label)
+	버텍스 추가
+- add_edge(size_t source, size_t target)
+	edge 추가
+- remove_edge(size_t source, size_t target)
+	edge 삭제
+- operator [ ] (size_t vertex)
+	버텍스 번호의 레이블값을 컨트롤하기 위한 어레이 인덱스
+- size( ) 
+	사이즈
+- is_edge(size_t source, size_t target)
+	엣지 유무 판단
+- set<size_t> neighbors(size_t vertex) const
+	인접한 버텍스들을 셋으호 만들어서 리턴
+
+----
+operator [ ]
+
+template <class Item>
+Item& graph<Item>::operator [ ] (std::size_t  vertex)
+{
+     assert(vertex < size())  ;
+     return labels[vertex] ;
+}
+
+ex) graph<double> g;   … ; g[2] = 7.67;
+
+----
+add_vertex
+
+template <class Item>
+void graph<Item>::add_vertex (const Item& label) {
+     std::size_t  new_vertex_number;
+     std::size_t  vertex ;
+     assert(size( ) < MAX ) ;
+     new_vertex_number = many_vertices ;
+     ++many_vertices ;
+     for (vertex=0;vertex<many_vertices;++vertex) {
+          edges[vertex][new_vertex_number] = false ;
+          edges[new_vertex_number][vertex] = false ;
+     }
+     labels[new_vertex_number] = label ;
+}
+
+----
+add_edge
+
+template <class Item>
+void graph<Item>::add_edge (std::size_t source,
+                                                  std::size_t target ) 
+{
+     assert(source < size( )) ;
+     assert(target < size( )) ;
+     edges[source][target] = true;
+}
+
+----
+is_edge
+
+template <class Item>
+bool graph<Item>::is_edge (std::size_t source,
+                                                  std::size_t target ) const 
+{
+     assert(source < size( )) ;
+     assert(target < size( )) ;
+     return edges[source][target];
+}
+
+----
+neighbors
+
+template <class Item>
+std::set<std::size_t> graph<Item>::neighbors (std::size_t vertex) const
+{
+     std::set<std::size> answer ;
+     std::size_t  i; 
+     
+     assert(vertex < size( )) ;
+     for (i=0; i<size( ) ; ++i) {
+          if (edges[vertex][i])
+             answer.insert(i) ;
+     }
+     return answer ;
+}
+
+----
+remove_edge
+
+template <class Item>
+void  graph<Item>::remove_edge(std::size_t  source, std::size_t  target)
+{
+     assert(source < size( )) ;
+     assert(target < size( )) ;
+ 
+     edges[source][target] = false ;
+}
+
+----
+
+node와 link [ vertex와 edge]
+
+------------------------------------------------------------------------------------
+Graph Traversals [그래프의 모든 vertex를 방문하는 툴]
+
+트리 traversal과 비슷하지만 cycle에 대해 염두해 두고 recursion을 통해 이루어짐
+반복된 방문을 막기위해 이미 처리된 vertex에 mark를 해줌
+
+DFS : depth-first search 깊이 우선 서치 [ 깊은 곳 먼저 탐색 ]
+BFS : breadth-first search 레벨 단위의 서치
+[졸업생들의 의견 : 가장 중요한 자료구조의 부분이다] 외워야할 필요가 있다.
+
+* Depth-First Search [깊이 우선 담색]
+ search proceeds from the start vertex to one of its neighbors,
+ then to one of the neighbor’s neighbors, and so on. 
+스타트 vertex에서 시작하는데 start vertex는 탐색자가 지정해줌
+start vertex의 neighbor를 방문하고 그 neighbor의 neighbor를 방문하면서 이루어짐
+-stack 기반과 queue 기반의 탐색이 있을 수 있는데
+stack 기반은 recursion을 이용해 탐색하게 되겠다.
+편의상 작은 버텍스 먼저 방문을 하게 될것이다.
+더이상 연결된 버텍스가 없을땐 다시 back-up 뒤돌아가며
+making 되지 않은 새로운 vertex에 방문하게 될것이다.
+마킹되지 않은 vertex를 다시 start vertex로 시작하며 진행될 수 있다.
+
+* Breadth-First Search [너비 우선 탐색] 레벨 오더
+search proceeds from the start vertex to each of its neighbors
+start vertex의 인접 vetex 모두를 먼저 방문하게 될것이다. 
+그 뒤 인접 vertex로 넘어가 인접 vertex 의 인접 vertex들을 다시 방문하게 됨
+
+탐색 차례마다 first level , second level 이런식으로 레벨 오더가 됨
+--------------------------
+* DFS 구현 (recursion 이용)
+- depth_first(processFunction,  aGraph, startingVertex) 
+- it will use a boolean array marked[aGraph.MAX] to keep track of the visited vertices
+방문한 버텍스를 표현할 boolean형 marked 생성
+-depth_first( …) will call a recursive function rec_dfs to actually carry out the search
+스타트 버텍스
+
+Pseudocode for depth_first( …) 
+1. Check that the start vertex is a valid vertex number of the graph.
+2. Set all the components of marked[ ] to false.
+3. Call a separate recursive function rec_dfs to actually carry out the search
+
+
+- code-
+depth_first
+
+template <class Process, class Item, class SizeType>
+void depth_first (Process f, graph<Item>& g, SizeType start) 
+{
+     bool marked[g.MAX] ;	// 마크
+          
+     assert( start < g.size( )) ;
+     std::fill_n(marked, g.size( ), false) ; // 방문시 표시
+     rec_dfs(f, g, start, marked) ; 	// 방문함수 rec_dfs 알아보자
+}
+
+-- rec_dfs	// 방문
+
+template <class Process, class Item, class SizeType>
+void rec_dfs(Process f, graph<Item>& g, SizeType v,bool marked[ ]) {
+     std::set<std::size_t> connections = g.neighbors(v) ;	// 인접함수들을 연결된 버텍스로 봄
+     std::set<std::size_t>::iterator  it ;
+     marked[v] = true ;
+     f(g[v]) ;
+     
+     for (it=connections.begin() ; it != connections.end() ; ++it) {
+          if (!marked[*it])	// 방문하지 않았다면
+             rec_dfs(f, g, *it, marked) ;	// 방문
+     }
+}
+[반드시 외워야합니다]
+
+-----------------------
+*BFS 구현 (queue 이용)
+
+ Pseudocode for breadth_first( …) 
+1. Check that the start vertex is a valid vertex number of the graph.
+2. Set all the components of marked[ ] to false.
+3. Process the start vertex, mark it, and place it in the queue.
+4. Repeat the following steps until the queue is empty:
+  4.1. Remove a vertex, v, from the queue.
+  4.2. For each unmarked neighbor u of v do:
+  4.2.1.     Process u, mark u, and then place u in the queue.
+
+큐에 인접 vertex들을 넣고 vertex를 접근하면서 mark하고 방문함
+큐를 비워가면서 진행
+
+-code-
+breadth_first
+
+template <class Process, class Item, class SizeType>
+void breadth_first (Process f, graph<Item>& g, SizeType start) 
+{
+     bool marked[g.MAX] ;
+     std::set<std::size_t>  connections ;		// 인접 vertex
+     std::set<std::size_t>::iterator  it ;
+     std::queue<std::size_t> vertex_queue ;	// vertex 큐
+          
+     assert( start < g.size( )) ;
+     std::fill_n(marked, g.size( ), false) ;	// 채우기
+     /*  MAIN PROCESS  in the next slide*/	//중요 알아보자
+}
+
+MAIN PROCESS
+
+marked[start] = true ;	// 스타트 버텍스 마킹
+     f(g[start]) ;		// start 방문
+     vertex_queue.push(start) ;	// 스타트 버텍스 queue 에 넣음
+     do {		
+            connections = g.neighbors(vertex_queue.front() ) ;	// 인접 버텍스를 연결에 넣음
+            vertex_queue.pop() ;	// 큐에서 삭제
+            for (it=connections.begin() ; it!=connections.end() ; ++it) {
+                if (!marked[*it])  {
+                    marked[*it] = true;		// 큐에서 꺼낸 인접 버텍스에 마킹
+                    f(g[*it]) ;			// 방문
+                    vertex_queue.push(*it) ;	
+                }
+            }
+     } while (!vertex_queue.empty() ) ;		// vertex 큐가 빌때까지 (모두방문)
+
+-----------------------
+Path Algorithms
+
+path가 있는지 없는지 결정
+	DFS와 BFS를 이용해서 v와 u 버텍스 사이에 패스가 있는지 탐색
+	v와 u사이에 마킹이 되어있는지 확인
+
+Graphs with Weighted Edges
+	가중치에 대한 처리
+	[거리를 표현할 수 있음]
+	가중치에 대한 그래프에선 path의 유무보단 path의 weight가 중요한데
+	즉 이것이 최단 경로를 알수 있는 방법이다.
+
+	weight 들의 합 낮을 수록 최단경로(경우에 따라)
+
+최단경로 알고리즘
+1. single source	한가지 지점에서 최단경로
+2. all pairs	두 점에서의 최단경로
+
+1번을 살펴보겠다.
+그래프에서 start 버텍스가 주어졌을떄 v 로 가는 최단경로를 구해보겠다
+distance[v] 에 start에서 모든 v로 가는 가장 낮은 가중치를 저장하겠다.
+
+이 알고리즘은 Dijkstra 알고리즘이라고 한다. 다익스트라 [weight가 음수가 아닌 경우에 대해서만 계산한다]
+						음수가 있다면 bellman-ford 알고리즘 사용
+D[i][j][k]stra
+
+어떻게 동작하는지 원리를 먼저 보겠습니다.
+
+Let v0 be the start vertex.  ->  | allowedVertexSet | = 0
+
+distance	[0]	[1]	[2]	[3]	[4]	[5]
+	0	무한	무한	무한	무한	무한
+	스타트
+
+allowedVertexSet={} // 공집합
+
+가장 낮은 값을 allowedVertexSet에 넣어줌	allowedVertexSet= {0}
+| allowedVertexSet | = | {0} | = 1
+
+방금 표시한 vertex를 거쳐서 더 작은 값으로 갈 수 있을때 어레이 값을 바꿔줌 
+무한대 이기 때문에 값을 넣을 수 있음
+distance	[0]	[1]	[2]	[3]	[4]	[5]
+	0	2	무한	무한	무한	9
+
+					allowedVertexSet={ 0, 1 } 
+| allowedVertexSet | = | {0,1} | = 2
+
+이중 마킹된 인덱스뺴고 가장 작은 값을 가진
+v1을 살펴봄
+v1을 거쳐서 v2 v3 v5을 가는길 살펴봄 [연결된 버텍스]
+distance	[0]	[1]	[2]	[3]	[4]	[5]
+	0	2	10	17	무한	8
+					allowedVertexSet={ 0, 1, 5 } 
+| allowedVertexSet | = | {0,1,5} | = 3
+
+마킹된 인덱스를 제외한 가장 작은 값을 가진 
+v5에 대해서 연결관계를 살펴봄
+v4와의 관게를 봄
+distance	[0]	[1]	[2]	[3]	[4]	[5]
+	0	2	10	17	11	8
+
+남은 것중 가장 작은값 v2 진행
+distance	[0]	[1]	[2]	[3]	[4]	[5]
+	0	2	10	11	11	8	
+					allowedVertexSet={ 0, 1, 5, 2}
+| allowedVertexSet | = | {0,1,5,2} | = 4
+
+인덱스에 동일한 값이 있을때 더 작은 인덱스로 진행
+distance	[0]	[1]	[2]	[3]	[4]	[5]
+	0	2	10	11	11	8	
+					allowedVertexSet={ 0, 1, 5, 2, 3}
+| allowedVertexSet | = | {0,1,5,2,3} | = 5
+
+마지막 한개가 남았을땐 더이상 진행할 필요가 없기때문에 진행 X
+
+----
+Dijkstra’s Algorithm - Pseudocode
+
+	Input:  a directed graph (of size n) with positive int weights 
+		start vertex number
+	Output:  distance[ ] array filled with the shortest distances
+		from start to every node in the graph
+	Variables:  distance[ ] – int array of size n
+		allowed_vertices – a set of allowed vertices
+
+	Step 1: Set distance[i]= for all vertex number i except start
+	         distance[start] = 0
+	Step 2: allowed_vertices ={} ;
+	Step 3: for(allowed_size=1; allowed_size<n; ++allowed_size)
+		{
+		Step 3a ;          
+		Step 3b ;
+		Step 3c ;
+		}
+		Step 3a:    next = an index of the distance array such that
+				next is not in the allowed_vertices and
+				distance[next] is the minimum among all
+					tentative distances
+		Step 3b:    add next to allowed_vertices
+		Step 3c:  for(v=0; v<n; ++v)
+			if ((v is not in allowed_vertices) and
+			(there is an edge from next to v))
+			{
+				sum =distance[next] + weight(next,v) ;
+				if ( sum < distance[v] )
+					distance[v] = sum ;
+			}
+
+-------------------------------
+지금까지 최단 경로 값만 구한것인데
+어떤 경로를 가야되는지는 구하지 않았습니다.
+
+그 경로를 구하는 법은 
+- need to keep track of which vertex was the next vertex when the distance[v] was updated
+distance[v] 가 업데이트 될때 그 갱신위치를 기록하면 됩니다.
+	if ( sum < distance[v] )   { 
+		distance[v] = sum ;
+		predecessor[v] = next ;
+	}
+
+the following code will print out the shortest path from the start vertex to v in reverse order
+역순 출력
+	vertex = v ;
+	cout << vertex << endl;
+	while (vertex != start) {
+		vertex = predecessor[vertex]  ;
+		cout << vertex << endl ;
+	}
+
+리커젼을 이용해서 다시 역순으로 뒤질을 수 있으니 생각해보시길 바랍니다.
+
+
+
+		
