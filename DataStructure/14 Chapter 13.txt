@@ -1,0 +1,98 @@
+Sorting 
+정렬 알고리즘에 대해 배워보도록 하겠습니다.
+
+seletion sort , insertion sort, |merge sort, quick sort
+선택 정렬       삽입 정렬      | 합병 정렬     퀵 정렬
+시간이 많이 걸리는 정렬         좀 더 빠른 정렬
+
+--
+Quadratic(제곱) Sorting Algorithms 시간 복잡도가 높은 알고리즘 [버블 < 선택 < 삽입]
+
+-선택정렬 Seletion Sort
+정렬하려는 대상
+data	3	5	8	2	1	4	9	6	7
+index	0	1	2	3	4	5	6	7	8
+
+0부터 i번째중에 가장 큰 값을 찾아서 인덱스를 가장 마지막에 두고
+가장 마지막을 저장하는 변수N을 -1 해주며 
+나머지에 대해 N이 첫 인덱스가 될 때까지 반복한다.
+
+void  selectionSort(int data[ ], size_t n)  {
+     size_t  i, j, index_of_largest ;
+     int  largest ;
+ 
+     if (n==0) return  ;
+     for ( i = n-1; i >0 ; --i)  {
+         largest = data[0] ;
+         index_of_largest = 0 ;
+       			// find the index of the largest       
+						for (j=1; j<=i ; ++j)   {
+						   if (data[j] > largest)  {
+   						        largest = data[j] ;
+
+						        index_of_largest = j ;
+  						    }
+						 }
+         swap(data[i], 
+                   data[index_of_largest]) ;  
+     } 	
+}
+
+selection sort : 분석
+	얼마나 많이 비교 연산을 수행을 하게 되는가?
+	data[i] > largest 가 몇번 수행되는지 세보면 되겠습니다.
+	n(n-1) / n 번 수행합니다.
+	비교연산에 대해서 즉 n의 제곱의 시간복잡도를 가지고 있습니다.
+	
+	스왑 연산은 n-1번 일어나느데
+	버블 소트의 경우는 스왑이 많이 일어나게 됩니다.
+
+	선택 정렬을 현재 어레이를 사용하고 있는데 이것을 heap으로 바꿔준다면
+	가장 큰값을 손쉽게 찾을 수 있기 때문에 비교연산에 대한 
+	시간복잡도가 굉장히 빨라질 수 있습니다. [Heap Sort]
+
+-삽입정렬 Insertion Sort
+data 	5 3 8 2 1 4 9 6 7
+index 	0 1 2 3 4 5 6 7 8
+
+앞에서 데이터를 키워나갈 것인데 정렬을 유지하면서 i번쨰 데이터를 끼워넣기 할 것이다.
+끼워넣기를 할때는 한칸씩 오른쪽으로 밀며 끼워넣어진다.
+
+2번째 인덱스인 1 부터 시작한다.
+1번 인덱스에 있는 3을 0번 인덱스와 비교
+0번 인덱스 5가 더 크기 떄문에 5번 인덱스 앞에 끼워넣기하고 나머지 값들은 뒤로 밀어낸다.
+3 5 8 2 1 4 9 5 7
+그 뒤 3번째 인덱스로 판단
+0번 1번 인덱스가 8보다 작기 때문에 다음인덱스로 넘어감
+4번째 인덱스 2로 끼워넣기
+
+이런식으로 정렬 반복
+1 2 3 4 5 6 7 8 9
+
+void  insertionSort(int data[ ], size_t n)  {
+     size_t  i, j;
+     int  next ;
+ 
+     if (n==0) return  ;
+     for ( i = 1; i  < n ; ++i)  {
+         next = data[i] ;
+         j = i ;
+   		  /* find the insertion index j of next */
+						while (j >0 && next < data[j-1])   {
+  							data[j] = data[j-1] ;
+    							--j ;
+						}
+         data[j] = next  ;  
+     } 	
+}
+
+insertion sort : 분석
+	비교연산의 경우 n(n-1)/n 번 반복되며
+	시간복잡도는 n의 제곱이다.
+	즉 Quadratic(제곱) 정렬 알고리즘이다.
+	워스트의 경우로 따지지않고 베스트인 경우로 따지면 n-1의 경우가 나올 수 있기때문에 
+	다른 Quadration 정렬 알고리즘보다 더 좋은 Quadration 정렬 알고리즘이다.
+
+	마찬가지로 내부적으로 어레이를 사용하고 있는데 
+	이 경우 밸런스드 바이너리 서치 트리를 쓴다면
+	시간 복잡도가 굉장히 빨라질 수 있다. [Tree Sort] 

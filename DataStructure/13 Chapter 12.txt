@@ -1,0 +1,186 @@
+Searching 
+
+searching 에 대해서 배워보겠습니다.
+search by hashing 은 제가 자료구조 수업을 들을 때 가장 참신하게 다가왔습니다.
+
+Serial Search 와 Binary Search 에 대해 먼저 알아보겠습니다.
+순차탐색이라고 할 수 있겠는데
+
+Serial Search
+순차적으로 어레이 안에서 원하는 데이터를 찾아내는 것입니다.
+[여기서는 어레이에 국한해서 배울 것입니다만 바이너리 서치는 바이너리 서치 트리에서 찾아 내는것이
+더 가까울 수 있습니다]
+
+서치는 멈추는데 언제 먼추냐면 아이템이 발견되거나 끝까지 도달했을때 멈춘다고 볼 수 있습니다.
+
+시리얼 서치의 예로서 2라고 하는 숫자를 찾아보도록 하겠습니다.
+3	5	8	2	1 	4	9	6	7
+여기서 2를 찾기위해 처음부터 시작해서 2에 도달한 순간
+서치가 멈추면서 2의 인덱스인 [3] 을 찾아낼수 있습니다.
+
+내가 원하는 아이템이 어레이에 없거나 가장 마지막에 있는 경우
+worst 케이스로 가장 느리게 작동하는 경우 일 것입니다.
+이 경우를 계산하는 것이 바이너리 서치입니다.
+
+binary search
+어레이가 정렬이 된 경우에 바이너리 서치를 할 수 있는데 
+이러한 강력한 조건은 현실적으로 와닿기 쉽지 않을 수 있습니다.
+
+바이너리 서치의 중요한 특징은 내가 비교한 것을 밖으로 버린다는 것입니다.
+
+1	2	3	4	5	6	7	8	9
+이렇게 어레이가 정렬이 되어있습니다.
+바이너리 서치는 어떻게 하냐면
+중간값을 먼저 봅니다.
+미들 인덱스에서 내가 찾고자 하는 타겟이 중간값 기준으로 왼쪽에 있는지 오른쪽에 있는지
+판단하고 아이템이 있는 쪽에서 동일한 작업을 반복하고 나머지 데이터들은 버립니다.
+이렇게 중간값을 계속 확인하다가 중간값이 발견되는 경우에 작동을 멈춥니다.
+
+시리얼 서치에서 8을 찾기위해선 8번의 작동을 해야하지만 바이너리 서치에서는 3번만에 찾을 수 있다.
+이것이 서치 단게의 시간복잡도에 대한 요점입니다.
+
+최악의 비교횟수를 판단하여 비교하는 것이 시간복잡도의 비교입니다.
+
+12장의 핵심인 Hashing 에 대해서 배워보겠습니다.
+목적은 이렇습니다.
+시리얼 서치와 바이너리 서치에서 더 간결하고 간단하게 찾을 수 있는 방법이 무엇일까?
+해싱의 테크닉은 key값을 어레이 인덱스에 mapping 하는 것입니다.
+
+여러분이 사용하고 있는 주민번호라던지 휴대폰 번호는 중복되지 않고 실제 존재하는 사람의 숫자보다
+훨씬 많은 데이터를 바탕에 두고 저장합니다.
+
+하지만 데이터공간은 유한하기때문에 해싱은 그 유한한 공간에 데이터들을 저장하는 방법입니다.
+
+자료구조의 해싱은 훨씬 작은 공간에 수많은 데이터를 저장하는 방법입니다.
+
+인덱스를 저장하기 위해 hash 함수를 사용하게 될 것입니다.
+    0     1     2      3     4     5     6      7     8
+a key1 key2 key3 key4 key5 key6 key7 key8 key9
+이런식으로 data값이 있을때 key값과 데이터를 매핑하는 것입니다.
+
+key3은 3번 key 에 매핑하여 key3을 찾을 땐 3번 key를 이용하여 찾아내는 것입니다.
+
+collision 충돌을 어떻게 피하느냐가 해싱의 가장 중요한 쟁점이라 할 수 있습니다.
+
+개방된 주소 해싱 Open-Address Hashing
+어레이에 관한 내용입니다.
+어레이에 모든 인덱스가 개방되어 있습니다.
+	key값 k를 갖는 레코드 hash(key)가 있다면
+	data[hash(key)]로 가봐서 인덱스가 비어있다면
+	그 곳을 사용하면 되고 만약에 데이터가 저장되어있다면
+	+1,+2,+3 등등 옆으로 넘어가면서 비어있는 공간을 찾아가면서 빈 공간에 저장한다.
+	이런식의 반복은 해시의 효율성이 크게 떨어집니다.
+
+	353의 해시를 거쳐 2번쨰 인덱스에 갔습니다.
+	566이 해시를 거쳐 4번째 인덱스에 갔습니다.
+	312가 해시를 거쳐 2번째 인덱스에 갔더니 353이 저장되어있어서
+	그 옆인 3번째 인덱스에 가서 저장합니다.
+	이런식의 중복저장을 피합니다. [collision avoid]
+	
+	값을 저장하기위해 많은 중복이 있습니다.
+
+table 클래스라는 것은 컨테이너입니다.
+어떤 컨테이냐면 값을 보관하는 것이 아니라 key와 record를 저장하기 위한 컨테이너 입니다.
+hash 함수를 갖는 컨테이너입니다.
+
+Table Class Template
+  template <class RecordType>
+  class table
+  { 
+       public: …
+       private:  …
+			RecordType  data[CAPACITY] ;
+                std::size_t  hash(int key) const ;
+ 			…
+   }
+
+Public Functions for Table
+
+-Constructor 
+-Insert(entryRecord)
+-remove(key)
+-is_present(key)
+-find(key, found, result)
+-size( )
+
+Private Functions for Table
+ hash(key) 
+ 	maps keys into indices
+
+ next_index(index) 
+ 	finds the next (circular) index
+
+ find_index(key, found, i) 
+ 	finds the array index of a record with a particular key
+
+    never_used(index)
+ 	returns true if data[index] has never been used
+
+ is_vacant(index)
+ 	returns true if data[index] is not currently being used
+
+Private member variables for Table
+ 
+   NEVER_USED
+ 	A constant used to indicate that a cell has never been used
+
+ PREVIOUSLY_USED
+ 	A constant used to indicate that a cell has been used before, but currently not in use
+
+ used
+ 	the number of records currently stored in the array
+
+   사용했던 데이터 공간인지 아닌지 USED 관련 변수들로 저장한다. collision 을 피하기 위해
+
+NEVER_USED를 먼저 사용하거나 예외로 제외하기 때문에 성능에 중요한 영향을 미친다.
+해쉬를 오래사용하면 사용할 수록 NEVER_USED의 공간이 사라지고
+사용하면 사용할 수록 성능이 떨어진다.
+
+해쉬는 표준으로 사용하는 방법이 없기 떄문에 상황에 따라 적합한 해쉬 함수를 사용해야한다.
+1. Division Hash Functions
+	빈번하게 사용되는 해쉬펑션 	
+	나머지 연산을 통해 인덱스를 저장
+	key % table_size  [키값을 테이블 사이즈로 나눔]
+	좋은 테이블 사이즈는 무엇이냐면 4k+3 형태의 소수이다. [collision 덜 발생]
+
+2. Mid_Square Hash Functions
+	작위적인 방법
+	key * key 키 값을 두개 곱해서 중간값을 뽑아낸다.
+	1010100001110  이런식이면 중간의 0100000 을 뽑아내서 인덱스를 설정
+
+3. Multioplicative Hash Function
+	- takes the first few digits of  a * key (0<a<1)
+	Example:  key = 157, a = 0.0234521
+	0.0234521*157= 3.6819797 여기서 681만 뽑아내서 인덱스 설정
+
+Types of Open-Address Hashing
+1. Linear Probing
+	- if location hash(key) is not empty, try hash(key)+1, hash(key)+2, hash(key)+3, 
+	and so on in circular fashion until a vacant spot is found.
+2. Double Hashing
+	In linear probing, when several keys are hashed into the same location, 
+	the result is a small cluster of elements. 
+	호텔직원(hash)이 모든 손님에게 101호로 가라고 한다면 cluster 데이터 뭉침현상이 발생한다.
+	그래서 다른 호텔직원(hash)를 만들어서 충돌이 난 경우 어디로 갈지 보내도록 한다.
+	hash 함수가 두개이기 떄문에 double hash
+	여기서 주의할 것은 두 해시를 다른 종류의 함수로 사용하는 것이 효율적이다.
+	
+	array size와 step length 의 최대공약수가 1이어야지 못보는 영역이 없다
+	array size와 step length 가 서로 다른 소수이어야 된다.
+
+Chained Hashing
+어레이가 아닌 링크드 리스트에서 해시 진행
+- Each array component can hold more than one entry.
+한개의 저장공간이 한개의 엔트리보다 많은 수를 저장할 수 있다면
+collision을 고민할 필요없기 entry를 저장할 수 있다.
+하지만 너무 많은 entry가 한 곳에 저장되지 않도록 주의해야 한다.
+
+
+
+
+
+
+
+
+
+
