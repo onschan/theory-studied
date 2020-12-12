@@ -1,0 +1,113 @@
+OpenFIle 구현:LpcProxy Code
+-LpcProxt Code 구현
+	OpenFile로 전달된 argment를 LpcRequest에 담아서 message queue에 전달
+	Request를 전달한 후 response를 기다린다.
+
+	client(pid 1)
+	OpenFile(""tmp/a.c", O_CREAT)
+	-------------------------------------------------------------
+	(1) LpcRequest를 위한 메모리 공간을 할당
+		[pid] < plpcRequest
+		[LpcService]
+		[numArg]
+		[ IpcArg[0]]
+		[ IpcArg[1]]
+	(2) pLpcRequest를 채운다.
+		>Pid: 1
+		>LpcService: LPC_OPEN_FILE
+		>numArg: 2
+		>lpcArg[0] :
+			argData: "tmp/a.c", size: 7
+		>lpcArg[1] :
+			argData: O_CREATE, size: 4
+	(3) pLpcRequest를 mesgsn로 request queue에 보냄
+		pid		[1]
+		LpcService	[LPC_OPEN_FILE]
+		numArg		[2]
+		IpcArg[0]		[tmp/a.c, 7]
+		IpcArg[1]		[O_CREAT, 4]
+	(4) File server가 LpcResponse를 보낼 때까지 기다린다.		
+		msgrecv( ) 	<- LpcResponse 		<- Response queue
+	(5) pLpcRequest의 메모리 공간을 할당
+	(6) msgrcv를 통해 LpcRequest를 송신할 때까지 기다림
+	(7) msgrcv함수를 통해 LpcRequest 메세지를 받음.
+	아래와 같이 pLpcRequest에 데이터가 구성됨
+	(8) LpcServer가 LPC_OPEN_FILE임을 확인하고, LpcStub의 OpenFile 함수를 호출함
+	(9) OpenFile 함수는 open() 시스템 콜을 호출
+		Int OpenFile(name, flag, clientpid) {
+			...
+			fd = open(name, flag)
+			...
+		}
+	(10) Open 함수로 전달된 2개의 argument를 LpcRequest에서 획득함
+	(11) LpcResponse를 위한 메모리 할당
+	(12) Open 함수 호출 결과를 pLpcResponse에 저장
+		[1]	client pid
+		[0]	errorno
+	fd의 크기	[4]	responseSize
+		[3]	reponseData
+		open의fd				
+	(13) pLpcResponse를 response queue에 송신
+	(14) Response queue에서 LpcResponse를 수신
+	(15) LpcResponse에서 fd값을 얻어서 OpenFile함수의 반환 값으로 전달
+
+--------------------------------------------------------------------------------------------
+ReadFile 구현 : LpcProxy Code
+	fd와 sizw만 LpcRequest에 담아서 송신
+	pBuf는 FileServer에서 전달된 데이터를 저장하는 메모리
+Client(pid 1)
+	ReadFile(fd, pBuf, 11)
+
+	(1) LpcRequest를 위한 메모리 공간을 할당
+	(2) pLpcRequest를 채운다.
+		pid		[1]
+		LpcService	[LPC_READ_FILE]
+		numArg		2	
+		lpcArg[0]		[fd,4]
+		lpcArg[1]		[11,4]
+	(3) File Server가 LpcResponse를 보낼 때까지 기다린다.
+	(4) PLpcRequest의 메모리 공간을 할당
+	(5) msgrecv를 통해 pcRequest를 송신할 때까지 기다림
+	(6) msgrecv함수를 통해 LpcRequest 메시지를 받음
+	(7) LpcServer가 LPC_READ_FILE임을 화인하고, LpcStub의 ReadFile 함수를 호출함
+	(8) ReadFile 함수는 read() 시스템 콜을 호출
+	(9) read함수로 전달될 2개의 argument를 LpcRequest에서 획득함.
+	단, read 함수의 buf는 여러분이 할당해야함.
+	(10) LpcResponse를 위한 메모리를 할당
+	(11) read 함수 호출 결과를 pLpcResponse에 저장
+	(12) Response queue에서 LpcResponse를 수신
+	(13) LpcResponse의 responseData는 pBuf에 복사하고, responseSize는 리턴 값으로 전달
+
+----------------------------------------------------------------------------------------
+컴파일
+	Main.c에 동작 테스트
+	11월 23일까지 testcase.c를 배포. Main.c 대신에 테스트
+	Client process는 2~3개 생성하여 테스트 할것
+
+----------------------------------------
+소프트웨어 개발 유의점
+	단계적 구현 없이 한번에 큰 코드를 구현하면 디버깅 시간은, 그렇지 않은 방법에 비해 몇배가
+	더 걸리거나 영원히 버그를 잡을 수 없다.
+
+두 프로세스 간에 간단한 통신
+	IPC 수업의 예제를 먼저 실행
+
+N 개 client 프로세스에서 Server 프로세스로 간단한 메세지를 송신
+	N개의 client가 자신의 pid를 msg type으로 server에게 전달
+	Server는 msg type을 0으로 송신 순서로 메세지를 받음
+
+Server 프로세스에게 N개 client 프로세스로 간단한 메세지를 송신
+	N개의 client에게 client pid를 msg type로 메세지를 전달
+
+두 프로세스 간에 LpcRequest 통신
+	LpcRequest 메세지를 구성해서 server로 전달
+
+Client에서 OpenFile에 대한 LpcRequest를 serve로 전송, Server는 해당 file name, flag로 open() 함수를 호출
+해 봄.
+	OpenFile이 성공하면 ReadFile, WriteFile 등을 구현함
+
+Server에서 LpcResponse 메시지를 구성해서 client로 전달, client는 해당 LpcResponse 메시지를 받음
+	성공하면, OpenFile, ReadFile, 등의 LpcResponse를 client로 전달 해봄
+
+
+
