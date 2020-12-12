@@ -1,0 +1,354 @@
+Threads
+
+쓰레드에 대해 배워볼 것입니다.
+
+개념적으로 어려운 부분이 있지만 가장 중요한 부분 중 하나입니다.
+
+웹서버는 요청이 들어오면 디스크에서 해당 기능을 찾아서 요청에 대해서 응답하도록 되어있다.
+
+WebServer
+
+Process <-	<-	<-
+		->	I/O	<-
+		->	I/O	<-
+		->	I/O	<-
+Process->Processing		디스크
+
+이 동작을 수행하는 중에 무거운 프로세스를 사용하지말고
+비교적 가벼운 쓰레드를 사용하면 성능이 향상될 수 있다.
+
+프로세스의 문제점
+	context switching 부하
+	큰 프로세스 생성 시간
+	큰 동기화 오버헤드
+
+[프로세스와 쓰레드의 장단점에 대해서는 알아야한다 - 취업에 흔히 물어봄]
+
+한 프로세스는 여러개의 쓰레드를 가질 수 있다.
+	쓰레드는 자신의 쓰레드 아이디를 가지게 되고 레지스트 묶음과 스택을 가지게 된다,
+	이것들을 합쳐서 thread context 쓰레드 묶음이라 한다.
+
+Linux/Unix/Window OS 들은 멀티쓰레드 프로그래밍을 지원한다.
+
+프로세스가 만들어지고 쓰레드가 자동으로 만들어지며
+쓰레드 안에서 코드가 실행된다.
+지금까지는 프로세스가 함수를 수행한다고 배웠지만
+실질적으론 쓰레드가 담당하는 경우가 많다.
+
+Procedure Calls VS Multithreading 멀티쓰레딩
+
+*프로세스의 함수 호출 (Procedure Calls)
+		 		[
+Int globalVar = 100;		[
+				[
+DWORD WINAPI			[____________
+Func0(LPVOID Param)		[stack			stack
+{				[
+    printf(“Hello, Func0\n”);		[
+}				[					Fun0 삭제 후 생성
+				[ *stack of Fun0	->	*stack of Fun1	순차적 진행
+DWORD WINAPI			[____________	finish
+Func1(LPVOID Param)		[heap
+{				[
+    printf(“Hello, Func 1\n”);		[
+}				[
+				[____________
+				[bss
+Int main(void)			[_____________
+{				[initalized data
+    Func0 (0);			[ *glovalVar
+    Func1 (0);			[____________
+}				[Text			
+
+
+* 쓰레드 (Multithreading)
+		 		[
+Int globalVar = 100;		[
+				[
+DWORD WINAPI			[____________
+Func0(LPVOID Param)		[stack
+{				[ *Stack of thread1
+    printf(“Hello, Func0\n”);		[  - Thread context
+}				[ *Stack of thread0		thread0과 thread1은
+				[  - Thread context		동시적으로 실행된다. <> 함수호출과 다름
+DWORD WINAPI			[____________		thread context swich 이루어짐
+Func1(LPVOID Param)		[heap
+{				[
+    printf(“Hello, Func 1\n”);		[
+}				[
+				[____________
+				[bss
+Int main(void)			[_____________
+{				[initalized data
+   hThread0 = CreateThread(NULL, 0, 	[ *glovalVar
+                    Func0, &Param, 	[____________
+                     0, &Thread)		[Text		
+
+
+   hThread1 = CreateThread(NULL, 0, 
+                     Func1, &Param, 
+                     0, &Thread);
+}
+
+유사점
+	function의 특성을 그대로 물려받는다.
+	-지역변수는 접근할 수 없음
+	- 전역 변수, malloc으로 받은 heap 영역은 함께 접근(공유) 할 수 있다.
+구별점
+	thread 별로 스택이 잡힌다.
+	병렬적으로 쓰레드가 실행된다.
+
+--------------------------------
+함수 호출 시 프로그램상에서 자동으로 thread를 생성하고
+처음으로 생성되는 thread는 메인 스레드라 하고 main 함수를 담당한다.
+이 스레드가 종료되면 모든 함수도 종료된다.
+main thread는 아주 중요한 thread 입니다.
+종료가 되면 child thread도 모두 종료되며 process도 종료된다.
+----------------------------------
+Single and Multithreaded Processes
+
+code | data | files				code	|  data	|files
+registers	|   stack				registers	| registers|registers
+					stack    	| stack	|stack
+						|	|	
+thread -> 지렁이 형태			thread	| thread	| thread   쓰레드가 각각 자신만의 
+						|	|	 스택과 register를 가짐
+
+single-threaded process			multihreaded process
+
+					쓰레드를 생성할때 메모리를 많이 잡아먹지 않고
+					생성 시간이 짧다 
+					메모리 사용량도 작다. stack 과 register는 끽해야 얼마 안됨
+	
+					프로세스는 메모리 공간을 많이 잡아먹고
+					생성 시간이 오래걸린다.
+쓰레드의 이점
+-낮은 context switching
+-짧은 생성시간
+-낮은 동기화 오버헤드
+-작은 메모리 점유율
+
+---------------------------
+Relationship between Process and Thread
+
+프로세스는 한개이상의 쓰레드와 자원(환경)으로 구성된다.
+
+								Thread0,Thread1 공유
+Thread0|	signal mask, kernel stack  	->	|Open FIle Table		<-
+______________________________________		|Memory			<- 
+Thread1|  signal mask, kernel stack	->	|
+
+---------------------------
+Thread Library
+
+쓰레드 라이브러리는 프로그래머에게 멀티쓰레딩을 위한 API 를 제공한다.
+
+크게 두가지 종류가 있다.
+	커널의 지원 없는 User level thread 라이브러리
+	시스템 콜을 호출할 수 있는 커널의 지원을 받는 Kernel level thread 라이브러리
+
+	지금은 대부분 Kernel level thread 라이브러리를 사용함
+
+Pthreads - Posix Threads
+	대부분의 vendors에 의해 지원됨
+	일단적인 개념의 thread API
+	OS가 다를때마다 쓰레드를 구현하면 힘들지만 호환성이 높아 사용가능
+	[Window 에서는 Posix Threads 를 지원하지않아 linux 와 window 간 쓰레드 호환이 안될수있음]
+
+Pthread Operations
+-pthread_cancle
+-pthread_create
+-pthread_detach
+... 등등				실패하면 0이 아니라 에러코드를 반환함
+
+----------------------------------------------------
+Creating a Thread 쓰레드 생성 방법
+
+새로운 쓰레드가 생성되면 병렬적으로 생성 쓰레드와 실행된다.
+쓰레드를 생성할 떄 쓰레드가 어떤 함수를 실행할 지 지시한다.
+
+*
+int pthread_create(pthread_t threadID, const pthread_attr_t* (NULL), void* 실행할 함수(func pointer), 함수 인자(void *))
+	function은 void* 리턴, void* 인자로 받음
+
+	creating program			created thread
+	pthread_create(); 0		->	processfd()
+			        동시진행
+예시
+void *processfd(void *arg) 
+{ 
+    char buf[BUFSIZE]; 
+     int fd; 
+     ssize_t nbytes; 
+     
+     fd = *((int *)(arg)); 
+     for ( ; ; ) { 
+         if ((nbytes = read(fd, buf, BUFSIZE)) < 0) 
+             break; 
+         // process buf data
+   } 
+   return NULL; 
+}
+
+int main(void)
+{
+   int error; 
+   int fd, pthread_t tid; 
+
+   fd = open(“a.txt”, O_CREAT);
+   if (error = pthread_create(&tid, NULL, processfd, &fd)) {
+    fprintf(stderr, "Failed to create thread: %s\n", strerror(error)); 
+   }
+   if (error = pthread_join(tid)){ 
+      fprintf(stderr, "Failed to detach thread: %s\n", strerror(error));
+   }
+} 
+
+
+
+*
+The Thread ID
+
+phread_t pthread_self(void)		=> getpid()
+
+pthread_join() => waitpid() 	빠져나올때 좀비상태의 child들을 정리해줌
+
+pthread_detach()
+
+쓰레드가 자원을 계속 소비하고있으면 메모리 낭비가 심해질 수 있음
+그것을 정리해주는 것이 join 말고도
+detach가 있음
+
+Detaching a Thread
+
+int pthread_detach(pthread_t threadid);
+	굳이 parent thread가 reap해주지 않아도 detach가 해줌
+detach = reap
+	pthread_join
+	pthread_detach
+		둘다 reap 해주는 방법임
+
+How to make a thread detached
+
+	void *processfd(void *arg); 
+
+	int error; 
+	int fd 
+	pthread_t tid; 
+
+	if (error = pthread_create(&tid, NULL, processfd, &fd)) {
+ 	   fprintf(stderr, "Failed to create thread: %s\n", strerror(error)); 
+	}
+	else if (error = pthread_detach(tid)){ 
+   	   fprintf(stderr, "Failed to detach thread: %s\n", strerror(error));
+	} 
+
+How a thread can detach itself
+
+	void *detachfun(void *arg) {
+	   int i = *((int *)(arg)); 
+	
+	   if (!pthread_detach(pthread_self())) 
+	     return NULL; 
+
+	   fprintf(stderr, "My argument is %d\n", i); 
+	   return NULL; 
+	} 
+
+int pthread_join(pthread_t thread, void** retval);		리턴된 값을 두번째 인자로 받게된다.
+	pthread_join(thid)
+
+	pthread_join은 detached되지 않은 쓰레드에 대해서만 가능함
+	detached 된 쓰레드에 대하서 join을 사용하면 에러 발생
+	child가 종료될때까지 잠든다. blocking 한다.
+
+Pthread_join
+
+	int error; 
+	int *exitcodep; 
+	pthread_t tid; 
+
+	if (error = pthread_join(tid, &exitcodep)){
+	  fprintf(stderr, "Failed to join thread: %s\n", strerror(error)); 
+	}
+	else {
+	  fprintf(stderr, "The exit code was %d\n", *exitcodep); 
+	}
+
+
+우리가 어떤 질문을 받을 수 있냐면
+만약에 쓰레드 안에서 exit() 함수를 호출했다. 그러면 프로세스 안에서 어떤 현상이 일어날까?
+> child thread가 종료되냐 전체 프로세스가 종료되냐
+정답은 전체프로세스가 종료된다. exit 은 전체 프로세스를 제어하는 함수입니다.
+그래서 exit() 함수를 호출하면 전체 프로세스가 종료됩니다.
+그러면 누군가가 어떤 쓰레드든 exit 함수를 호출하면 다 날라간다
+중요한건 뭐냐면 exit 을 호출하지 않더라고 main 함수에서 return 함수를 호출하면
+전체 프로세스가 종료된다.
+그리고 또 중요한것이 뭐냐면 프로세스가 있고 메인프로세스와 차일드가 있어요
+그러면 하나라도 메모리참조오류 발생하면 프로세스를 종료하는 시그널이 전달되고
+전체 프로세스가 종료된다.
+[즉, 전체프로세스를 종료하는 호출을 쓰레드에서 받으면 무조건 전체 프로세스가 종료된다.]
+
+그래서 쓰레드 종료를 하고 싶으면 exit() 함수가 아니라
+pthread_exit() 함수를 호출해야한다.
+[void pthread_exit(void *value_ptr);]
+다른 쓰레드를 종료시키고 싶으면
+int pthread_cancle(pthread_t thread) 를 사용한다.
+[즉 exit를 통해서 쓰레드를 종료시키고 cancle을 통해서 다른 쓰레드를 종료시킬 수 있다.]
+
+Thread Attributes 쓰레드의 특성을 설정하는 방법
+	pthread_attr_t 오브젝트를 사용하게 될 거에요.
+	How can you use the attribute?
+	1.Create an attribute object (initialize it with default properties) 
+	2.Modify the properties of the attribute object 
+	3.Create a thread using the attribute object 
+
+Initialize or destroy an attribute with:
+ 	int pthread_attr_destroy(pthread_attr_t *attr); 
+	int pthread_attr_init(pthread_attr_t *attr); 
+
+Example: Create a detached thread
+	int error, fd; 
+	pthread_attr_t tattr; 
+	pthread_t tid; 
+
+	if (error = pthread_attr_init(&tattr)) 	
+	   fprintf(stderr, "Failed to create attribute object: %s\n", strerror(error)); 
+	else if (error = pthread_attr_setdetachstate(&tattr, PTHREAD_CREATE_DETACHED)) 
+	     fprintf(stderr, "Failed to set attribute state to detached: %s\n", strerror(error)); 
+	else if (error = pthread_create(&tid, &tattr, processfd, &fd)) 
+	              fprintf(stderr, "Failed to create thread: %s\n", strerror(error)); 
+
+The thread stack
+	차일드 쓰레드를 생성할 떄 스택이 잡히게 되요 [ 아주 작은 크기에요]
+	내부 변수등을 저장하고 함수 호출을 담당해요
+	계속 사용하다보면 스택공간이 부족하게되어요
+
+	스택이 부족하겠다싶으면 개발자가 직접 스택공간을 잡을 수 있어요
+	그 방법이 바로
+	pthread_attr_init(&attr);
+    	mystack = malloc(mystacksize ); 
+   	pthread_attr_setstack(&attr, mystack, mystacksize);	// 스택 크기 설정
+    	pthread_create(&tid, &attr, processfd, &fd);		// 설정된 스택과 차일드 생성과 연결
+   	pthread_attr_getstack(&attr, &stackaddr, &stacksize);	// 스택 정보 얻어옴 
+   	printf("Retrieved stackaddr is %x, %d\n", stackaddr,statcksize);
+   	pthread_attr_destroy(&attr); 
+   	return 0;
+} 
+
+---------------------------------------------
+Linux-clone [리눅스에서 쓰레드 생성하는 법]
+
+clone() 이라는 함수를 사용해서 쓰레드를 생성할 수 있다.
+fork 함수와 비슷합니다. 
+
+int clone(int (*fn)(void *), void *child_stack, int flags, void *arg);
+[성공하면 pid를 반환하는데 이것은 프로세스의 아이디 혹슨 쓰레드의 아이디가 될 수 있다]
+
+클론을 사용할때는 스택공간을 두번쨰 인자로 넣어줘야한다는 것이 중요하다.
+pthread_create 에서는 본인이 다른 스택을 원하는 경우아니면 자동으로 잡아줬는데 여기는 직접 잡아야된다.
+
+중요한 것은 스택을 공간을 직접 지정해야한다는 것이다.
+말록을 통해서 스택 사이즈를 할당받고
+스택의 시작위치와 사이즈를 더해서 인자에 넣어줘야된다.
+
