@@ -1,0 +1,172 @@
+Machine-Level Programming 1
+어셈블리
+
+어셈블리 프로그래밍
+
+CPU							MEMORY
+
+E      Registers			addresses->		Object Code
+I				<-data->			Program Data
+P      Condition Code Registers	<-instructions		OS Data
+							[Stack]
+registers 임시 메모리 공간 [작은 단위]
+
+							메모리는 바이트의 배열로 구성되어있음
+							코드, 데이터, OS 데이터
+
+C 를 Object Code로 바꾸기
+
+	text		C program (p1.c p2.c)
+				V		compiler(gcc -s)
+	text		Asm program (p1.s p2.s)
+				V		Assembler(gcc or as)
+	binary		Object program (p1.o p2.o)  + Static libraries (.a)
+				V		Linker(gcc or ld)
+	binary		Executable program (p)	
+
+
+어셈블리 언어 [Assembly language]
+	가장 낮은 레벨 프로그래밍
+	
+어셈블리 언어로 만들어진 코드를 실행파일로 만들기 위해선 assembler가 필요함
+[하드웨어의 구동 프로그램을 만들기 위해선 어셈블리 언어가 필요함]
+
+어셈블리 특징
+최소의 Data Types
+	1,2 or 4 바이트의 정수형 데이터
+	4,8,10 바이트의 실수형 포인트 데이터
+	어레이, 구조체등의 집합이 없음
+	[단지 메모리에서 바이트를 할당받을뿐]
+기본적인 동작
+	기본적인 연산, 메모리 데이터의 이동
+	transfer control
+		jump 등의 흐름 조작
+
+어셈블리 언어는 숫자로만 코딩되어야 하지만
+개발자가 보기위해 고유번호를 가진 알파벳을 사용하게됨
+이는 .s 로 저장되고 어셈블러를 통해 숫자로 이루어진 .o 로 컴파일됨
+
+------------------------------
+Machine Instruction 예제
+
+int t = x+y;			C Codoe : add two signed integers
+
+addl 8(%ebp), %eax		Assembly Code
+	Similar to				add 2 4-byte initergers
+	expresssion			Operand:
+	x += y					x: Register %eax
+						y: Memory M[%ebp+8]
+						t: Register %eax
+						>> return function value in %eax
+				Object Code(HEXA format)
+					3-bye instruction
+0x401046: 03 45 08			Store at address 0x401046
+
+--------------------
+Disassemnling
+16진수로 이루어진 어셈블리 코드를 문자열이 들어욌는 코드로 변환해줌
+
+Moving Data
+	movl Source,Dest
+
+movl $0x4,%eax
+movl %eax,%edx
+movl (%eax),%edx
+movl %eax,(%edx)
+
+메모리에 저장된 값을 메모리로 이동하는 것은 불가능하다.
+movl( %eax),(%edx)	 X
+
+-----------------------------------
+이제 약간 어려운게 나옵니다.
+Simple Addressing Modes
+
+Normal 		(R)		 Mem[Reg]
+	Register R 메모리 주소
+	(R) 은 메모리 안에 들어있는 값
+	movl (%ecx), %eax
+
+Displacement 	D(R) 		Mem[Reg[R]+D]
+	Register R 메모리 영역 시작지점
+	Constant displacement D specifies offset
+	movl 8 (%ebp), %edx		
+	
+	8 (%ebp)
+	ebp 주소가 100이라고 할때 8을 더한 위치에 있는 데이터
+
+	%edx 의 주소로 보냄
+
+-------------------------------------
+Indexed Addressing Modes	
+	가장 일반적인 Form
+	D(Rb,Ri,S)  => Mem[Reg[Rb]+S*Reg[Ri]+D]
+	
+	Special Cases
+		(Rb,Ri)	Mem[Reg[Rb]+Reg[Ri]]
+		D(Rb,Ri)	Mem[Reg[Rb]+Reg[Ri]+D]
+		(Rb,Ri,S)	Mem[Reg[Rb]+S*Reg[Ri]]
+
+-------------------------------------
+Some Arithmetic Operations 연산 오퍼레이션
+
+Two Operand Instructions
+addl  Src,Dest	Dest = Dest + Src
+subl  Src,Dest	Dest = Dest - Src
+imull Src,Dest	Dest = Dest * Src
+sall  Src,Dest	Dest = Dest << Src	Also called shll
+sarl  Src,Dest	Dest = Dest >> Src	Arithmetic
+shrl  Src,Dest	Dest = Dest >> Src	Logical
+xorl  Src,Dest	Dest = Dest ^ Src
+andl  Src,Dest	Dest = Dest & Src
+orl   Src,Dest	Dest = Dest | Src
+
+One Operand Instructions
+incl Dest	Dest = Dest + 1
+decl Dest	Dest = Dest - 1
+negl Dest	Dest = - Dest
+notl Dest	Dest = ~ Dest
+
+-------------------------
+int arith
+  (int x, int y, int z)
+{
+  int t1 = x+y;
+  int t2 = z+t1;
+  int t3 = x+4;
+  int t4 = y * 48; 
+  int t5 = t3 + t4;
+  int rval = t2 * t5;
+  return rval;
+}
+
+# eax = x
+	movl 8(%ebp),%eax	
+# edx = y
+	movl 12(%ebp),%edx
+# ecx = x+y  (t1)
+	leal (%edx,%eax),%ecx
+# edx = 3*y
+	leal (%edx,%edx,2),%edx
+# edx = 48*y (t4)
+	sall $4,%edx
+# ecx = z+t1 (t2)
+	addl 16(%ebp),%ecx
+# eax = 4+t4+x (t5)
+	leal 4(%edx,%eax),%eax
+# eax = t5*t2 (rval)
+	imull %ecx,%eax
+----------------------------------
+intel/microsoft format 과 GAS/Gnu format 이 다름
+
+Operands listed in opposite order
+mov Dest, Src	 movl Src, Dest
+
+Constants not preceded by ‘$’, Denote hex with ‘h’ at end
+100h	$0x100
+
+Operand size indicated by operands rather than operator suffix
+sub	subl
+
+Addressing format shows effective address computation
+[eax*4+100h]	$0x100(,%eax,4)
+
