@@ -1,0 +1,118 @@
+TCP 와 UDP 소켓 프로그래밍을 주고
+
+UDP로 바꿔봐라
+인자를 받아봐라 등등
+
+
+Transport Layer
+
+process to process
+port to port
+
+
+TCP의 특징
+reliable
+in-oder delivery
+[congestion control]
+[flow control]
+[connection setup]
+
+UDP의 특징
+unreliable
+unordered delivery
+[no-frills extension of "best-effort" IP]
+불필요한 서비스가 없다.
+best-effort <-> guarantees
+
+--------------------------------------
+Multiplexinig/demultiplexing
+
+하나의 프로세스에 여러개의 프로세스가 연결되어있을때
+멀티플렉싱, 디멀티플렉싱의 방법
+
+TCP
+1:1 연결
+
+UDP
+연결이라는 개념이 없음
+1:N도 가능
+
+------------------------
+coneectionless - UDP
+
+7계층
+
+UDP와 TCP 차이
+
+-------------------
+streaming multimedai
+DNS
+SNMP	<> SMTP
+
+UDP + reialble + ordered > TCP
+
+why bother? why is there UDP 
+그럼에도 불구하고 UDP를 사용하는 이유
+
+-------------------------------------------
+rdt3.0 : channel with errors and loss		data network(packet switched) <-> tel (circuit switched)
+(첫사랑 프로토콜)
+첫번째로 배우는 프로토콜	[recevier 받으면 즉각반응, send timer, sender act받으면 다음 패켓준비 send]
+rdt3.0 in action		< 시험문제 [중요한 내용]	빈종이에 화살표 그려보기 [대원칙 기억]
+		[sender ]			[receiver]
+a)no loss		send pkt0[timer]	>	recv pkt0
+		rcv ack0		<	send act0(받자마자 바로보냄)
+		send pkt1[timer]  	>	rcv pkt1
+		rcv ack1		<	send ack1 (화살표는 연결되어있음) [즉각적인 반응(대원칙)
+		
+b)packet loss	send pkt0[timer]	>	rcv pkt0
+(data packet)	rcv ack0		<	send ack0
+		send pkt1[timer]	> X loss
+			[timeout]	[loss가 일어난것을 알게된 시점]
+		resend pkt1[timer]	>	rcv pkt1
+		rcv ack1		<	send ack1
+
+c)ACK loss	send pkt0[timer]	>	rcv pkt0
+(ack packet)	rcv ack0		<	send ack0
+		send pkt1[timer]	>	rcv pkt1
+	 		X loss	<	send ack1
+			[timeout]			
+		resend pkt1[timer] >	rcv pkt1(detect duplicate)	[중복된 패켓을 받음] -차이점
+		rcv act1		<	send ack1
+
+		이벤트
+		액션
+		[포맷]			이벤트
+					액션
+					[포맷]
+d) premature timeout/ delayed ACK
+		send pkt0	>	rcv pkt0
+		rcv act0		< 	send act0
+		send pkt1	>	rcv pkt1
+			timeout	
+				<	send act1
+		send pkt1	>	rcv pkt1(detect duplicate)
+		rcv ack1		>	rcv pkt1 [다음부턴 어긋난 화살표]
+
+>> data loss와 ack loss 구별과 그 이후 진행과정에서 다른 결과가 나오는지
+	[ack loss에서는 중복된 패켓을 받게되지만 이후 진행과정에서 차이점은 없음]
+>> 특징 : reliable [no loss, no delay, in-ordered delivery] timer, time out, sequence number
+	딜레이의 경우 진행과정에서 달라짐
+-----------------------------------------------------
+rdt3.0 = reliable 프로토콜	
+no loss, no delay, in-ordered delivery [ reliable ]
+
+프로토콜
+event action format
+synteax semantic timing
+
+no loss 로스가 생기지 않게하되 로스가 생겼을떄 처리할 수 있는 매커니즘이 있는것
+no delay 딜레이가 생기지 않게하되 딜레이가 생겼을때 처리할 수 있는 매커니즘이 있는것
+in-ordered delivery	순서 번호를 적어서 보내주면 순서에 따라서 순서를 맞춰준다. (sequence number)
+			[분할과 재조립]
+
+rdt3.0 프로토콜	> timer를 통한 timeout 을 바탕으로 loss 와 딜레이를 판단함
+		> 해당패켓을 재전송하는 것으로 문제를 해결
+		> 시퀀스 번호를 사용하기 때문에 
+		no loss, no delay, in-ordered delivery 에 대한 매커니즘을 갖추고있다.
+		[reliable 하다.]

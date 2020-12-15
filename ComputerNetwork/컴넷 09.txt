@@ -1,0 +1,91 @@
+Principles of congestion cotrol
+
+congestion: 혼잡
+too many sources sending too much data too fast for network to handle
+different from flow control
+-lost packets
+-long delay
+
+------------------------------------------
+lamda output
+
+out > send 다셈
+good put > 재전송은 뺴고 셈
+
+good put이 굉장히 중요한 의미를 갖고 있습니다.
+
+이러한 goot put을 받기 위해서는 
+더많은 전송
+불필요한 재전송
+
+----------------------------------
+Causes/cost of congestion: 에 있는 그림
+
+그래프를 주고 람다 in 람다 out 이 있으면
+여기서 알 수 있는것이 무엇인지 말하기
+
+네트워크로 들어가는 양 L in
+네트워크에서 빠져나오는 양 L out (good put)
+
+L in 이 증가하면 L out 도 비례적으로 증가하다가
+어느 정도 L in이 증가하면 점점 줄어들기 시작함
+
+너무 욕심부려서 네트워크에 넣어봤자 지 혼자 고생하게 된다.
+
+L in 에 어느정도 congestion controld 이 필요하다.
+
+congetion control 을 할때의 그래프는 톱니처럼 생겼다. [additive increase, multiplicative decrease 1씩 증가, 반 감소]
+			cwnd
+
+
+-------------------------------------
+TCP congestion control	
+
+AIMD [ 1씩 증가 반씩 감소] 톱니처럼 생김
+
+-------------------------------------------
+TCP Slow Start
+AIMD
+TCP : detecing, reacting to loss
+
+손실을 알고 그에대한 반응을 어떻게 하는가
+
+
+Reno 버젼
+타임아웃이 되면 loss라고 알게됨
+cwnd를 1 MSS 로 만듬 [reset]
+[더 심각]
+- 아예 timeout으로 loss되었기떄문에 해당 데이터가 전송됐는지 없어졌는지 전달받았는지 알수없음
+
+3번의 반복된 ACK를 받으면
+cwnd 를 반으로 줄임
+[덜 심각]
+- 어쩌면 네트워크 상태가 양호할 수 도 있음[어찌됐든 보내고 받은건 확인되니깐]
+
+---------------------------------------
+증가시킬때	addictive increase
+		slow start
+감소시킬때	1로 바꾸거나
+		반으로 줄여주거나
+
+AIMD
+즉, 네트워크에 아직 별 문제가 없어서 전송 속도를 더 빠르게 하고 싶다면 
+혼잡 윈도우 크기를 1씩 증가시키지만, 중간에 데이터가 유실되거나 응답이 
+오지 않는 등의 혼잡 상태가 감지되면 혼잡 윈도우 크기를 반으로 줄인다.
+
+Slow Start
+기본적인 원리는 AIMD와 비슷하지만 윈도우 크기를 증가시킬 때는 지수적으로 증가시키다가
+혼잡이 감지되면 윈도우 크기를 1로 줄여버리는 방식이다.
+
+Tahoe와 Reno는 기본적으로 처음에는 Slow Start 방식을 사용하다가 네트워크가 혼잡하다고 
+느껴졌을 때는 AIMD 방식으로 전환하는 방법을 사용하는 정책들이다. 
+--------------------------------------
+네트워크 그래프					1씩 증가 congetion avoid
+		congestion window6|________ssthresh___ congetion 구간
+		(in segments)	4|
+				2|slow start 구간
+				0|______________________________________________________
+						Transmission round
+
+Reno 타임아웃 (1로 바꿈)과 3번 반복 (반으로 바꿈)구분
+Tahoe	1 로 바꿈

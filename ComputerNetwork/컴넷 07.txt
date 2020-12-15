@@ -1,0 +1,116 @@
+rdt3.0 in action
+
+loss의 종류를 식별했을때
+성능개선의 문제
+
+프로토콜의 성능에 대해서 물어봣을때
+대부분의 학생들이 속도의 문제에 대해서 답변을 한다.
+
+원칙적으론 step 수가 적어야 한다.
+n개의 패켓을 보내기 위해 해야하는 동작(step수)이 적어야된다.
+
+loss를 식별하기 위한 step수가 적고, 그 이후에 동작에 문제가 문제가 없다면
+성능이 좋은 프로토콜이라고 할 수 있다.
+
+rdt3.0 프로토콜의 단점,한계, 개선할점
+
+rdt3.0에서는 파이프 라인의 크기가 1임
+
+------------------------------------------------
+pipelined protocols
+
+reliable 프로토콜의 파이프라인의 정의 :
+ack[acknowledged pkts]을 받기전에 보낼 수 있는 패켓의 개수
+[파이프 라인의 크기]
+
+프로토콜
+	Go-back-N 누적응답
+	Selective Repeat 개별응답
+
+-------------------------------------
+Go-back-N
+
+GBN in action
+
+sender					receiver
+
+send pkt0[timer]			>		rcv pkt0,send ack0
+send pkt1[timer]			>		rcv pkt1, send ack1	
+send pkt2[timer]			>	X loss		(discard : 순서에 맞지않은 패켓을 버림)
+send pkt3[timer]			>		rcv pkt3,dicard, (re)send ack1[1까지 누적적으로 잘 받음]
+파이프라인이 4인 프로토콜					*3번 pkt에 대해서 act1을 다시 보내는것
+	(wait)						GBN의 특징
+rcv act0,send pkt4			<		rcv pkt4,dicard, (re)send ack1
+rcv ack1, send pkt5		<		rcv pkt5, discard, (re)send ack1
+	ignore duplicate ACK					loss된 pkt2가 타임아웃될때까지
+
+	pkt2 timeout [Go back N]
+send pkt2(loss된 패켓부터 다시시작]	>		rcv pkt2, deliver, send ack2
+send pkt3			>		rcv pkt3, deliver, send ack3
+send pkt4			>		rcv pkt4, deliver, send ack4
+send pkt5			>		rcv pkt5, deliver, send ack5
+				<
+				<
+				<
+				<
+
+send가 연속적     rcv 패켓과 동일하지 않은 (re)send ack1, discard(순서에 맞지 않는 패켓처분),loss된 시점부터 재시작
+파이프라인 근거   GBN의 근거
+
+중복된 ack을 받는 경우
+:send쪽에서 일어난 이벤트. 중복된 ack을 받은 경우는 loss가 발생했고 gap이 발생했다는 뜻이다.
+중복된 ack을 무시하고 window에 추가하지 않음
+
+
+sender 쪽에 window라는 자료구조를 가지고있음
+
+sender window (N=4 [파이프라인에 보낼 수 있는 패켓  수])[N개의 act되지 않은 패켓수]
+send pkt0,pkt1,pkt2,pkt3
+0* 1* 2* 3* 4 5 6 7 8
+
+rcv ack0, send pkt4	
+0 1* 2* 3* 4* 5 6 7 8 
+
+rcv ack1, send pkt5
+0 1 2* 3* 4* 5* 6 7 8
+
+중복된 패켓 무시
+
+0 1 2 3 4 5 6 7 8
+   *window size N
+[][!*][!*][!*][*][][][][]
+  ^send_base 시작점
+         ^! nextseqnum  다음 시퀸
+	   ^ end_window	윈도우 사이즈
+	3개의 포인터가 필요하다
+
+
+--------------------------------------------------------
+Selective rapeat 개별응답
+
+
+sender					receiver	
+
+send pkt0			>	rcv pkt0,send ack0
+send pkt1			>	rcv pkt1,send ack1
+send pkt2			> X loss  
+send pkt3			> 	rcv pkt3, buffer, send ack3
+파이프라인이 4인 프로토콜	
+	(wait) 	
+rcv act0, send pkt4			<	rcv pkt4, buffer, send ack4
+rcv ack1, send pkt5		<	rcv pkt5, buffer, send ack5	[개별응답]
+	record ac3 arrived
+
+	pkt2 timeout
+send pk2	[해당패킷만 재전송]	>	rcv pkt2; deliver pkr2,
+					pkt3,pkt4,pkt5; send ack2
+					[버퍼에 저장되어있는 것들을 다 deliver 시켜주고 ack2 전송]
+send가 연속적     개별적으로 일치하는 ack, buffer 시키는 것, time out시 해당패킷만 재전송
+파이프라인 근거   SR의 근거
+
+sender와 receive 양 쪽에 window라는 자료구조를 가지고있고
+send의 포인터는 GBN과 마찬가지로 3개
+rcv는 간단하게 한개면 가능하다. 저장할 다음 buffer에 대한 포인터
+
+
+
