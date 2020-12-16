@@ -1,0 +1,54 @@
+
+서로 무선 통신하는 5개의 노드가 주어질때
+전송 범위와 전파 범위가 다음과 같이 주어졌을때
+hidden terminal problem과			숨겨진 터미널
+exposed terminal pronle의 발생여부를 적고	노출된 터미널
+왜 그런지 예를 들어서 설명하시오
+
+
+히든 터미널 - chain 토폴로지
+전송영역(correctly decode), 전파영역 (receive but cannot decode)
+	hidden terminal problem ( 그림 별로임)
+	>> 완전한 개활지에서도 일어난다.
+	시험 node 3개 써서 hidden terminal problem이 일어나는 경우
+	a가 b에게 전송 중 c는 a의 전파영역 밖
+	c가 b에 전송하려고 할 때 발생
+	뭐가 hidden terminal? c의 입장에서 a가 hidden
+	
+	exposed terminal problem 
+	c가 전파범위 안에 노출 d한테 못 보낸다.
+
+	기본적 동작 원리 node 하나의 전송영역, 전파영역
+	a의 전송영역, 전파영역 형성 
+	c가 전파영역 안에 있어서 보내지 않는 게 제일 좋다.
+	c에서 보면 b는 idle 그래서 전송했는데 collision
+	>> hidden terminal problem
+	
+	a의 전송, 전파영역 안에 c가 있어서
+	c는 d한테 못 보낸다. CSMA -> exposure terminal problem
+
+	chain topology 쓰지 말고 !
+
+	Hidden terminal problem		
+		보내면 안 되는데 보냄		>> collsion
+		
+	Exposure terminal problem
+		보내도 되는데 안 보냄		>> end to end throughput low
+
+
+
+
+
+
+
+
+	무선에서
+	a나 c는 b에서 collision이 일어난 것을 알 수 없다.
+	b도 알 길이 없다. 전파가 jam이 돼서 ethernet frame이 온다고 하더라도
+	c에서 온 신호와 a에서 온 신호가 중복
+	b는 자신이 receiver인지도 모름
+
+	so new protocols’ goal is collision avoidance			
+	
+	다른 protocol이 필요하다.
+	>> 이유 : collision detection이 불가능하기 때문에

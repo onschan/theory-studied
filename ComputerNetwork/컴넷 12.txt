@@ -1,0 +1,61 @@
+MAC protocols : taxonomy
+
+random access : contension based
+
+인터넷은 전부 이방식
+
+
+random access protocol
+
+contension based protocol [경쟁기반 트포토콜]
+
+------------------------
+CSMA [carrier sense multiple access]
+
+listen before talk(transmit)
+
+
+동시에 네트워크를 사용하고자 할때, 가장 중요한 것중에 하나가, 상호충돌을 방지하는 기능이다. 
+이를 위해서는 전송하기 전에 다른 호스트가 사용중인지를 선 체크해야 하는데 
+전송 선로에 흐르는 신호를 감지하여 해당 기능을 구현한다. 
+이러한 기능을 감지하는 프로토콜을 CSMA 프로토콜이라고 한다.
+
+
+
+CSMA/CD와 CSMA/CA의 개념
+
+CSMA는 위에서 적은 것처럼 네트워크를 전송하기 전에 현재 채널을 사용중인지를 체크하여 멀티플 액세스가 되는 기능을 구현하는 것을 말한다. CD는 Detect, 충돌 감지 기능을 사용해 충돌 여부를 확인하는 것이고, CA는 Avoidance, 즉 충돌을 회피하는 기능을 사용하는 방식이다.
+
+
+
+CD와 CA는 사용환경부터 완전 다르다. CD는 IEEE 802.3, LAN의 이더넷 전송 프로토콜에서 사용하며, CA는 IEEE 802.11, 무선 랜 전송 프로토콜에서 사용을 한다.
+
+
+
+1) CSMA/CD
+
+- 전류의 강도를 통해 케이블이 사용중인지 확인하고 트래픽이 없으면 패킷을 
+송출하는 LAN의 매체 점유 방법중의 한가지 방법(유선 NW)
+
+- 송신 전에 전송매체가 비어 있는지 확인하고(Carrier Sense), 비어 있으면 신호를 
+전송하고(Multiple Access), 전송 후에 충돌이 있는지 확인(Collision Detection) 하는 방식
+
+- CSMA 방식 단말의 증가에 따라 동시에 전송(충돌)할 확률이 높아지는 문제점을 개선한 방식
+
+- 유선 Ethernet LAN에 적용되는 방식 : 버스형, 트리형 LAN
+
+
+
+2) CSMA/CA
+
+- 충돌 회피 방식, 무선랜 MAC(Media Access Control)프로토콜 DCF는 
+CSMA/CA사용 동등한 우선순위를 가지고 경쟁/매체 공유하는 방식
+
+- CSMA/CD의변형으로서, 무선환경에서 사용하는 Media Access방법(알고리즘)
+
+- CSMA/CA에서는 ACK프레임을 사용
+
+- DCF(Distributed Coordination Function) : 개별적인 노드가 경쟁에 의해 무선 채널을 획득하도록 하는 방식
+
+
+---------------------------------------------
