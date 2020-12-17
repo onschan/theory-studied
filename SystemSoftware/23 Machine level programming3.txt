@@ -1,0 +1,38 @@
+Machine-Level Programming III: Procedures
+
+IA32 Stack
+
+		________Stack "Bottom"__________
+		|			   |		^
+		|			   |		increasing
+		|			   |
+		|			   |
+		|			   |
+		|			   |
+		|			   |
+		|			   |
+		|			   |		gromws down
+		|			   |		v
+		|			   |
+		|			   |
+		|________________ ________________|
+		|			   |	<- Stack Pointer %esp
+		------------Stack "Top"----------	push 하면 4씩 늘어남 %esp + r
+
+
+Procedure Control Flow
+
+	Procedure call:
+		call label // 함수 주소
+
+	Return address value:
+		Address of instruction beyond call
+	ex)
+	current	804854e:	e8 3d 06 00 00 	call   8048b90 <foo>
+ 	next	8048553:	50             	pushl  %eax 
+		Return address = 0x8048553 [current 에서 +4]
+
+	Procedure return:
+	-ret adress	Pop return address from stack; Jump to address
+	-popl %eip; jump to the address
+
