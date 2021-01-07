@@ -1,0 +1,64 @@
+스택을 사용하는 이유에 대해서 말해볼거에요
+
+스택기반의 랭귀지
+
+스택안에는 어떤것이 저장되냐면
+
+스택에는 함수가 호출되면
+
+함수에 전달된 argument, 지역변수, return 되는 주소[return pointer]
+
+스택은 함수호출될떄 스택이 만들어지고
+함수 호출이 끝나면 스택이 사라진다.
+
+스택은 Frame  한개 또는 그 이상으로 이루어져있따.
+
+함수 호출의 연속된 모습을 call-chain 이라고 한다.
+
+각 함수 호출마다 Frame 이 만들어진다.
+
+지역변수, 리턴정보, 임시저장공간
+
+Set-up code [함수 초기화 하는 코드]
+Finish code [함수를 끝내는 코드, 스택을 없애주는]
+
+Frame		현재 스택 포인터
+Pointer	->
+%ebp
+			proc
+Stack
+Pointer	->	스택의 탑을 가리키고 있음
+%esp
+
+
+--------
+yoo()
+{	
+	who()
+
+}
+			call chain
+
+			yoo
+			V
+			who	
+stack
+			[]				
+[]			[yoo]
+[]	<Frame Pointer		<Frame Pointer %ebp
+[yoo]			[who]
+	<Stack Pointer		<Stack Pointer  %esp
+
+
+stack operation 에 대해서 살펴봤다.
+
+스택 프레임의 내부를 살펴보면
+[	]
+[Arguments]			} caller Frame
+[Return Addr]
+[Old %ebp]			< FramePointer(%ebp)
+[Saved Registers + Local Variables]
+[Argument Build]			< StackPointer(%esp)
+
+Revisiting swap
+
