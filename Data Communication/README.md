@@ -56,3 +56,11 @@
 - circuit-switched network = telecommunication network (전화망)  *[키워드 : dedicated]*
 - packet-switched network = data network (데이터망)  *[키워드 : shared]*
 [써킷 교환망, 패킷 교환망 표를 만들어서 비교]
+
+## Protocol (프로토콜)
+- 정의 Syntax [구문] , Semantics [의미], Timing [순서]
+ 
+## OSI의 7계층
+ ![2](https://user-images.githubusercontent.com/62434898/111783399-88504f00-88fd-11eb-8517-1765464d17f2.jpg)
+통신에 필요한 각 기능들을 각 계층별로 나누어 놓은 것
+
