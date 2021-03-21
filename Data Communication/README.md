@@ -203,10 +203,15 @@ Digital-to-analog conversion
 > 진폭도 바꾸고 위상도 바꾸는 것
 Analog-to-analog conversion	
 - Amplitude Modulation (AM)
+
 ![am](https://user-images.githubusercontent.com/62434898/111907310-13654c80-8a98-11eb-86bb-48eda51eff5c.jpg)
+
 - Frequency Modulation (FM)
+
 ![fm](https://user-images.githubusercontent.com/62434898/111907311-13fde300-8a98-11eb-830f-a371235829ab.jpg)
+
 - Phase Modulation (PM)
+
 ![pm](https://user-images.githubusercontent.com/62434898/111907309-12ccb600-8a98-11eb-906d-bb3b6a6648ef.jpg)
 
 Muliplexing
