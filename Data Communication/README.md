@@ -65,3 +65,8 @@
 
 통신에 필요한 각 기능들을 각 계층별로 나누어 놓은 것
 
+![OSI 7계층 정리표](https://user-images.githubusercontent.com/62434898/111903301-fa06d500-8a84-11eb-8b7b-45e8d379cbff.jpg)
+
+# Chapter 2
+
+
