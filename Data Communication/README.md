@@ -187,3 +187,32 @@ real-time 오디오나 비디오에서 전체 frame stream이 도착해야 하�
 > 
 > Modularion rate(변조 속도)
 
+![`1](https://user-images.githubusercontent.com/62434898/111907283-f597e780-8a97-11eb-94a0-304ec42161f9.jpg)
+
+![`2](https://user-images.githubusercontent.com/62434898/111907282-f466ba80-8a97-11eb-8ae5-65db41c5ee51.jpg)
+
+Chapter 5 Analog Transmission
+Digital-to-analog conversion	
+- Amplitude Shift Keying (ASK, 진폭 편이 참조)
+> 주파수 크기에 따라서 데이터를 전달
+- Frequency Shift Keying (FSK)
+> 빈도수가 더 많은 것과 적은 것을 구분하여 데이터 전달
+- Phase Shift Keying (PSK)
+> 1에서 출발, 0에서 출발등 사이클에 따라 데이터 전달
+- Quadrature Amplitude Modulation (QAM, 진폭 위상 편이 변조)
+> 진폭도 바꾸고 위상도 바꾸는 것
+Analog-to-analog conversion	
+- Amplitude Modulation (AM)
+ 
+- Frequency Modulation (FM)
+ 
+- Phase Modulation (PM)
+ 
+
+Muliplexing
+하나의 고속 통신 회선을 다수의 단말기가 공유할 수 있도록 하는 것
+- Multiplexer (다중화기, MUX)
+> 하나의 통신회선에 여러 개의 단말기가 동시에 접속할 수 있도록 하는 장치
+> 다중화기를 이용하여 전송로의 수를 줄일 수 있음
+> 통신회선을 공유함으로써 전송 효율을 높이고 통신회선의 비용을 줄일 수 있음
+
