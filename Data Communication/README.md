@@ -120,7 +120,6 @@ Transmission of Digital Signals
 > PCM의 복잡한 기술을 단순화 시킨 테크닉
 
 ## Transmission modes
-
 -Parrallel 전송
 - Serial 전송
 > Asynchronous
@@ -128,17 +127,14 @@ Transmission of Digital Signals
 > Isochronous
 
 ## Parrallel Transmission 병렬 전송
- 
 n개의 와이어를 사용하여 n개의 bit를 한번에 전송함
 
 ## Serial Transmission 직렬 전송
- 
 한 개의 와이어를 사용하여 한번에 한 개의 bit를 전송함
 이때, 이 비트를 동기식으로 보낼지, 비동기식으로 보낼지, 일정하게 보낼지에 따라 구분됨
 [Synchronous, Asynchronous, Isochronous]
 
 ## Asynchronous Transmission 비동기 전송
-
 비동기전송에서는 시작부분에 1개의 시작비트(0)와 각 바이트 끝에 하나 이상의 정지비트(1)를 보낸다.
 각 바이트 간에는 간격이 있을 수 있다.
 - 여기서 비동기식이란 ‘바이트수준에서의 비동기’를 의미하지만, 비트들을은 여전히 동기화되고 비트들의
@@ -150,7 +146,6 @@ n개의 와이어를 사용하여 n개의 bit를 한번에 전송함
 - 비트를 그룹화하는 것은 수신자의 책임이다.
  
 ## 동기식/비동기식 전송 비교
-
 - 동기식 전송(고속, 근거리)
 > 미리 정해진 수 만큼의 문자열을 한 블록(프레임)으로 만들어 일시에 전송하는 방식
 > 제어문자(SYN)등, 전송 속도 빠름
@@ -161,11 +156,9 @@ n개의 와이어를 사용하여 n개의 bit를 한번에 전송함
 > 시작 / 종료 비트가 필요함, 전송 효율이 낮음
 
 ## Isochronous Transmission 등시식 전송
-
 real-time 오디오나 비디오에서 전체 frame stream이 도착해야 하는 상황에서 실시간으로 모든 frame을 전송
 
 ## 병렬/ 직렬 전송 비교
-
 - 병렬 전송 (컴퓨터 내부통신)
 > 각 비트들을 여러 개의 전송매체(채널)을 통하여 동시에 전송
 > 전송 속도는 빠르지만 구성 비용이 많이 듬 > 근거리 전송
