@@ -72,6 +72,8 @@ TCP/IP vs OSI Model
 # Chapter 2 : Physical Layer
 
 ## Analog & Digital Signals
+
+![zx](https://user-images.githubusercontent.com/62434898/111907394-7525b680-8a98-11eb-93a8-5b1887240cb6.jpg)
  
 아날로그 시그널 : 시간 순서에 따라 연속된 신호 [사람의 음성 : 4kHz]
 디지털 시그널 : 0, 1 의 신호로 신호의 유무 존재
@@ -81,17 +83,16 @@ TCP/IP vs OSI Model
 - 노이즈에 대해 덜 민감
 - 감쇠에는 약하기 때문에 산호를 멀리보내기 어려움
 
-
-
-
-
-
-
 ## Data and Signals
-  
+
+![123x](https://user-images.githubusercontent.com/62434898/111907418-8c64a400-8a98-11eb-9c9d-8e79f91359ef.jpg)
+
+![zxc](https://user-images.githubusercontent.com/62434898/111907419-8d95d100-8a98-11eb-806f-3fea8bc8e21f.jpg)
+
 - digital data > Modem > analog signal
 - analog data > Codec > digital signal
-Transmission of Digital Signals
+
+## Transmission of Digital Signals
 - Baseband transmission
 > 디지털 신호를 아날로그 신호로 바꾸지 않고(변조없이) 그대로 전송
 > 
@@ -131,14 +132,23 @@ Transmission of Digital Signals
 > Isochronous
 
 ## Parrallel Transmission 병렬 전송
+
+![p1](https://user-images.githubusercontent.com/62434898/111907445-a56d5500-8a98-11eb-8a02-42a09ce4c70c.jpg)
+
 n개의 와이어를 사용하여 n개의 bit를 한번에 전송함
 
 ## Serial Transmission 직렬 전송
+
+![s1](https://user-images.githubusercontent.com/62434898/111907443-a4d4be80-8a98-11eb-8228-8182d7bc2dc8.jpg)
+
 한 개의 와이어를 사용하여 한번에 한 개의 bit를 전송함
 이때, 이 비트를 동기식으로 보낼지, 비동기식으로 보낼지, 일정하게 보낼지에 따라 구분됨
 [Synchronous, Asynchronous, Isochronous]
 
 ## Asynchronous Transmission 비동기 전송
+
+![zzxa](https://user-images.githubusercontent.com/62434898/111907475-d0f03f80-8a98-11eb-958b-1b9eaaea5c9d.jpg)
+
 비동기전송에서는 시작부분에 1개의 시작비트(0)와 각 바이트 끝에 하나 이상의 정지비트(1)를 보낸다.
 각 바이트 간에는 간격이 있을 수 있다.
 - 여기서 비동기식이란 ‘바이트수준에서의 비동기’를 의미하지만, 비트들을은 여전히 동기화되고 비트들의
@@ -146,6 +156,9 @@ n개의 와이어를 사용하여 n개의 bit를 한번에 전송함
  
 
 ## Synchronous Transmission 동기 전송
+
+![zzxca](https://user-images.githubusercontent.com/62434898/111907495-f11ffe80-8a98-11eb-85d8-bce3cc077f66.jpg)
+
 동기전송에서는 시작비트/정지비트 및 간격 없이 차례로 비트를 보낸다.
 - 비트를 그룹화하는 것은 수신자의 책임이다.
  
@@ -191,8 +204,9 @@ real-time 오디오나 비디오에서 전체 frame stream이 도착해야 하�
 
 ![`2](https://user-images.githubusercontent.com/62434898/111907282-f466ba80-8a97-11eb-8ae5-65db41c5ee51.jpg)
 
-Chapter 5 Analog Transmission
-Digital-to-analog conversion	
+# Chapter 5 Analog Transmission
+
+## Digital-to-analog conversion	
 - Amplitude Shift Keying (ASK, 진폭 편이 참조)
 > 주파수 크기에 따라서 데이터를 전달
 - Frequency Shift Keying (FSK)
@@ -201,7 +215,8 @@ Digital-to-analog conversion
 > 1에서 출발, 0에서 출발등 사이클에 따라 데이터 전달
 - Quadrature Amplitude Modulation (QAM, 진폭 위상 편이 변조)
 > 진폭도 바꾸고 위상도 바꾸는 것
-Analog-to-analog conversion	
+
+## Analog-to-analog conversion	
 - Amplitude Modulation (AM)
 
 ![am](https://user-images.githubusercontent.com/62434898/111907310-13654c80-8a98-11eb-86bb-48eda51eff5c.jpg)
@@ -214,7 +229,7 @@ Analog-to-analog conversion
 
 ![pm](https://user-images.githubusercontent.com/62434898/111907309-12ccb600-8a98-11eb-906d-bb3b6a6648ef.jpg)
 
-Muliplexing
+## Muliplexing
 하나의 고속 통신 회선을 다수의 단말기가 공유할 수 있도록 하는 것
 - Multiplexer (다중화기, MUX)
 > 하나의 통신회선에 여러 개의 단말기가 동시에 접속할 수 있도록 하는 장치
