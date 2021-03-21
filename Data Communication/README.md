@@ -94,6 +94,7 @@ TCP/IP vs OSI Model
 Transmission of Digital Signals
 - Baseband transmission
 > 디지털 신호를 아날로그 신호로 바꾸지 않고(변조없이) 그대로 전송
+> 
 > 장거리 전송에 적합하지 않고, 따라서 LAN등 가까운 거리에 사용 (디지털 시그널은 감쇠에 약하기때문)
 - Broadband transmission
 > 디지털 신호를 전송하기 위해 아날로그 신호로 바꾸어 전송(변조이용)
@@ -115,6 +116,7 @@ Transmission of Digital Signals
 ## Analog-to-digital conversion
 - Pulse Code Modulation (PCM)
 > 아날로그 데이터를 디지털 시그널로 바꾸는 가장 기본적인 테크닉
+> 
 > 표본화, 양자화, 부호화의 세가지 단계를 거치게 된다.
 - Delta Modulation (DM)
 > PCM의 복잡한 기술을 단순화 시킨 테크닉
