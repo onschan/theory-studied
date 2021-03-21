@@ -67,6 +67,118 @@
 
 ![OSI 7계층 정리표](https://user-images.githubusercontent.com/62434898/111903301-fa06d500-8a84-11eb-8b7b-45e8d379cbff.jpg)
 
-# Chapter 2
+TCP/IP vs OSI Model
 
+# Chapter 2 : Physical Layer
+
+## Analog & Digital Signals
+ 
+아날로그 시그널 : 시간 순서에 따라 연속된 신호 [사람의 음성 : 4kHz]
+디지털 시그널 : 0, 1 의 신호로 신호의 유무 존재
+
+## Digital Signal 의 장단점
+- 아날로그 시그널보다 더 저렴
+- 노이즈에 대해 덜 민감
+- 감쇠에는 약하기 때문에 산호를 멀리보내기 어려움
+
+
+
+
+
+
+
+## Data and Signals
+  
+- digital data > Modem > analog signal
+- analog data > Codec > digital signal
+Transmission of Digital Signals
+- Baseband transmission
+> 디지털 신호를 아날로그 신호로 바꾸지 않고(변조없이) 그대로 전송
+> 장거리 전송에 적합하지 않고, 따라서 LAN등 가까운 거리에 사용 (디지털 시그널은 감쇠에 약하기때문)
+- Broadband transmission
+> 디지털 신호를 전송하기 위해 아날로그 신호로 바꾸어 전송(변조이용)
+
+## Transmission Impairment 전송 장애
+
+- Attenuation 감쇠 : 증폭기(amplifiers)를 통해 해결 
+- Distortion 왜곡
+- Noise 잡음
+
+# Chapter 4 : Digital Transmission
+
+## Digital-to-digital conversion	
+- Line coding
+> 디지털 데이터를 디지털 시그널로, 혹은 디지털 시그널을 디지털 데이터로 바꾸는 것
+- Block coding
+- Scrambling
+- 
+## Analog-to-digital conversion
+- Pulse Code Modulation (PCM)
+> 아날로그 데이터를 디지털 시그널로 바꾸는 가장 기본적인 테크닉
+> 표본화, 양자화, 부호화의 세가지 단계를 거치게 된다.
+- Delta Modulation (DM)
+> PCM의 복잡한 기술을 단순화 시킨 테크닉
+
+## Transmission modes
+
+-Parrallel 전송
+- Serial 전송
+> Asynchronous
+> Synchronous
+> Isochronous
+
+## Parrallel Transmission 병렬 전송
+ 
+n개의 와이어를 사용하여 n개의 bit를 한번에 전송함
+
+## Serial Transmission 직렬 전송
+ 
+한 개의 와이어를 사용하여 한번에 한 개의 bit를 전송함
+이때, 이 비트를 동기식으로 보낼지, 비동기식으로 보낼지, 일정하게 보낼지에 따라 구분됨
+[Synchronous, Asynchronous, Isochronous]
+
+## Asynchronous Transmission 비동기 전송
+
+비동기전송에서는 시작부분에 1개의 시작비트(0)와 각 바이트 끝에 하나 이상의 정지비트(1)를 보낸다.
+각 바이트 간에는 간격이 있을 수 있다.
+- 여기서 비동기식이란 ‘바이트수준에서의 비동기’를 의미하지만, 비트들을은 여전히 동기화되고 비트들의
+지속시간은 동일하다. [비트레이트는 동기화되어있고 바이트 단위로 비동기화 되어있다]
+ 
+
+## Synchronous Transmission 동기 전송
+동기전송에서는 시작비트/정지비트 및 간격 없이 차례로 비트를 보낸다.
+- 비트를 그룹화하는 것은 수신자의 책임이다.
+ 
+## 동기식/비동기식 전송 비교
+
+- 동기식 전송(고속, 근거리)
+> 미리 정해진 수 만큼의 문자열을 한 블록(프레임)으로 만들어 일시에 전송하는 방식
+> 제어문자(SYN)등, 전송 속도 빠름
+> 시작 / 종료 비트가 없음, 오버헤드가 없고, 효율이 좋음
+> 블록과 블록사이에 휴지(idle time)가 없음
+- 비동기식 전송(저속, 원거리)
+> 한번에 한 문자씩 전송, 앞뒤에 시작비트와 종료비트를 붙여서 (바이트와 바이트 사이를) 구분
+> 시작 / 종료 비트가 필요함, 전송 효율이 낮음
+
+## Isochronous Transmission 등시식 전송
+
+real-time 오디오나 비디오에서 전체 frame stream이 도착해야 하는 상황에서 실시간으로 모든 frame을 전송
+
+## 병렬/ 직렬 전송 비교
+
+- 병렬 전송 (컴퓨터 내부통신)
+> 각 비트들을 여러 개의 전송매체(채널)을 통하여 동시에 전송
+> 전송 속도는 빠르지만 구성 비용이 많이 듬 > 근거리 전송
+- 직렬 전송 (통신망)
+> 하나의 전송매체를 통하여 한 비트씩 순서적으로 전송
+> 전송 속도가 느리지만, 구성 비용이 적게 듬 > 원거리 전송
+
+## 용어 정리
+
+-Data Rate
+> bps(bits per second) 단위로 측정한 데이터 전송률
+- Baud(보)
+> baud 단위로 측정 : signal elements per second
+> Baud =1 / T ( T: 신호당 속도, 신호 1개(변조 또는 전송에 걸리는 시간)
+> Modularion rate(변조 속도)
 
