@@ -151,5 +151,37 @@ Big O 와 부등식의 방향만 다르다.
 ![7](https://user-images.githubusercontent.com/62434898/112133999-9d83f100-8c0f-11eb-8817-d32b99ec457d.jpg)
 ![8](https://user-images.githubusercontent.com/62434898/112134003-9e1c8780-8c0f-11eb-86d7-799b97844b7f.jpg)
 ![9](https://user-images.githubusercontent.com/62434898/112134005-9e1c8780-8c0f-11eb-8156-4c3386c16c47.jpg)
- 
 
+## Theta(θ)
+“어떤 양의 상수 c와 d, 충분히 큰 양의 실수 N에 대해서 c × f(n) ≤ g(n) ≤ d × f(n), for all n ≥ N.”
+
+θ(f(n))= O(f(n)) ∩ Ω(f(n)) [최고차항의 차수가 같다]
+
+![1](https://user-images.githubusercontent.com/62434898/112141434-a0371400-8c18-11eb-9269-58abe76e5fa1.jpg)
+
+## Proog of Theta
+
+![2](https://user-images.githubusercontent.com/62434898/112141435-a1684100-8c18-11eb-9a6e-0073c0477e04.jpg)
+![3](https://user-images.githubusercontent.com/62434898/112141437-a1684100-8c18-11eb-9be8-bdd66ddc207a.jpg)
+
+## small o
+“모든 양의 상수 c, 충분히 큰 양의 실수 N에 대해서 g(n) ≤ c × f(n), for all n ≥ N”
+
+N을 지나는 이후로 f(n)에 어떤 상수 c를 곱해도 g(n)이 같거나 작다.
+
+![5](https://user-images.githubusercontent.com/62434898/112141443-a200d780-8c18-11eb-9f4a-66b6f580183c.jpg)
+
+[small o를 만족하면 Big O를 만족한다.]
+
+![4](https://user-images.githubusercontent.com/62434898/112141440-a200d780-8c18-11eb-8021-8c9208836c2a.jpg)
+  
+
+## Proof of small o
+
+![6](https://user-images.githubusercontent.com/62434898/112141444-a2996e00-8c18-11eb-9159-2b8b537c14e1.jpg)
+![7](https://user-images.githubusercontent.com/62434898/112141447-a2996e00-8c18-11eb-8715-9944ba5d487e.jpg)
+![8](https://user-images.githubusercontent.com/62434898/112141448-a3320480-8c18-11eb-916c-23f7bf990261.jpg)
+ 
+## Properties of Order
+
+![9](https://user-images.githubusercontent.com/62434898/112141450-a3320480-8c18-11eb-908f-46ea0de5994f.jpg)
