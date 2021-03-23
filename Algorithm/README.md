@@ -10,6 +10,7 @@
 ```
 public static index SeqSearch(int n, keyType[ ] S, keyType x) { 
   index location = 1 ; 
+  
   while (location <= n && S[location] != x) location++ ; 
   if (location > n) location = 0 ; 
   return location ; 
@@ -24,6 +25,7 @@ public static index BinSearch(int n, keyType[ ] S, keyType x) {
   low = 1 ; 
   high = n ; 
   location = 0 ; 
+  
   while (low <= high && location == 0) { 
     mid = floor( (low+high) / 2 ) ; 
     if ( x== S[mid]) location = mid ; 
@@ -48,8 +50,7 @@ public static int Fib(int n) {
 ```  
 public static int Fib2(int n) {
 	index i; int[] f = new int[n+1];
-	
-  f[0] = 0;
+	f[0] = 0;
 	if ( n > 0) {
 		f[1] = 1;
 		for (i = 2; i <= n; i++)
