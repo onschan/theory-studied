@@ -74,6 +74,7 @@ public static int Fib2(int n) {
 
 ## Time Complexity Analysis
 The determination of how many times the basic operation is done for each value of the input size
+
 입력 크기의 각 값에 대해 기본 작업이 수행되는 횟수의 결정
 
 ## Type of Time Complexity Analysis
