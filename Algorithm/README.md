@@ -10,7 +10,6 @@
 ```
 public static index SeqSearch(int n, keyType[ ] S, keyType x) { 
   index location = 1 ; 
-  
   while (location <= n && S[location] != x) location++ ; 
   if (location > n) location = 0 ; 
   return location ; 
@@ -25,7 +24,6 @@ public static index BinSearch(int n, keyType[ ] S, keyType x) {
   low = 1 ; 
   high = n ; 
   location = 0 ; 
-  
   while (low <= high && location == 0) { 
     mid = floor( (low+high) / 2 ) ; 
     if ( x== S[mid]) location = mid ; 
