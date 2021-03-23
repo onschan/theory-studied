@@ -82,9 +82,12 @@ The determination of how many times the basic operation is done for each value o
  
 - Every Case Analysis
 > 크기 n의 모든 인스턴스에 대해 동일한 횟수만큼 기본 작업이 수행될 때 적용 가능
+
 - Non-Every Case Analysis
 > Best Case Analysis : the minimum # of times 
+> 
 > Wort Case Analysis : the maximum # of times
+> 
 > Average Case Analysis : the average # of times
 
 ## Applying the theory
