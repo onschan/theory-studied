@@ -106,3 +106,46 @@ Input size N의 크기를 충분히 크다고 생각하고 알고리즘의 효�
 > ex) n : 10,000 / 0.1n^2 : 10,000,000 / 0.1n2+n+100 : 10,010,100
 
 ![3](https://user-images.githubusercontent.com/62434898/112126287-a40e6a80-8c07-11eb-96dc-0af9e3e3def2.jpg)
+
+## Rigorous Introduction to Order 차수에 대한 엄밀한 소개
+- Big O		[<=]
+- Omega(Ω)	[>=]
+- Theta(θ)
+- small o
+
+## Big O
+“양의 상수 c, 충분히 큰 양의 실수 N에 대해서 g(n) ≤ c × f(n), for all n ≥ N”
+
+주어진 복잡도 함수 f(n) 에 대하여 O(f(n))은 f(n)과 관련이 있는 복잡도 함수 g(n)을 모아 놓은 집합
+![1](https://user-images.githubusercontent.com/62434898/112133979-9b219700-8c0f-11eb-8cb2-062a79cea06f.jpg)
+
+
+## Proof of Big O
+![2](https://user-images.githubusercontent.com/62434898/112133986-9c52c400-8c0f-11eb-8553-604e43659989.jpg)
+![3](https://user-images.githubusercontent.com/62434898/112133987-9c52c400-8c0f-11eb-8940-99bb5882442a.jpg)
+![4](https://user-images.githubusercontent.com/62434898/112133992-9ceb5a80-8c0f-11eb-9429-bbd10c4d9a4c.jpg)
+![5](https://user-images.githubusercontent.com/62434898/112133993-9ceb5a80-8c0f-11eb-847e-bb4ddff76d30.jpg)
+  
+*Trick for proof : 
+> ex ) n^2 + 10n 과 O(n^2)
+> 
+> n^2 + 10n <= c * n^2 에서 상수 c는 왼쪽항의 n^2 의 1보다 클 것
+>
+> n^2 + 10n <= 2 * n^2 에서 소거
+>
+> 10 <= n
+>
+> n >= 10 으로부터 증명 시작 *
+
+## Omega(Ω)
+“양의 상수 c, 충분히 큰 양의 실수 N에 대해서 g(n) ≥ c × f(n), for all n ≥ N”
+
+Big O 와 부등식의 방향만 다르다.
+![6](https://user-images.githubusercontent.com/62434898/112133997-9d83f100-8c0f-11eb-934e-f69ce9854e80.jpg)
+ 
+## Proof of Omega
+![7](https://user-images.githubusercontent.com/62434898/112133999-9d83f100-8c0f-11eb-8817-d32b99ec457d.jpg)
+![8](https://user-images.githubusercontent.com/62434898/112134003-9e1c8780-8c0f-11eb-86d7-799b97844b7f.jpg)
+![9](https://user-images.githubusercontent.com/62434898/112134005-9e1c8780-8c0f-11eb-8156-4c3386c16c47.jpg)
+ 
+
