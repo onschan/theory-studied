@@ -101,4 +101,5 @@ Input size N의 크기를 충분히 크다고 생각하고 알고리즘의 효�
 - Quadratic 2차 : ex) (Average case) Bubble sort with n items
 - Highest-Order Term(최고차항)이 알고리즘의 복잡도를 지배한다.
 > ex) n : 10,000 / 0.1n^2 : 10,000,000 / 0.1n2+n+100 : 10,010,100
+
 ![3](https://user-images.githubusercontent.com/62434898/112126287-a40e6a80-8c07-11eb-96dc-0af9e3e3def2.jpg)
