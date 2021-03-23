@@ -115,7 +115,7 @@ Input size N의 크기를 충분히 크다고 생각하고 알고리즘의 효�
 - small o
 
 ## Big O
-“양의 상수 c, 충분히 큰 양의 실수 N에 대해서 g(n) ≤ c × f(n), for all n ≥ N”
+“어떤 양의 상수 c, 충분히 큰 양의 실수 N에 대해서 g(n) ≤ c × f(n), for all n ≥ N”
 
 주어진 복잡도 함수 f(n) 에 대하여 O(f(n))은 f(n)과 관련이 있는 복잡도 함수 g(n)을 모아 놓은 집합
 
@@ -140,7 +140,7 @@ Trick for proof :
 > n >= 10 으로부터 증명 시작
 
 ## Omega(Ω)
-“양의 상수 c, 충분히 큰 양의 실수 N에 대해서 g(n) ≥ c × f(n), for all n ≥ N”
+“어떤 양의 상수 c, 충분히 큰 양의 실수 N에 대해서 g(n) ≥ c × f(n), for all n ≥ N”
 
 Big O 와 부등식의 방향만 다르다.
 
