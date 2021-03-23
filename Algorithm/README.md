@@ -117,6 +117,7 @@ Input size N의 크기를 충분히 크다고 생각하고 알고리즘의 효�
 “양의 상수 c, 충분히 큰 양의 실수 N에 대해서 g(n) ≤ c × f(n), for all n ≥ N”
 
 주어진 복잡도 함수 f(n) 에 대하여 O(f(n))은 f(n)과 관련이 있는 복잡도 함수 g(n)을 모아 놓은 집합
+
 ![1](https://user-images.githubusercontent.com/62434898/112133979-9b219700-8c0f-11eb-8cb2-062a79cea06f.jpg)
 
 
@@ -126,7 +127,7 @@ Input size N의 크기를 충분히 크다고 생각하고 알고리즘의 효�
 ![4](https://user-images.githubusercontent.com/62434898/112133992-9ceb5a80-8c0f-11eb-9429-bbd10c4d9a4c.jpg)
 ![5](https://user-images.githubusercontent.com/62434898/112133993-9ceb5a80-8c0f-11eb-847e-bb4ddff76d30.jpg)
   
-*Trick for proof : 
+Trick for proof : 
 > ex ) n^2 + 10n 과 O(n^2)
 > 
 > n^2 + 10n <= c * n^2 에서 상수 c는 왼쪽항의 n^2 의 1보다 클 것
@@ -135,15 +136,17 @@ Input size N의 크기를 충분히 크다고 생각하고 알고리즘의 효�
 >
 > 10 <= n
 >
-> n >= 10 으로부터 증명 시작 *
+> n >= 10 으로부터 증명 시작
 
 ## Omega(Ω)
 “양의 상수 c, 충분히 큰 양의 실수 N에 대해서 g(n) ≥ c × f(n), for all n ≥ N”
 
 Big O 와 부등식의 방향만 다르다.
+
 ![6](https://user-images.githubusercontent.com/62434898/112133997-9d83f100-8c0f-11eb-934e-f69ce9854e80.jpg)
  
 ## Proof of Omega
+
 ![7](https://user-images.githubusercontent.com/62434898/112133999-9d83f100-8c0f-11eb-8817-d32b99ec457d.jpg)
 ![8](https://user-images.githubusercontent.com/62434898/112134003-9e1c8780-8c0f-11eb-86d7-799b97844b7f.jpg)
 ![9](https://user-images.githubusercontent.com/62434898/112134005-9e1c8780-8c0f-11eb-8156-4c3386c16c47.jpg)
