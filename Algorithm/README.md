@@ -236,7 +236,7 @@ Assumption : n=2^k for some integer k >= 0
 > 
 > =  ((… ( W(n/2^k) + 1) + 1) + 1) + … ) + 1
 >
-> = 1+k
+> = 1 + k
 > 
 > = 1 + log n [n=2^k]
 > 
