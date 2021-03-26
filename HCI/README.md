@@ -586,3 +586,382 @@ sayHello(“Rich”);
 	init();
 })();
 ```
+
+## 함수 인자 (Arguments)
+- 함수 선언과 상관 없이 많거나 적은 개수의 인자를 전달해도 에러 발생하지 않음
+```
+function reflect(value) {
+	return value;
+}
+console.log(reflect(“Hi!”));	// “Hi!”
+console.log(reflect(“Hi!”,25)); // “Hi!”
+```
+
+- 함수 인자는 실제로 배열로 전달됨
+> 인자 배열 이름 : arguments
+> 
+> 형식 인자 개수 : length
+```
+function reflect(value) {	// 형식인자 value
+	return value;
+}
+console.log(reflect(“Hi!”));	// “Hi!”
+console.log(reflect(“Hi!”,25)); // “Hi!”
+console.log(reflect.length); // 1
+```
+
+```
+reflect = function() {	// 형식인자 없음
+	return arguments[0]; // 함수에 전달된 인자들의 배열 argument
+}
+console.log(reflect(“Hi!”));	// “Hi!”
+console.log(reflect(“Hi!”,25)); // “Hi!”
+console.log(reflect.length); // 0
+```
+
+- 임의 개수의 인자를 받는 함수
+```
+function sum() {
+	var result = 0, i = 0, len = arguments.length; // 전달된 인자배열의 개수 (형식인자X)
+	while(i < len) {
+		result += arguments[i];
+		i++;
+	}
+	return result;
+}
+console.log(sum(1, 2));	// 3
+console.log(sum(3, 4, 5, 6));	// 18
+console.log(sum(50));	// 50
+console.log(sum());	// 0
+```
+
+## 함수의 중첩 (Nesting)
+- 함수 내부에 새로운 함수를 정의할 수 있음
+> 내부 함수는 외부 함수의 지역 변수에 접근 가능
+```
+function sayHelloTo(name) {	// 외부함수 sayHelloTo
+	var text = ‘Hello, ‘ + name;
+	function print() {		// 내부함수 print
+		console.log(text);		// 외부함수의 지역변수인 text에 접근 가능
+	}
+	print();
+}
+sayHelloTo(‘John);		// ‘Hello, John’
+```
+
+## 클로저 (Closure)
+- 함수 내부에 중첩 생선된 후 반환된 함수 객체
+> 외부 함수가 종료된 후에도 외부 함수의 변수에 접근 가능
+> 
+> 외부 함수의 변수를 마치 private 변수처럼 사용 가능
+```
+function sayHelloTo(name) {
+	var text = ‘Hello, ‘ + name;
+	return function() {
+		console.log(text);
+	};	// 생성된 내부함수 객체가 반환
+}
+sayHelloTo(‘John’)();	// ‘Hello, John’
+```
+
+```
+function sayHelloTo(name) {
+	var text = ‘Hello, ‘ + name;
+	return function() {
+		console.log(text);
+	};	// 생성된 내부함수 객체가 반환
+}
+var hello1 = sayHelloTo(‘John’);
+var hello2 = sayHelloTo(‘Mary’);
+hello1();		// ‘Hello, John’
+hello2();		// ‘Hello, Mary’
+```
+> 외부함수가 종료된 후에도 내부함수에서 사용된 text 변수가 사라지지않고 내부함수가 할당된 변수에서 text 변수를 사용할 수 있도록 유지되어 있음
+
+```
+function makeCounter() {
+		var count = 0;
+		return function() {
+			return count++;
+		};
+}
+var counter1 = makeCounter();
+var counter2 = makeCounter();
+console.log(counter1());	// 0
+console.log(counter1());	// 1
+console.log(counter2());	// 0
+```
+> 내부 함수가 할당된 변수들마다 별도의 count변수를 참조한다.
+
+## 객체
+- C++, Java에서와 같은 클래스 개념이 없다.
+- JavaScript의 객체는 속성(property)들의 집합
+- 속성 : <이름,값> 쌍(key-value pair)
+> 값이 변수인 경우 C++/Java의 멤버 변수에 해당
+> 
+> 값이 함수인 경우 C++/Java의 멤버 함수에 해당
+> 
+> 접근 영역(private, public 등)을 명시할 수 없음
+
+## 객체 선언과 정의
+```
+let animal = {
+		name : ‘Leo’,
+		energy : 10,
+		eat : function(amount) {
+			console.log(‘${this.name} is eating.’)
+			this.energy += amount
+		},
+		play : function (length) {
+			console.log(‘${this.name} is playing.’)
+			this.energy -= length
+		}
+};
+```
+
+## 객체 생성 후 속성 추가
+```
+let animal = {};	// 동일한 타입의 객체를 여러 개 생성하려면
+animal.name = ‘Leo’;	// 객체 속 기존의 name의 존재 여부 상관없이 name 선언과 초기화
+animal.energy = 10;
+animal.eat = function(amount) {
+		console.log(‘${this.name} is eating.’)
+		this.energy += amount
+	};
+animal.play = function (length) {
+		console.log(‘${this.name} is playing.’)
+		this.energy -= length
+};
+```
+
+## 함수형 객체 생성 (Functional Instantiation)
+```
+function Animal(name, energy) {	// 생성자(constructor) 함수
+		let animal = {};
+animal.name = ‘Leo’;
+animal.energy = 10;
+animal.eat = function(amount) {
+			console.log(‘${this.name} is eating.’)
+			this.energy += amount
+		};
+animal.play = function (length) {
+			console.log(‘${this.name} is playing.’)
+			this.energy -= length
+};
+return animal;
+}
+> 객체 animal을 초기화하며 생성하는 함수 Animal 생성 (생성자 역할)
+```
+
+## 공용 메소드 중복 (Redundancy)
+```
+function Anumal (name, energy) {
+		let animal = {};
+		// …
+		return animal;
+}
+const leo = Animal(‘Leo’, 7);
+const snoop = Animal(‘Snoop’, 10);
+ ```
+> 같은 역할을 하는 메소드가 객체마다 중복되어 생성되어 메모리 할당받음(비효율적)
+
+## 메소드 공유 객체 생성
+```
+// Shared methods
+const animalMethods = {
+		eat(amount) {
+			console.log(‘${this.name} is eating.’);
+			thisi.energy += amount;
+		},
+		play(length) {
+			console.log(‘$this.name) is playing.’);
+			this.energy -= length;
+		}
+};
+```
+> 메소드 부분을 가진 별도의 객체로 생성
+
+```
+// Functional instantiation with shared methods 공유 메소드를 가진 함수형 객체 생성
+function Animal (name, energy) {
+		let animal = {};
+animal.name = ‘Leo’;
+animal.energy = 10;
+animal.eat = animalMethods.eat;
+animal.play = anumalMethods.play;
+return animal;
+}
+```
+> 공유 메소드 수동적 위임(delegation)
+
+```
+const leo = Animal(‘Leo’, 7);
+const snoop = Animal(‘Snoop’, 10);
+``` 
+> 수동적 위임의 과정 (비효율)
+
+
+## Object.create()를 이용한 자동 위임
+```
+const parent = {
+		name : ‘Stacey’,
+		age : 35,
+		heritage : ‘Irish’
+};
+
+const child = Object.create(parent);
+child.name = “Ryan’;
+child.age = 7;
+console.log(child.name);	// ‘Ryan’
+console.log(child.age);	// 7
+console.log(child.heritage); // ‘Irish’
+```
+> child 에 초기화되지 않은 멤버 변수 및 함수는 parent에서 자동적으로 불러와서 위임된다.
+
+## 자동 위임 방식의 메소드 공유
+```
+const leo = Animal(‘Leo’, 7);
+const snoop = Animal(‘Snoop’, 10);
+leo.eat(10);
+snoop.play(5);
+``` 
+
+## 프로토타입 객체
+- 함수마다 하나씩 자동으로 만들어지는 위임 객체
+> 함수 객체의 prototype 속성으로 접근 가능
+> 
+> 별도의 위임 객체(e.g animalMethods) 불필요
+```
+function doThing() {}
+console.log(doThing.prototype)	// {}
+```
+
+## 프로토타입 기반 객체 생성 (Prototypal Instantiation)
+```
+function Animal (name, energy) {
+		let animal = Object.create(Animal.prototype);
+		animal.name = ‘Leo’;
+		animal.energy = 10;
+		return animal;
+}
+Animal.prototype.eat = function(amount) {
+console.log(‘${this.name} is eating.’);
+		thisi.energy += amount;
+}
+Animal.prototype.play = function(length) {
+		console.log(‘$this.name) is playing.’);
+		this.energy -= length;
+}
+const leo = Animal(‘Leo’, 7);
+const snoop = Animal(‘Snoop’, 10);
+leo.eat(10);
+snoop.play(5);
+``` 
+
+## new를 이용한 단순화
+- 프로토타입 객체로의 위임(Object.create) 및 생성된 객체의 반환(return)을 암묵적을 처리
+```
+function Animal (name, energy) {
+		this.name = name;
+		this.energy = energy;
+}
+const leo = new Animal(‘Leo’,7);
+const snoop = new Animal(‘Snoop’, 10);
+```
+> new와 함께 생성자 호출 시 생성자 Aminal에서 const this = Object.create(Animal.prototype); 과 return this; 생략 가능
+>
+>  주의 : new를 빠뜨리지 말기
+
+## ES6의 클래스 유사 구문 지원
+
+![1](https://user-images.githubusercontent.com/62434898/112633789-2489d100-8e7d-11eb-94c9-0137cfc987e7.jpg)
+
+## 상속 (Inheritance)
+- 기존 객체(부모)의 모든 속성을 물려 받고, 새로운 객체(자식)의 고유한 속성 추가
+- 변수 속성(property)
+> 생성자 함수에서 기존 생성자 함수 호출(call)
+> 
+> 생성자 함수에서 새로운 변수 추가
+- 함수 속성(method)
+> 생성자 함수의 프로토타입을 기존 생성자 함수의 프로토타입으로부터 생성(Object.create)
+> 
+> 생성자 함수의 프로토타입에서 새로운 함수 추가
+
+## 변수 상속
+- 생성자 함수
+> 부모 객체의 기존 생성자 함수 호출
+> 
+> 자식 객체 고유이 새로운 변수 추가
+- 자식 객체의 this를 전달해야 함 
+> call 메소드 사용
+
+## 변수 상속의 call 메소드
+- 함수를 호출하면서 this에 해당되는 객체를 인자로 전달
+```
+const user = {
+	name : Tyler’,
+	age : 27,
+	greet() {
+		alert(‘Hello, my name is ${this.name}’);
+	}
+}
+user.greet();	// ‘Hello, my name is Tyler’
+> 객체 밖에서 greet 을 정의하면 this가 정의되지 않음 > call 메소드 사용
+function Dog(name, energy, breed) {
+	// call the parent’s constructor
+	Anumal.call(this, name, energy); // call 메소드를 사용하여 dog의 this 사용
+	// add new variable properties
+	this.breed = breed;
+}
+function Animal(name, energy) {
+	this.name = name
+	this.energy = energy;
+}
+```
+
+## 함수 상속
+- 부모 객체의 함수
+> 부모 객체의 프로토타입에 위임
+- 자식 객체의 함수
+> 자식 객체의 프로토타입에 정의
+
+## 부모 객체의 프로토타입에 위임
+- 부모 생성자 함수의 프로토타입으로부터 자식 생성자 함수의 프로토타입 생성
+```
+function Dog(name, energy, breed) {
+	Anumal.call(this, name, energy); 
+	this.breed = breed;
+}
+Dog.prototype = Object.create(Animal.prototype);
+```
+
+## 프로토타입 체인 (Prototype Chain)
+-프로토타입 링크를 연결함으로써 연쇄 위임
+
+## 생성자 연결
+- 자식 객체에 대하여, 생성자 함수와 프로토타입 간의 올바른 연결 관계 수립
+```
+function Dog(name, energy, breed) {
+	Anumal.call(this, name, energy); 
+	this.breed = breed;
+}
+Dog.prototype = Object.create(Animal.prototype);
+Dog.prototype.constructor = Dog;	
+```
+
+## 자식 객체의 프로토타입에 함수 추가
+```
+function Dog(name, energy, breed) {
+	Anumal.call(this, name, energy); 
+	this.breed = breed;
+}
+Dog.prototype = Object.create(Animal.prototype);
+Dog.prototype.constructor = Dog;
+Dog.prototype.bark = function() {
+	console.log(‘Woof Woof!’);
+	this.energy -= .1;
+}
+```
+
+최종 상태
+![8](https://user-images.githubusercontent.com/62434898/112633802-2784c180-8e7d-11eb-8fa4-48ca33736da7.jpg)
