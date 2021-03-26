@@ -229,8 +229,14 @@ Input Size : n, the number of items in array
 Assumption : n=2^k for some integer k >= 0
 
 > W(n) = W(n/2) + 1 for n>1, W(1) = 1
+>
+> = = ( W(n/2^2) + 1 ) + 1
 > 
 > … 
+> 
+> =  ((… ( W(n/2^k) + 1) + 1) + 1) + … ) + 1
+>
+> = 1+k
 > 
 > = 1 + k 
 > 
