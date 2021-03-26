@@ -966,3 +966,5 @@ Dog.prototype.bark = function() {
 ## 최종 상태
 
 ![8](https://user-images.githubusercontent.com/62434898/112633802-2784c180-8e7d-11eb-8fa4-48ca33736da7.jpg)
+
+---
