@@ -69,6 +69,8 @@
 
 TCP/IP vs OSI Model
 
+---
+
 # Chapter 2 : Physical Layer
 
 ## Analog & Digital Signals
@@ -105,6 +107,8 @@ TCP/IP vs OSI Model
 - Attenuation 감쇠 : 증폭기(amplifiers)를 통해 해결 
 - Distortion 왜곡
 - Noise 잡음
+
+---
 
 # Chapter 4 : Digital Transmission
 
