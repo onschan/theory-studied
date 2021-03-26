@@ -1,6 +1,8 @@
 # HCI / Human Computer Interaction (or Interface)
 사람들이 디지털 제품이나 서비스를 이용해 작업을 수행하거나 문제를 해결하는 과정에서 최적의 경험을 제공하는 것
 
+---
+
 # HTML+CSS+JavaScript
 - HTML : 내용 + 구조
 - CSS : 시각적 표현
@@ -278,3 +280,4 @@ console.log(tip); // 콘솔에 7.6 출력
 
 ![15](https://user-images.githubusercontent.com/62434898/112614200-53e01400-8e64-11eb-85bb-7d2e4f148685.jpg)
  
+---
