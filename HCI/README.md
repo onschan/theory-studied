@@ -874,7 +874,7 @@ const snoop = new Animal(‘Snoop’, 10);
 
 ## ES6의 클래스 유사 구문 지원
 
-![1](https://user-images.githubusercontent.com/62434898/112633789-2489d100-8e7d-11eb-94c9-0137cfc987e7.jpg)
+![5](https://user-images.githubusercontent.com/62434898/112633797-26ec2b00-8e7d-11eb-848d-d831702c9080.jpg)
 
 ## 상속 (Inheritance)
 - 기존 객체(부모)의 모든 속성을 물려 받고, 새로운 객체(자식)의 고유한 속성 추가
