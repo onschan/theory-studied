@@ -469,6 +469,7 @@ function trimSections(header, body, footer) {
 ```
 
 ## var vs let (ES6)
+-var i
 ```
 function foo() {
 	for(var i=0; i < 5; i++) {
@@ -481,6 +482,7 @@ function foo() {
 ```
 > var i 는 foo 함수에 영향을 미치지는 지역변수로 사용
 
+-let i
 ```
 function foo() {
 	for(let i=0; i < 5; i++) {
