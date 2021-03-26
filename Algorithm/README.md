@@ -185,3 +185,46 @@ N을 지나는 이후로 f(n)에 어떤 상수 c를 곱해도 g(n)이 같거나 
 ## Properties of Order
 
 ![9](https://user-images.githubusercontent.com/62434898/112141450-a3320480-8c18-11eb-908f-46ea0de5994f.jpg)
+
+# Chapter 2
+
+## Divide and Conquer 분할 정복
+- Step 1 : Divide
+> 주어진 문제의 인스턴스를 한 개 혹은 더 작은 인스턴스로 분할한다.
+- Step 2 : Conquer
+> 분할된 인스턴스를 이용해 솔루션을 얻을 수 있다면 문제를 해결한다. 그렇지 않다면, 재귀를 이용해 보다 더 작은 인스턴스로 분할한다.
+- Step 3 : (if necessary) Combine
+> 솔루션을 더 작은 인스턴스와 결합한다면 원래의 인스턴스에 대한 솔루션을 얻을 수 있다.
+
+## Binary Search
+- Step 0 : if target=S[mid], quit
+> 중간 인덱스의 값이 타겟 값과 같다면 종료
+- Step 1 : Divide
+> 중간 값보다 타겟 값이 작다면 타겟 값 왼쪽의 배열로 인스턴스 분할
+> 
+> 중간 값보다 타겟 값이 크다면 타겟 값 오른쪽 배열로 인스턴스 분할
+- Step 2: Conquer
+> 분할된 인스턴스에서 타겟이 어디에 위치한지 결정
+
+## Recursive Binary Search
+```
+public static index location(index low, index high)
+{
+	index mid;
+	if (low > high) return 0;
+	else {
+		mid = (low + high) / 2;
+		if (x==S[mid]) return mid;
+		else if (x<S[mid]) return location(low,mid-1);
+		else return location(mid+1,high);
+	}
+}
+```
+
+## Worst-Case Time Complexity of Binary Search
+Basic Operation : Compartison of x with S[mid]
+Input Size : n, the number of items in array
+Assumption : n=2^k for some integer k >= 0
+W(n) = W(n/2) + 1 for n>1, W(1) = 1
+= … = 1 + k = 1 + log n -> θ(log n)
+
