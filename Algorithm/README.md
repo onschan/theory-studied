@@ -223,8 +223,18 @@ public static index location(index low, index high)
 
 ## Worst-Case Time Complexity of Binary Search
 Basic Operation : Compartison of x with S[mid]
+
 Input Size : n, the number of items in array
+
 Assumption : n=2^k for some integer k >= 0
-W(n) = W(n/2) + 1 for n>1, W(1) = 1
-= … = 1 + k = 1 + log n -> θ(log n)
+
+> W(n) = W(n/2) + 1 for n>1, W(1) = 1
+> 
+> … 
+> 
+> = 1 + k 
+> 
+> = 1 + log n 
+> 
+> -> θ(log n)
 
