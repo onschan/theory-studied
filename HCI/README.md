@@ -36,6 +36,7 @@
 ## 예제
 
 ![1](https://user-images.githubusercontent.com/62434898/112614171-4f1b6000-8e64-11eb-8916-606c964b4de2.jpg)
+![2](https://user-images.githubusercontent.com/62434898/112614176-504c8d00-8e64-11eb-9a0a-af016e5cc630.jpg)
   
 ## 요소 속성
 - 모든 HTML 요소는 ‘속성-값’ 쌍으로 매개화 가능
@@ -54,7 +55,7 @@
 - ID
 > 하나의 ID는 하나의 요소에만 적용 가능
 
-![2](https://user-images.githubusercontent.com/62434898/112614176-504c8d00-8e64-11eb-9a0a-af016e5cc630.jpg)
+![3](https://user-images.githubusercontent.com/62434898/112614177-50e52380-8e64-11eb-92b1-2519d31901b0.jpg)
  
 ## DOM (Document Object Model)
 - HTML의 계층적 문서 구조
@@ -67,7 +68,7 @@
 </html>
 ```
 
-![3](https://user-images.githubusercontent.com/62434898/112614177-50e52380-8e64-11eb-92b1-2519d31901b0.jpg)
+![4](https://user-images.githubusercontent.com/62434898/112614179-50e52380-8e64-11eb-90a8-f951fdba33ba.jpg)
 
 크롬의 개발자 도구 옵션등, DOM 구조로 이루어진 웹페이들을 확인할 수 있다.
 
@@ -85,7 +86,7 @@
 > 
 > 높이
  
-![4](https://user-images.githubusercontent.com/62434898/112614179-50e52380-8e64-11eb-90a8-f951fdba33ba.jpg)
+![5](https://user-images.githubusercontent.com/62434898/112614182-517dba00-8e64-11eb-82e0-ec52c7a77d26.jpg)
 
 ## CSS (Cascading Style Sheets)
 - DOM 요소의 시각적 표현 방식을 규정
@@ -160,30 +161,30 @@ font-family: Helvetica, Arial, sans-serif;
 ## 스타일 지정 방식
 1. HTML 문서에 CSS 저장
 
-![5](https://user-images.githubusercontent.com/62434898/112614182-517dba00-8e64-11eb-82e0-ec52c7a77d26.jpg)
+![6](https://user-images.githubusercontent.com/62434898/112614183-517dba00-8e64-11eb-971f-1868782e9619.jpg)
 
 > head 영역안에 style 태그를 사용하여 속성 값 나열
 
 2. 외부 CSS 파일을 HTML 문서에서 참조 [내용과 형식 구분]
 
-![6](https://user-images.githubusercontent.com/62434898/112614183-517dba00-8e64-11eb-971f-1868782e9619.jpg)
+![7](https://user-images.githubusercontent.com/62434898/112614186-52165080-8e64-11eb-8ce3-a0873e57c5ab.jpg)
  
 > head 영역안에 link 태그를 이용하여 style.css 의 속성을 참조하여 적용
 
 3. HTML 태그 안에서 직접 지정 (코드의 이해와 관리를 어렵게 하므로 가능한 배제)
  
-![7](https://user-images.githubusercontent.com/62434898/112614186-52165080-8e64-11eb-8ce3-a0873e57c5ab.jpg)
+![8](https://user-images.githubusercontent.com/62434898/112614188-52165080-8e64-11eb-839d-87cb1f9f1896.jpg)
 
 ## 스타일의 상속(inheritance)
 - 스타일 속성은 계층 구조에 따라 상속됨
 
-![8](https://user-images.githubusercontent.com/62434898/112614188-52165080-8e64-11eb-839d-87cb1f9f1896.jpg)
+![9](https://user-images.githubusercontent.com/62434898/112614191-52aee700-8e64-11eb-872d-9064da1f6296.jpg)
 
 ## 스타일의 종속(cascade)
 - 선택자는 위에서부터 아래로 내려오며 매칭됨
 > 각 요소에 대하여, 그 요소를 선택할 수 있는 가장 *구체적인* 선택자 중 *나중에* 기술된 것을 대응시킴
 
-![9](https://user-images.githubusercontent.com/62434898/112614191-52aee700-8e64-11eb-872d-9064da1f6296.jpg)
+![10](https://user-images.githubusercontent.com/62434898/112614193-52aee700-8e64-11eb-98da-79b05962faf4.jpg)
 
 ## JavaScript
 - HTML 문서가 웹 브라우저에 적재된 이후에, 동적으로 DOM을 조작할 수 있는 스트립트 언어
@@ -235,7 +236,7 @@ fruit.tasty // true
 
 - 두 구조를 결합하여 더 복잡한 구조 형성 가능
 - 
-![10](https://user-images.githubusercontent.com/62434898/112614193-52aee700-8e64-11eb-98da-79b05962faf4.jpg)
+
  
 연산자와 흐름 제어
 - C, Java 등의 언어와 유사하기 때문에 같은 방식 적용 가능
