@@ -238,7 +238,7 @@ Assumption : n=2^k for some integer k >= 0
 >
 > = 1+k
 > 
-> = 1 + log n  / [n=2^k]
+> = 1 + log n [n=2^k]
 > 
 > -> θ(log n)
 
