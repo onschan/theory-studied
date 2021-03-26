@@ -186,6 +186,8 @@ N을 지나는 이후로 f(n)에 어떤 상수 c를 곱해도 g(n)이 같거나 
 
 ![9](https://user-images.githubusercontent.com/62434898/112141450-a3320480-8c18-11eb-908f-46ea0de5994f.jpg)
 
+---
+
 # Chapter 2
 
 ## Divide and Conquer 분할 정복
