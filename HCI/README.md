@@ -13,7 +13,7 @@
 - 태그 중첩은 계층적 구조 하에서만 허용
 
 ## 대표적인 HTML 요소
-- <!DOCTYPE html>
+- /<!DOCTYPE html/>
 > 이 문서의 타입이 HTML 타입이라는 것을 알려주는 마크업
 - html	
 - head
