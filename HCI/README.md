@@ -167,24 +167,24 @@ font-family: Helvetica, Arial, sans-serif;
 
 2. 외부 CSS 파일을 HTML 문서에서 참조 [내용과 형식 구분]
 
-![7](https://user-images.githubusercontent.com/62434898/112614186-52165080-8e64-11eb-8ce3-a0873e57c5ab.jpg)
+![8](https://user-images.githubusercontent.com/62434898/112614188-52165080-8e64-11eb-839d-87cb1f9f1896.jpg)
  
 > head 영역안에 link 태그를 이용하여 style.css 의 속성을 참조하여 적용
 
 3. HTML 태그 안에서 직접 지정 (코드의 이해와 관리를 어렵게 하므로 가능한 배제)
  
-![8](https://user-images.githubusercontent.com/62434898/112614188-52165080-8e64-11eb-839d-87cb1f9f1896.jpg)
+![9](https://user-images.githubusercontent.com/62434898/112614191-52aee700-8e64-11eb-872d-9064da1f6296.jpg)
 
 ## 스타일의 상속(inheritance)
 - 스타일 속성은 계층 구조에 따라 상속됨
 
-![9](https://user-images.githubusercontent.com/62434898/112614191-52aee700-8e64-11eb-872d-9064da1f6296.jpg)
+![10](https://user-images.githubusercontent.com/62434898/112614193-52aee700-8e64-11eb-98da-79b05962faf4.jpg)
 
 ## 스타일의 종속(cascade)
 - 선택자는 위에서부터 아래로 내려오며 매칭됨
 > 각 요소에 대하여, 그 요소를 선택할 수 있는 가장 *구체적인* 선택자 중 *나중에* 기술된 것을 대응시킴
 
-![10](https://user-images.githubusercontent.com/62434898/112614193-52aee700-8e64-11eb-98da-79b05962faf4.jpg)
+![11](https://user-images.githubusercontent.com/62434898/112614195-53477d80-8e64-11eb-9f4e-4521e79c5447.jpg)
 
 ## JavaScript
 - HTML 문서가 웹 브라우저에 적재된 이후에, 동적으로 DOM을 조작할 수 있는 스트립트 언어
@@ -235,32 +235,45 @@ fruit.tasty // true
 ```
 
 - 두 구조를 결합하여 더 복잡한 구조 형성 가능
-- 
+
+![12](https://user-images.githubusercontent.com/62434898/112614196-53477d80-8e64-11eb-838a-4532448d5eb9.jpg)
 
  
-연산자와 흐름 제어
+## 연산자와 흐름 제어
 - C, Java 등의 언어와 유사하기 때문에 같은 방식 적용 가능
 
-함수
+## 함수
 - JavaScript 함수는 객체
 > 변수에 할당하고, 다른 함수의 인자로 전달하고, 속성을 설정하는 등 실행 시간에 조작할 수 있는 대상
+```
 var calculateGarivity = function(bill) { return bill * 0.2; }; // 함수를 변수에 할당
 var tip = calculateGravity(38);
 console.log(tip); // 콘솔에 7.6 출력
+```
 - C언어의 함수와의 차이
 > 중첩함수 (nested function)
+> 
 > 익명함수 (anonymous function)
+> 
 > 함수 단위 접근범위 (scope)
+> 
 > 클로저 (closure)
+> 
 > …
 
-스크립트 지정
+## 스크립트 지정
 - HTML 문서에 직접 포함
+
+![13](https://user-images.githubusercontent.com/62434898/112614197-53477d80-8e64-11eb-8135-4bc1f982c94b.jpg)
  
 > body 안에 script 태그를 이용하여 포함
 - 외부 파일 참조
  
+ ![14](https://user-images.githubusercontent.com/62434898/112614199-53e01400-8e64-11eb-99b4-c02ce41e96a2.jpg)
+ 
 > head안에 script 태그를 이용하여 .js 소스 포함
 
-HTML+CSS+JavaScript 예시 코드
+## HTML+CSS+JavaScript 예시 코드
+
+![15](https://user-images.githubusercontent.com/62434898/112614200-53e01400-8e64-11eb-85bb-7d2e4f148685.jpg)
  
