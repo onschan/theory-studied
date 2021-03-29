@@ -1020,18 +1020,24 @@ context.strokeText(‘Hello Canvas’, canvas.width/2 – 150, canvas.height/2 +
 - 서피스(surface) 크기 : 메모리
 > 캔버스에 그려질 이미지 데이터 저장 영역의 크기
 - HTML에서 크기 지정할 경우 두 크기는 동일
-![5](https://user-images.githubusercontent.com/62434898/112826673-46c35f00-90c8-11eb-89e7-6665b250cb13.jpg) 
+
+![5](https://user-images.githubusercontent.com/62434898/112826673-46c35f00-90c8-11eb-89e7-6665b250cb13.jpg)
+
 - CSS에서 지정할 경우 두 크기는 다를 수 있음
 > 캔버스 : CSS에서 명시된 크기로 지정됨	
 > 
 > 서비스 : 기본 크기인 300 픽셀 x 150 픽셀로 지정됨
+
 ![6](https://user-images.githubusercontent.com/62434898/112826674-46c35f00-90c8-11eb-9e8a-6e46bd8f7354.jpg) 
+
 > 이러한 상황이 발생하지 않기 위해서는 캔버스를 생성하는 단계에서 너비와 높이를 지정하는 방식을 취함
 
 ## 도형 그리기
 - 좌표계
 > 기본 크기인 300x150인 경우의 예
+
 ![7](https://user-images.githubusercontent.com/62434898/112826676-475bf580-90c8-11eb-8bd5-0d8c8cdb5c96.jpg) 
+
 > 원점이 좌상단에 있고 y축이 아래로 향하고 있음
 
 ## 사각형 그리기
@@ -1072,7 +1078,9 @@ context.canvas.omousedown = function (e) {
 
 ## 색상과 투명도
 - stokeStyle, fillStyle 속성에서 지정
+
 ![8](https://user-images.githubusercontent.com/62434898/112826678-475bf580-90c8-11eb-9f0a-92d6c7e2ade3.jpg)
+
 ![9](https://user-images.githubusercontent.com/62434898/112826683-47f48c00-90c8-11eb-9dff-3711934310e1.jpg) 
  
 ## 그림자
@@ -1081,6 +1089,7 @@ context.canvas.omousedown = function (e) {
 > 
 > 그 밖의 그림자 관련 속성에 0이 아닌 값 지정
 - 아이콘 예제
+
 ![10](https://user-images.githubusercontent.com/62434898/112826684-488d2280-90c8-11eb-8567-2b2b5ecf457e.jpg) 
 
 ## 경로 (Path)
@@ -1090,44 +1099,57 @@ context.canvas.omousedown = function (e) {
 > 외곽선 그리기(stroke)
 > 
 > 내부 채우기(fill)
+
 ![11](https://user-images.githubusercontent.com/62434898/112826686-488d2280-90c8-11eb-80ab-101c7a6edbd8.jpg) 
 
 ## 사각형 그리기
+
 ![12 사각형](https://user-images.githubusercontent.com/62434898/112826687-4925b900-90c8-11eb-81d0-fde555fbc401.jpg)
 
 ## 열린 원호
+
 ![13 열린 원호ㅗ](https://user-images.githubusercontent.com/62434898/112826689-49be4f80-90c8-11eb-95f1-6a7f4c3b405c.jpg)
 
 ## 닫힌 원호
 ![14 닫힌 원호](https://user-images.githubusercontent.com/62434898/112826690-49be4f80-90c8-11eb-9ab7-5cfcbb5a586c.jpg)
 
-##직선 그리기
-![15 직선 그리기](https://user-images.githubusercontent.com/62434898/112826693-4a56e600-90c8-11eb-91c5-371a09bef0df.jpg)   
+## 직선 그리기
+
+![15 직선 그리기](https://user-images.githubusercontent.com/62434898/112826693-4a56e600-90c8-11eb-91c5-371a09bef0df.jpg) 
+
 > 직선 너비와 픽셀 경계영역이 있기 때문에 좌표에 0.5 더해주는 것이 좋다.
 
 ## 격자 그리기
+
 ![16](https://user-images.githubusercontent.com/62434898/112826695-4a56e600-90c8-11eb-8b3c-8e0c6ad62f6f.jpg)
  
 ## 직선 관련 속성
 - lineCap
 > 직선의 양쪽 끝을 어떻게 마무리 할 것인가
+
 ![17](https://user-images.githubusercontent.com/62434898/112826696-4aef7c80-90c8-11eb-9ba8-bdc48ed080c0.jpg)
 
 - lineJoin
 > 직석이 결합될 때 맞닿는 위치의 처리
+
 ![18](https://user-images.githubusercontent.com/62434898/112826697-4aef7c80-90c8-11eb-971c-dbde76a2368c.jpg)
 
 - miterLimint
+
 ![19](https://user-images.githubusercontent.com/62434898/112826699-4b881300-90c8-11eb-8c92-5c5c4cd11453.jpg)
 
 ## 원호 그리기
+
 ![20](https://user-images.githubusercontent.com/62434898/112826700-4b881300-90c8-11eb-8094-6dd39c732418.jpg) 
+
 > arc(원의 중심좌표 x,y, 반지름, 시작 각도, 끝 각도, 시계 방향 false, 반시계 true)
+
 ![21](https://user-images.githubusercontent.com/62434898/112826701-4c20a980-90c8-11eb-97c6-ffee4d2ce461.jpg) 
 
 ## 베이어 곡선
 - 양 끝점과 2개의 제어점을 이용한 곡선 그리기
 > 총 4개의 점 필요 [시작점, 끝점, 2개의 제어점]
+
 ![22](https://user-images.githubusercontent.com/62434898/112826703-4c20a980-90c8-11eb-8e3b-fb0ff76d6198.jpg)
 ![23](https://user-images.githubusercontent.com/62434898/112826705-4cb94000-90c8-11eb-9087-51feaba1dd01.jpg)
 ![24](https://user-images.githubusercontent.com/62434898/112826706-4cb94000-90c8-11eb-9061-9017aa4d2d22.jpg)
