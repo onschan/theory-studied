@@ -244,3 +244,68 @@ Assumption : n=2^k for some integer k >= 0
 > 
 > -> θ(log n)
 
+
+## Merge Sort
+- Step 1 : Divide
+> 전체 array의 반 크기를 가진 두 개의 subarray로 만든다.
+- Step 2: Conquer
+> 만약 각 subarray가 충분히 작다면 그것을 적절히 정렬한다. 그렇지 않다면, 재귀를 이용해서 그들을 정렬한다.
+- Step 3: Combine
+> 	정렬된 subarray들을 합쳐서 원래의 array크기를 가진 하나의 정렬된 array로 만든다.
+```
+public static void mergeSork(int n, keytype[] S)
+{
+	if (n > 1) {
+		const int h = floor(n/2), m = n-h;
+		keytype[] U = new keytype[1..h],
+			 V = new keyype[1..m];
+		copy S[1:h] to U[1:h];
+		copy S[h+1:n] to V[1:m];
+		mergeSort(h,U);
+		mergeSort(m,V);
+		merge(h,m,U,V,S);
+	}
+}
+
+public static void merge(int h, int m, keytype[] U, keytype[] V, keytype[] S)
+{
+	index i = 1, j = 1, k = 1;
+	while (i<=h && j<=m) {
+		if(U[i] < V[i]) {
+			S[k] = U[i];
+			i++;
+		} else {
+			S[k] = V[k];
+			j++;
+		}
+		k++;
+	}
+	if(i>h)
+		copy V[j:m] to S[k:h+m];
+	else
+		copy U[i:h] to S[k:h+m];
+}
+```
+
+## Time Complexity of Merge
+- Basic Opearation 
+> U[i] 와 V[j]의 비교(comparison)
+- Input Size
+> h & m, 각 배열의 요소
+- Best case
+> U의 모든 요소가 V의 가장 작은 요소보다 작다면 U와 V의 비교없이 진행가능
+> 
+> Best(h,m) = min(h,m) 
+> 
+> θ(n log n)
+
+- Worst Case
+> U의 마지막 가장 큰 요소가 V의 가장 큰 요소를 제외한 모든 요소들보다 큰 경우
+> 
+> U와 V의 비교를 가장 많이 하게됨
+> 
+> θ(n log n)
+
+![1](https://user-images.githubusercontent.com/62434898/113471313-86a68f80-9496-11eb-8bfd-5274057583df.jpg)
+
+
