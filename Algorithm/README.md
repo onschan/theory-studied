@@ -308,4 +308,78 @@ public static void merge(int h, int m, keytype[] U, keytype[] V, keytype[] S)
 
 ![1](https://user-images.githubusercontent.com/62434898/113471313-86a68f80-9496-11eb-8bfd-5274057583df.jpg)
 
+## Quick Sort
+- Merge Sort와 공통점
+> 주어진 array를 두개의 array로 나누고 각각을 재귀적으로 정렬한다.
+- Merge Sort와 차이점
+> Merge Sort는 조건없이 반으로 나눈 뒤 정렬하지만 Quick Sort는 조건에 따라 나누게 된다,
+> 
+> Quick Sort에서는 pivoit 설정 뒤 크기에 따라 앞뒤로 나눈다.
+```
+public static void quickSort(index low, index high)
+{
+	index pivotPoint;
+	if (high > low)
+	{
+		pivotPoint = partition(low, high);
+		quickSort(low, pivotPoint-1);
+		qucikSort(pivotPoint+1, high);
+	}
+}
+
+public static partition(index low, index high)
+{
+	index i, j, pivotPoint;
+	keytype pivotItem;
+	pivotItem = S[low];
+	j = low;
+	for ( i = low + 1; i <= high; i++) {
+		if(S[i] < pivotItem) {
+			exchange S[i] and S[++j];
+		}
+	}
+	pivotPoint = j;
+	exchange S[low] and S[pivotPoint];
+	return pivotPoint;
+}
+```
+
+## Time Complexity of Partition
+- Basic Operation
+> S[i] 와 pivotItem 을 비교
+- Input Size;
+> m = high-low+1, subarray의 요소들
+- T(m) = m-1
+
+## Time Complexity of QuickSort
+- Wort Case
+> array가 이미 정렬되어있다면 wort case가 된다.
+> 
+> T(n) = n – 1 + T(0) + T(n-1) > n(n-1)/2 
+> 
+> O(N^2)
+
+- Average Case
+![1](https://user-images.githubusercontent.com/62434898/113474934-d17fd180-94ad-11eb-9c4a-f0999bfc65b8.jpg)
+![2](https://user-images.githubusercontent.com/62434898/113474935-d2186800-94ad-11eb-8855-1a7380de71bb.jpg)
+![3](https://user-images.githubusercontent.com/62434898/113474937-d2b0fe80-94ad-11eb-924c-15f51f95b7f1.jpg)
+> θ(n log n)
+
+## 재귀 관계의 풀이
+http://contents.kocw.or.kr/KOCW/document/2014/Chungbuk/LeeChungse/05.pdf
+- Homogeneous Linear Recurrence Relations (제차 선형 재귀 관계)
+> a(n) = a(n-1) + a(n-2)
+
+![3 homo](https://user-images.githubusercontent.com/62434898/113474936-d2b0fe80-94ad-11eb-93e8-65578a08a126.jpg)
+![4 homo](https://user-images.githubusercontent.com/62434898/113474938-d3499500-94ad-11eb-8ac1-e0541f52fa2b.jpg)
+![5 homo](https://user-images.githubusercontent.com/62434898/113474939-d3499500-94ad-11eb-92f1-594fc2575f53.jpg)
+   
+- non-Homogeneous Linear Recurrence Relations (비제차 선형 재귀 관계)
+> a(n) = a(n-1) + 1
+
+![6non](https://user-images.githubusercontent.com/62434898/113474940-d3e22b80-94ad-11eb-9a7f-0605dd9050fb.jpg)
+![7non](https://user-images.githubusercontent.com/62434898/113474941-d3e22b80-94ad-11eb-98a6-166edf6ca840.jpg)
+
+
+  
 
