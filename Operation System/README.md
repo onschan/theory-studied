@@ -3,7 +3,9 @@
 ![1 oper](https://user-images.githubusercontent.com/62434898/113505424-b5496680-9579-11eb-962e-465036692eea.jpg)
  
 > 사용자와 하드웨어에서 존재하는 아주 큰 프로그램
+> 
 > 하드웨어 제어 및 할당하는 역할
+> 
 > 항상 돌아가는 프로그램 - 커널이라고도함
 
 ## Dual-mode Operation
