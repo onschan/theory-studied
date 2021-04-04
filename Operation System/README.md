@@ -26,8 +26,11 @@
 > 시스템콜 호출 시 CPU가 유저모드에서 커널모드로 들어갈 것이다.
 > 
 > CPU는 Mode bit 라는 것을 가지고 있음
-	mode bit = 1 유저모드
-	mode bit = 0 커널모드
+> 
+> 	mode bit = 1 유저모드
+> 
+> 	mode bit = 0 커널모드
+> 	
 > CPU의 동작에 따라 mode bit의 값이 변한다.
 > 
 > 현재 mode bit 의 권한과 일치하지 않는 접근시 프로그램이 종료된다.
