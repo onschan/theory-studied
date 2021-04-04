@@ -1,4 +1,4 @@
-## Opeartion System
+# Opeartion System
 
 ![1 oper](https://user-images.githubusercontent.com/62434898/113505424-b5496680-9579-11eb-962e-465036692eea.jpg)
  
@@ -35,6 +35,7 @@
 > 
 > 현재 mode bit 의 권한과 일치하지 않는 접근시 프로그램이 종료된다.
 
+---
 
 # Operating System Structure
 
