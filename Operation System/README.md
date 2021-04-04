@@ -85,10 +85,14 @@ _syscall3(int, __NR_read, int, fd, vvoid*, pBuf, int, nByte)
 int read(int fd, void* pBuf, int nByte);
 ```
 시스템콜에 포함되어있는 software interrupt가 발생하게되고 시스템콜을 호출한다.
+
 단, 호출할 시스템콜의 수가 많아질수록 인터럽트를 통해 시스템콜을 호출하는 것이 어려워진다.
+
 이때 block 또는 in-memory table을 통해 시스템콜 인자를 passing 하고 시스템콜을 호출하게 된다.
+
 내부적으로 생성된 block의 위치에 따라 시스템콜을 순차적으로 호출한다.
 (윈도우에서는 해당 역할을 위해 stack을 이용한다.)
+
 시스템콜 호출 시 블록의 위치와 시스템콜의 번호, 인자를 전달하며
 
 ![6 linux](https://user-images.githubusercontent.com/62434898/113505430-b7abc080-9579-11eb-861d-a7de13ed5c4c.jpg)
