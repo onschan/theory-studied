@@ -393,4 +393,38 @@ http://contents.kocw.or.kr/KOCW/document/2014/Chungbuk/LeeChungse/05.pdf
 - size n의 인스턴스를 두 개이상의 인스턴스로 나누어도 n과 차이가 별로 없는 경우
 - size n의 인스턴스를 거의 n개의 인스턴스만큼으로 나누었을 때 각각이 n에 비례하는 숫자를 같은 경우
 
+---
+# Chapter 3
+
+## Dynamic Programing 동적 계획법
+- 분할 정복과 유사점
+> 문제의 인스턴스를 두 개 이상의 작은 인스턴스로 나눈다.
+- 분할 정복과 차이점
+> 작은 인스턴스를 먼저 풀고 필요한 경우에만 필요한 인스턴스를 가지고와서 사용한다. (bottom-up)
+
+## Dynamic Programing Step
+- Step 1 :
+> 문제의 인스턴스의 답을 구하기위한 재귀 관계식을 세운다.
+- Step 2 :
+> bottop-up 방식으로 나누어진 작은 인스턴스를 먼저 풀면서 최종 인스턴스의 답을 구한다.
+(Memoization 을 사용하여 top-down 방식으로 해결가능)
+
+## The Binomial Coefficient 이항 계수 
+C(n,k)=n!/k!(n-k)! for 0 <= k <= n
+C(n,k)={█(C(n-1,k)+ C(n-1,k-1)@1)┤ 
+
+```
+public static int bin2(int n, int k)
+{
+	index i, j;
+	int[][] B = new int [0..n][0..k];
+	for(i = 0; i <= n; i++)
+		for(j = 0; j <= min(i,k); j++)
+			if(j==0 || j==i)
+			B[i][j] = 1;
+		else
+			B[i][j] = B[i-1][j-1] + B[i-1][j];
+	return B[n][k];
+}
+```
 
