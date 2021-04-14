@@ -380,6 +380,17 @@ http://contents.kocw.or.kr/KOCW/document/2014/Chungbuk/LeeChungse/05.pdf
 ![6non](https://user-images.githubusercontent.com/62434898/113474940-d3e22b80-94ad-11eb-9a7f-0605dd9050fb.jpg)
 ![7non](https://user-images.githubusercontent.com/62434898/113474941-d3e22b80-94ad-11eb-98a6-166edf6ca840.jpg)
 
+## Determining Thresholds
+병합 정렬이나 퀵 정렬에서 발생되는 재귀는 함수 호출 overhead를 가질 수 있다. 
 
-  
+(Mid 값 계산, 두 가지의 재귀함수를 호출하는 stack operation, 두 배열 병합 과정에서)
+
+아마도, n 이 충분히 작으면 θ(n^2)의 시간복잡도를 가진 정렬 방식(ExchangeSort)이 더 빠를 수도 있다. 
+
+이때 ExchangeSort와의 시간관계가 역으로 바뀌는 지점을 threshold 라고 한다. (nearly, n <= 10) 
+
+## 분할 정복을 사용하면 안되는 경우
+- size n의 인스턴스를 두 개이상의 인스턴스로 나누어도 n과 차이가 별로 없는 경우
+- size n의 인스턴스를 거의 n개의 인스턴스만큼으로 나누었을 때 각각이 n에 비례하는 숫자를 같은 경우
+
 
