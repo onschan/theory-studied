@@ -409,9 +409,9 @@ http://contents.kocw.or.kr/KOCW/document/2014/Chungbuk/LeeChungse/05.pdf
 > bottop-up 방식으로 나누어진 작은 인스턴스를 먼저 풀면서 최종 인스턴스의 답을 구한다.
 (Memoization 을 사용하여 top-down 방식으로 해결가능)
 
-## The Binomial Coefficient 이항 계수 
-C(n,k)=n!/k!(n-k)! for 0 <= k <= n
-C(n,k)={█(C(n-1,k)+ C(n-1,k-1)@1)┤ 
+## The Binomial Coefficient 이항 계수
+
+![1](https://user-images.githubusercontent.com/62434898/114710384-9f515800-9d68-11eb-979c-c5f5090bd9e8.jpg)
 
 ```
 public static int bin2(int n, int k)
