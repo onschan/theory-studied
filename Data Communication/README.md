@@ -15,7 +15,6 @@
 ![화면 캡처 2021-03-19 201354](https://user-images.githubusercontent.com/62434898/111782301-322edc00-88fc-11eb-82aa-1f162cbd623d.jpg)
 
 
-
 ## 단말장치 (DTE : Date Termial Equipment)  
 *[키워드 : 입출력]*
 - 통신시스템과 사용자의 접점에 위치하여 데이터를 입력하거나 처리된 결과를 출력하는 장치
