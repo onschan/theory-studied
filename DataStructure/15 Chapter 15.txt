@@ -469,7 +469,4 @@ the following code will print out the shortest path from the start vertex to v i
 	}
 
 리커젼을 이용해서 다시 역순으로 뒤질을 수 있으니 생각해보시길 바랍니다.
-
-
-
 		
