@@ -1,0 +1,624 @@
+주요 강의 내용
+
+4차 산업혁명 개요/ 네트워크 발전 방향
+미래 인터넷 구조
+차세대 유선 (코어) 네트워크 기술
+차세대 무선 네트워크 기술
+Internet of Things(ioT)
+
+---
+인터넷이란?
+
+ARPANET 알파넷의 탄생
+1969 미국 국방성 [데이터 전송에 IP(인터넷 프로토콜) 전송 규약 사용]
+
+---
+인터넷 통신 규약
+
+TCP/IP 프로토콜
+> 이더넷 방식의 LAN 기술과 TCP/IP(트랜스미션 컨트롤 프로토콜/인터넷 프로토콜) 프로토콜의
+통신 기술 발전
+> 인터넷 표준 프로토콜
+
+NSFNET의 구축
+> 미국과학재단(NSF) 에서 TCP/IP 프로토콜로 연결하여 학술정보망인 NSFNET을 구축
+
+---
+인터넷 vs 웹?
+
+> 인터넷 = 고속도로	/ 웹 = 고속도로 망을 이용한 물류사업
+
+인터넷 
+> 웹의 개념이 나오기전부터 만들어진 컴퓨터 연결 네트워크
+> 컴퓨터마다 고유한 주소 IP 주소를 부여하여 컴퓨터 구분
+
+World Wide Web
+> 인터넷을 화용하는 응용 서비스 중 하나 [하나의 서비스로 나왔으나 모든 웹서비스의 표준이됨]
+> 웹 서버와 웹 브라우저로 구성되는 정보 전달 및 공유 서비스
+
+---
+4차 산업 혁명
+
+1차 - 증기기관 기반 기계화 혁명
+2차 - 전기 에너지 기반 대량생산 혁명
+3차 - 컴퓨터 인터넷 기반 정보혁명
+4차 - AI/SW와 ICBMS 기반 지능정보 혁명 [머신러닝, 딥러닝] 
+
+> 초연결 지능 사회
+> 전문직 혁명
+> O2O 융합	[오프라인 온라인 융합]
+> 인공지능, 개인화
+
+---
+4차 산업혁명의 관점
+1. 현실과 가상의 인간중심으로의 융합
+2. 여러 분야의 혁신
+3. O2O 서비스의 확장 [오프라인 온라인 융합]
+
+---
+O2O 융합
+1. 데이터 수집 
+- ioT + ioB [internet of Things + internet of Binmetry] = ioE [internet of Everything]
+2. 저장&분석
+-빅데이터
+3. 가치 창출
+- 인공지능 [데이터 수집을 통해 얻은 빅데이터를 인공지능을 통해 예측, 맞춤] (머신러닝)
+
+> Online(지능 + 빅데이터 + 클라우드) <> Offline(더 나은 세상)
+
+[웹사이트에서 정보 수집을 통해 고객의 니즈를 파악해 추천하는 서비스]
+
+---
+예시)
+분야별 혁신 : 제조업
+1. 데이터 수집(ioT) - 중장비 센서에서 데이터 수집
+2. 저장&분석(CLOUD/BIG DATA) - 수집된 데이터로 장비 상태 분석
+3. 가치 창출(A.I) - Before Service 시장 창출
+4. 최적화(기술융합) - 중장비 최적화 및 작업 효율 증가
+
++ 공장, 유통
+
+---
+인간과 AI의 협업
+---
+데이터 가공 기반 가치 창출
+
+- 데이터가 가치창출을 할 수 있는 자원이다.
+
+냉장고의 여러 식재료 > 요리사와 레시피 > 맛있는 음식
+
+클라우드의 여러 빅데이터 > 인정지능과 알고리즘 > 다양한 서비스[맞춤 추천, 예측, 투자]
+---
+산업의 재편
+
+기술의 발전은 산업을 재편함
+- 신규 산업의 발전, 기존 산업의 쇠퇴
+- 전통산업의 수직적 구조 재편
+
+---
+비용의 속도
+
+AI와의 협업을 통해 동일한 기능을 구현하는데 소요되는 비용(년)이 감소됨
+
+기업의 성장속도도 가파르게 성장됨
+
+---
+인공지능의 대체로 인해 사라져가는 직업과 늘어나는 직업
+
+---
+IoT 의 개요
+
+Internet of Things
+
+여러가지 사물들에 지능화된 컴퓨터가 장착됨
+[임베이디드 컴퓨터]
+
+컴퓨터 데이터 수집을 통한 다양한하고 더 유용한 기능 제공
+
+---
+Smart Things 란?
+
+아날로그 데이터를 센싱해서 데이터를 수집할 수 있는 기능이 있어야한다.
+기본적인 컴퓨터의 CPU와 메모리가 있어야함
+
+---
+사물통신의 필요성
+(M2M)
+
+사람이 하기에는 위험한일
+사람이 하기에는 신회성이 없고 부정확한일
+사람이 하기에는 비용이 많이들고 단순 반복적인 일
+
+---
+사물통신의 응용분야
+
+자동차 /측정기 /원격 유지 장치/헬스케어/트래킹/환경모니터링/결제/보안/개인용 기기
+
+---
+IoT란?
+
+초연결 기술 - internet of things
+
+의미있는 데이터를 가공해서 사용할 수 있는 사물들끼리 연결된 환경
+
+things <> connect <> smart
+
+사물 연결 수집,활용
+
+---
+IoT 시장 전망
+
+암튼 좋다
+
+---
+데이터를 수집하려면?
+
+모바일에서 인터넷 게이트웨이로 연결
+- 무선 연결
+- 작은 영역 네트워크
+: RFID, NFC, Sensor network, ZigBee, Bluetooth,
+- 로컬 영역 네트워크
+: 와이파이, LoRa, LTE
+
+인터넷 게이트웨이에서 서버로
+- 무선 연결
+- 코어 인터넷 네트워크
+
+---
+RFID system
+
+Radio Frequncy IDentification
+무선 환경에서 물리적인 객체를 인식하기 위한 무선 센서 네트워크의 작은 형식
+
+---
+무선 센서 네트워크 (WSN)
+wiress sensor network
+
+센싱 모듈
+데이터 전처리기
+커뮤니케이션
+
+WSN의 구조
+작은 디바이스
+- 낮은 파워 소비와 작은 컴퓨팅 파워
+- 짧은 범위 무선 커뮤니케이션
+커뮤니케이션
+- 짧은 통신 범위
+싱크
+- 인터넷 게이트웨이
+
+---
+3주차 1차시
+
+1. internet of things 핵심 기술
+2. internet of things 전망
+3. internet of things 응용
+
+---
+IoT 핵심기술
+
+ioT = inteligent things connected on the internet
+
+기존의 사물 자체에 컴퓨터를 붙여서 스마트하게 만든다
+> 의미있는 환경을 만든다.
+
+기존 things + 작은 컴퓨터 = ioT
+
+다양한 형태의 서비스를 제공할 수 있습니다.
+
+---
+ioT 인프라구조
+
+통신/네트워크 인프라구조
+
+ioT 네트워크
+> 무선 네트워크, 하이브리드 네트워크. 유선 네트워크
+
+무선 네트워크
+> 짧은 범위 RF 네트워크, 하이브리드 sub-1GH 솔루션, Cellular ioT
+
+- 자세한 내용은 강의자료 12페이지 참고
+
+---
+ioT 출현으로 인한 신기술 개발 압력
+
+500억 대의 장치가 연결될 것으로 예상으로 인한 문제점
+- 할당 주소 부족 -> 미래 인터넷 기술
+- 방대한 트래픽 처리를 위한 통신/ 네트워크 기술 -> 5G/6G/ 미래 와이파이 기술
+
+IoT 적응을 위한 새로운 기술 개발 필요
+-새로운 things 출현
+(언더워터[해저] 센서, on/in-body 센서, 운송장치, 드론)
+-새로운 things를 위한 통신/ 네트워크 기술 출현 
+(언더워터[해저] 커뮤니케이션/네트워크/ 운송장치 네트워크/신체 영역 네트워크)
+- 방대한 데이터 처리 기술
+(머신 러닝, 시그널 프로세싱, 데이터-센터 네트워크)
+
+---
+IoT 전망
+
+전망은 매우 밝고 시장 가치도 크다
+단말의 수들은 점점더 늘어날 것이다.
+
+---
+IoT 응용
+
+다양한 things 에서 수집한 방대한 데이터를 조합 가공하면 수많은 서비스/응용 창출
+
+- connected vehicles 
+차를 타면 운전만 하는 것이 아니라 네비게이션, 수많은 센서들이 있고
+다양한 서비스, 솔루션을 제공한다.
+
+(V2V, V2I, I2V) 등의 통신 vehicle to internet ...
+
+미국에서는 운송장치 통신을 할 수 있도록 의무화하고 있다.
+
+안전 서비스, 자율 주행 자동차
+
+- connected home
+원격으로 집에 있는 사물, 가전제품을 컨트롤할 수 있는 서비스
+원격 모니터링, 원격 제어
+
+- proximity detection
+무인 점포
+
+- Facility Management
+제품 관리
+
+- 헬스케어 시스템
+혈압, 건강 정보등의 관리
+
+- 공공 치안
+감시와 데이터 수집을 통한 치안관리
+
+- 스마트 홈
+지속적으로 성장하고있지만 예상보다 성장속도가 크지는 않다.
+
+- 스마트 공장
+운영 효율성, 자동화, 유지보수
+
+* IoT 는 수많은 응용부분들이 있다.
+
+---
+3주차 2차시
+
+IoT Connectivity
+
+IoT의 High-level 요구사항
+
+500억개의 디바이스가 연결될 때
+다른 디바이스, 다른 서비스, 다른 네트워크 기술을 공통 플랫폼으로 만들 수 있을까?
+이런 질문이 항상 제기 되어 왔다.
+
+---
+IoT 네트워크 (Transport) 기술
+
+Different 서비스는 Different UX를 요구한다.
+
+  네트워크(전송) [와이파이, BT, Zigbee, NFC, Z-Wave ...]이
+  플랫폼을 거쳐 UX로 [전송속도, 커버리지, 소모전력, 비용]
+
+---
+IoT 전송기술 비교(근거리, 원거리)
+
+서비스특성(B2B, B2C), 주파수대역(면서/비면허), 기술특성(전송속도, 커버리지, 전력 소모등)으로 구분
+
+강의자료 21페이지 참고
+
+고속전송, 저속전송 | 근거리, 원거리
+
+전송속도
+커버리지
+채널 대역폭
+주파수 대역
+
+---
+근거리 전송기술 비교
+
+와이파이 블루투스 ZigBee Z-Wave, NFC
+
+전송속도, 커버리지, 평균 소모 전력, 비용 등의 기준으로 비교
+강의자료 22페이지 참고
+
+---
+Wifi 기술 진화
+
+가용성, 사용자 친화력 및 기술력(고속데이터전송, 저지연(low latency),IP 지원등) 에서 장점을 가진 
+Wi-Fi는 IoT의 핵심 커넥티비티 기술
+
+1997년부터 꾸준히 발전, 성장해왔다.
+2014년 이후 중요한 발전
+- 802.11ax (2.5&5 GHz) 체감 전송 속도 4배이이상 향상
+- 802.11ay (60GHz) 20Gbps이상 고속 전송
+- 802.11ba(WUR) 초전력 Wi-Fi(1mW 이하)
+
+--
+802.11ax
+늘어나는 디아이스로 인한 핫플레이스에서의 성능 저하 해결
+- 언제나 어디서나 기가급 체감 속도 실현
+
+802.11 ay
+20Gbps 이상 고속전송을 실현하는 60GHz 무선 전송 기술
+- 고화질, 저지연 비디오 전송, 클라우드 네트워킹
+
+802.11 ba : Wake-up Radio (WUR)
+IoT 지원 초저전력전송기술
+
+---
+블루투스
+
+저비용, 저전력, 소량데이터전송, 오디오 관점에서 장점
+- Low-endIoT 무선 솔류션으로서 응용분야 확대
+
+---
+4주차 1차시
+
+1. IoT Connectivity
+2. 미래 인터넷 개요
+
+---
+ZigBee
+
+근거리, 소량, 저전력
+
+홈네트워킹
+automotive 네트워크
+상업 네트워크
+상호작용 장난감
+원격 metering
+active RFID/asset traking
+
+센서 네트워크를 위해서도 사용됨
+센서 조직화되는 특성
+엄청나게 오래가는 배터리
+사람의 작용없이 오랫동안 사용할 수 있음
+
+---
+LoRA
+
+저전력으로 넓은 범위를 커버하도록 만들어진 기술
+Low Power, Long rage, Wide Area, Low data rate
+키로미터 단위이며 낮은 데이터 전송률을 가짐
+
+스마트 농업
+스마트 시티
+
+---
+미래 인터넷 개요
+
+인터넷의 성공 역사
+
+패킷 스위칭(1962)
+패킷 스위칭을 기반으로 알파넷 구성됨
+1974년 인터넷 컨셉이 나오고
+1978년 TCP/IP 프로토콜이 갖춰짐
+샌디에고에서 1차 IETF 미팅이 열려지고
+1993년 World Wide Web이 나옴
+
+---
+네트워크의 변화
+
+환경 : 신뢰 > 비신회
+유저 : 리서처 > 고객
+작동 : 비상업적 > 상업적
+사용 : 호스트 중심 > 데이터 중심
+연결 : E2E IP > Intermittent X
+
+---
+미래 인터넷에 대한 요구
+[어디서든, 모든것을, 환경을 위해, 산업을 위해]
+
+Uer-Centric
+Context-Aware 
+Date-Centric
+Hard Realtime
+
+---
+문제 상황
+
+라우팅 고장,
+보안성
+모바일
+서비스의 질
+IP = narrow waist of hourglass
+네트워크 운영
+
+현재 인터넷은 모든 것을 커버할 수 없기 때문에 바뀌어야 한다.
+
+---
+페러다임의 변화
+
+자원 공유, 똑똑한 네트워크
+프로그래밍가능
+서비스 인식
+
+---
+4주차 2차시
+---
+패러다임의 변화
+전화	->	인터넷	->	미래 네트워크
+02-123-1234	123.1.12.1		3ABC4ABC4DSE5WQ00
+-Number(wire)	Address(interface)	ID(host/data/service/thing)
+-Specify How	Spectify Where	Specify What
+> 스위칭		라우팅		로케이팅(locating) / path selection
+
+---
+ID-LOC(locator) sepatation
+
+기본 네트워크:
+ID-Locator 결합
+관계(Relation)는 아마 ID 그 자체안에 인코딩된다.
+관계는 아마 외부 상호작용에 의해 획득된다.
+
+미래 네트워크:
+ID-Locator 분리
+ID 그 자체는 개체의 위치에 대한 증거가 없다.
+Locator는 개체로 부터 독립적이다.
+개체는 아마도 다양한 공간의 위치에 묶어진다.
+---
+개체와 환경이 분리가 된다.
+
+하나의 개체가 여러개의 환경에 접촉할 수 있다.
+---
+Polymorphic Networks(다형성)
+
+서비스가 다양해지고 요구조건이 다양해졋다.
+여러가지 라우팅 프로그램이 나왔고
+
+하드웨어를 다 바꿀수없지만 대신 다형성을 가져서 처리할 수 있도록 함
+---
+Horizontal Layor
+
+원래는 수직적(verical) 함수 계층이 정해져있었음 (하향식/상향식)
+
+하지만 수평적인 네트워크 계층이 만들어지고 그것이 필요해짐
+---
+미래 인터넷
+
+서비스와 네트워크의 상호작용
+다양한 아키텍쳐가 지원을 하는 형태를 가질 것이다.(Internet, Sensor 등)
+
+Virtualization 가상화
+Federation 연합
+Programmability 프로그래밍가능
+---
+OpenFlow Switcing 
+중앙 서버에서 처리하도록함
+sw/ hw (secure channel, flow table)
+
+---
+5주차 1차시
+1. 미래 인터넷
+2. Content Centric Network의 Motivation
+3. CCN 을 위한 Architecture
+
+---
+네트워크 가상화
+
+하나의 네트워크 상에서 컴퓨터나 네트워크를 추상화 시켜서 자원으로 사용
+
+데스크탑, 어플리케이션, 시스템, 스토리지, 네트워크 가상화
+
+---
+CCN (Content Centric Network) 
+[반 야콥슨이 만듬]
+
+네트워킹을 보기위한 새로운 방법
+CCN : TCP/IP에 주로 기반을 두고있는 현재의 컴퓨터 네트워크를 향한 대안적인 패러다임의 제안
+인터넷을 machne이 아닌 content 기반으로 Redesign 한다.
+
+예전 인터넷이 초창기에 개발됐을때 컴퓨터는 너무 비싸서 personal 컴퓨터는 거의 없었다.
+지금은 personal 컴퓨터가 아주 흔하다.
+
+초기의 네트워크는 전문가용이었으며 data도 아주 적었다. 그래서 point to point 커뮤니케이션에 중점을 뒀다.
+오늘날은 누구나 네트워크를 사용하고 아주 많은 데이터양이 있다. ubiquitous, wireless 등 어디서든 접속할 수 있다.
+그래서 content dissemination에 중점을 둔다. (데이터 기반의 네트워크)
+
+하나하나 point to point 로 데이터를 뽑아서 전다라면 동시작업에 대해서 대역폭이 한정되어있기때문에
+비효율적이고 제한적인 휴대성이 있다. TCP/IP의 한계가 이것과 동일하기 때문에 추가적인 protocol 과
+서비스의 수요가 생김
+
+CCN은 ...
+데이터 중심의 네트워크
+TCP/IP는 data에 맹점이있다. 데이터의 보안, 충분한 전환이 힘들다.
+
+key idea
+데이타 기반의 네이밍
+데이터가 네트워크 레벨에서 요구된다.
+누구든지 데이터와 함께라면 응답할 수 있다.
+data storage(caching)과 가깝게 인접해어있다.
+
+CCN의 구조
+IP stack		CCN stack
+
+CCN Packet
+ccn의 페켓이 어떻게 만들어질까>?
+pull-based model
+-2types of packets
+> interest, data
+
+interest packet			data packet
+content name			content name
+selector				signature
+nonce				signed info
+				data
+---
+5주차 2차시
+1. Content Centric Network (CCN)
+2. Data Center Network (DCN)
+
+---
+CCN
+
+운송 신뢰성 및 제어(Transport Reliability and control)
+■ 요청/응답모델로 QoS(혼잡, 우선)
+■ CCN 이해관계가 TCP ack처럼 흐름을 제어
+■ Hop by Hob 혼잡 제어
+■ 실패한 이해관계가 재전송됨
+
+이동성(Mobility)
+■ 2계층(데이터링크)과 CCN층 간 결합 필요 없음 (named content)
+■ 노드 어드레싱 문제가 더이상 없음(다중 인터페이스 지원, 쉬운 이동성)
+■ 전략 계층에서 관리하는 다중 인터페이스
+
+---
+Deplyment 배치(deploy : 빌드되어 실행가능한 결과물을 컨테이너에서 인식가능한 곳에 배치하는 것)
+
+Integration with IP Networks [IP 네트워크와의 통합]
+¤ Critical element for CCN adoption [CCN 도입의 핵심요소]
+■ Anything can run on CCN, CCN can run on anything
+[모든 것이 CCN에서 실행될 수 있으며 CCN은 모든 것에서 실행될 수 있습니다.]
+■ CCN overlay over IP, IP overlay over CCN
+[IP 위의 CCN 오버레이, CCN 위의 IP 오버레이]
+■ Similarity with IP - hierarchical name aggregation
+[IP와의 유사성 - 계층 이름 집계(종합/취합)]
+■ Compatible with existing infrastructure, incremental deployment possible
+[기존 인프라와 호환 가능, 증분 배포 가능]
+
+---
+CCN for IoT and MANET (IoT 및 MANET용 CCN)
+
+CCN in IoT [사물인터넷[IoT]의 CCN]
+¤ CCNx implementation on Android [안드로이드에서 CCNx 구현]
+¤ INRIA: CCN implementation on Contiki OS [INRIA : 콘티키 OS에서 CCN 구현]
+¤ Alternative to 6lowpan (6로우팬의 대안)
+
+CCN in MANET (Mobile Adhoc Network) [모바일 애드혹 네트워크(MANET)의 CCN]
+¤ Native support of context-awareness [문맥 인식의 기본 지원]
+¤ Easy mobility [이동성 용이]
+¤ Multiple network if usage [사용시 다중망[
+¤ Context-aware name space (/ThisRoom/projector) [상황 인식 네임스페이스(/ThisRoom/프로젝터)]
+¤ CCN for Emergency MANET (UCLA) [비상매닛용 CCN(UCLA)]
+
+---
+Motivation for DCN (DCN의 동기)
+
+종종 밀접하게 결합되는 10에서 100의 수천 개의 호스트  :
+- e-비즈니스 (예: 아마존)
+- 콘텐츠 서버 (예: 유튜브, 아카마이, 애플, 마이크로소프트)
+- 검색엔진, 데이터 마이닝(예: 구글)
+과제 :
+- 여러 애플리케이션, 각각 수많은 고객에게 서비스
+- 부하 관리/균형 조정, 네트워킹, 데이터 병목 현상
+
+---
+Data Center Network (1)
+
+로드 밸런서: 응용 프로그램 계층 라우팅
+■ 외부 의뢰 접수
+■ 데이터 센터 내 워크로드 관리
+■ 외부 클라이언트에게 결과 반환
+
+---
+DCN component
+
+스위치, 랙 간의 풍부한 상호 연결:
+■ 랙 간 처리량 증가(경로 변경 가능)
+■ 중복성을 통한 신뢰성 향상
+
+---
+Topology of DCN (1)
+
+- Fat-tree : 핵심 지점, 즉 계층 상위에 가까운 지점의 용량이 더 뚱뚱하거나 더 높다.
+- Clos family 
+- Hypercube : "슈퍼 컴퓨팅"의 기타 토폴로지
