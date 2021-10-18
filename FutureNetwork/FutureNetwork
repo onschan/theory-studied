@@ -622,3 +622,142 @@ Topology of DCN (1)
 - Fat-tree : 핵심 지점, 즉 계층 상위에 가까운 지점의 용량이 더 뚱뚱하거나 더 높다.
 - Clos family 
 - Hypercube : "슈퍼 컴퓨팅"의 기타 토폴로지
+
+---
+6주차 1차시
+1. 미래 인터넷
+2. Content Centric Network의 Motivation
+3. CCN 을 위한 Architecture
+
+---
+네트워크 가상화
+
+하나의 네트워크 상에서 컴퓨터나 네트워크를 추상화 시켜서 자원으로 사용
+
+데스크탑, 어플리케이션, 시스템, 스토리지, 네트워크 가상화
+
+---
+CCN (Content Centric Network) 
+[반 야콥슨이 만듬]
+
+네트워킹을 보기위한 새로운 방법
+CCN : TCP/IP에 주로 기반을 두고있는 현재의 컴퓨터 네트워크를 향한 대안적인 패러다임의 제안
+인터넷을 machne이 아닌 content 기반으로 Redesign 한다.
+
+예전 인터넷이 초창기에 개발됐을때 컴퓨터는 너무 비싸서 personal 컴퓨터는 거의 없었다.
+지금은 personal 컴퓨터가 아주 흔하다.
+
+초기의 네트워크는 전문가용이었으며 data도 아주 적었다. 그래서 point to point 커뮤니케이션에 중점을 뒀다.
+오늘날은 누구나 네트워크를 사용하고 아주 많은 데이터양이 있다. ubiquitous, wireless 등 어디서든 접속할 수 있다.
+그래서 content dissemination에 중점을 둔다. (데이터 기반의 네트워크)
+
+하나하나 point to point 로 데이터를 뽑아서 전다라면 동시작업에 대해서 대역폭이 한정되어있기때문에
+비효율적이고 제한적인 휴대성이 있다. TCP/IP의 한계가 이것과 동일하기 때문에 추가적인 protocol 과
+서비스의 수요가 생김
+
+CCN은 ...
+데이터 중심의 네트워크
+TCP/IP는 data에 맹점이있다. 데이터의 보안, 충분한 전환이 힘들다.
+
+key idea
+데이타 기반의 네이밍
+데이터가 네트워크 레벨에서 요구된다.
+누구든지 데이터와 함께라면 응답할 수 있다.
+data storage(caching)과 가깝게 인접해어있다.
+
+CCN의 구조
+IP stack		CCN stack
+
+CCN Packet
+ccn의 페켓이 어떻게 만들어질까>?
+pull-based model
+-2types of packets
+> interest, data
+
+interest packet			data packet
+content name			content name
+selector				signature
+nonce				signed info
+				data
+
+---
+6주차 2차시
+
+1. Openflow 개요
+2. Openflow 적용 사례
+
+---
+OpenFlow 개요
+
+- 제어면(control plane)과 데이터면(data plane) 분리
+> 컨트롤러에 의한 제어면(control plane)
+> 데이터면(data plane)은 스위치에서 작 동
+
+- 기기 공급업체별 의존성 제거
+> 외부 기기의 소프트웨어
+ >> 장치 공급업체에 관계없이 패킷의 경로를 결정한다.
+ >> 공급업체와 독립적인 프로그래밍 가능한 개방형 프로토콜 지원
+
+- 주요 기능
+> 와이어 프로토콜(wire protocol)
+ >> 스위치의 흐름 테이블, 세션 설립, 통계 수집 정의
+> 환경 설정 및 관리 프로토콜
+ >> 물리적 스위치 포트와 컨트롤러 간의 매핑
+
+OpenFlow는 SDN 기술 중 하나로, control plane과 data plane의 상호작용을 위한 프로토콜
+- 컨트롤러에서 패킷 경로 탐색을 위한 소프트웨어가 독립적으로 실행됨으로써 하드웨어에 종속
+되던 트래픽 흐름 제어의 주체가 네트워크 소유자(사용자) 및 해당 응용프로그램으로 변경
+- 기존 IP 라우팅 프로토콜 기반 분산 컨트롤러 구조에서 중앙집중식 구조로 변화
+
+OpenFlow는 오픈 소스를 근간으로 하므로, 사용자들이 새로운 특징과 기능을 신속하
+게 고안 및 구현할 수 있으며 특정 요구 조건을 가진 네트워크에 맞게 조정 가능
+
+OpenFlow프로토콜은 다양한 하드웨어로 구성된 네트워크를 통합 
+
+---
+OpenFlow 구조
+
+- 컨트롤러가 앱을 위한 플로우 테이블(Flow Table)을 만들고 테이블을 스위치로 전달한다.
+- 각 스위치마다 적절한 플로우 테이블 및 포워딩과 패킷을 비교한다.
+
+--
+Openflow 구성요소 - Flow Table
+
+-컨트롤러에 전체 네트워크 토폴로지가 있음
+> 적절한 플로우 테이블 생성
+> 각 OpenFlow 스위치로 플로우 테이블 전송
+
+-컨트롤러 하나로 모든 스위치 제어 가능
+> 장점: 최적 결정 가능
+> 단점 : 하나의 실패 지점
+
+-각 OpenFlow 스위치마다 흐름표에 따라 패킷 처리
+
+---
+Openflow 표준화 동향
+
+- ONF ( Open Networking Foundation )
+> 2011년 3월 22일 비영리, 상호 이익을 바탕으로 하는 새로운 단체로 SDN의 개발과 활용을 
+촉진하는 것을 목표로 설립
+> 산업체 중심의 de-factor 표준기구
+> 현재 ETRI, KT, SKT, 삼성 등이 회원으로 등록 (전세계 96여개 기관 회원)
+
+- Architecture and Framework WG 
+- Top-Down Approach + (NB APIs) (Big Switch/NEC) 
+- NBAPIs WG 
+- Extensibility WG - OpenFlow Specification 1.3.x + 1.4/1.5 (HP) 
+- Config WG – config protocol - OF-CONFIG 1.x (MS/NEC) 
+- Testing WG – test-cases, plug-fest - Testing & Interop 1.0 (Ixia) 
+- Migration WG – use cases, recommendations (Huawei) 
+- Optical Transport WG – optical circuit switches 
+- Forwarding Abstraction WG –TTP (Brocade) 
+- Market Education WG – white-papers, talks
+
+- Openflow 적용 사례
+> 미국 GENI(Global Environment for Network Innovations)
+> Google
+> 대학과 연구소를 중심으로 소규모 개념 검증을 위한 prototype 개발이 추진 중이며,
+ GIST, 충남대, KOREN, ETRI 등에서 Proof of Concept 수준의 테스트베드 망구성
+> 파이오링크 및 나리네트웍스에서 OpenFlow 지원 스위치 개발 중
+> 쿨클라우드 (MuL), 아토리서치 (ATTNET) 등에서 OpenFlow 컨트롤러 개발 중
+
